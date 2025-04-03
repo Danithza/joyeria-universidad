@@ -1,12 +1,12 @@
 <template>
   <div :class="['sidebar', isOpen ? 'open' : 'closed']">
     <ul>
-      <li><a href="#">Anillos</a></li>
-      <li><a href="#">Pulseras</a></li>
-      <li><a href="#">Cadenas</a></li>
-      <li><a href="#">Relojes</a></li>
-      <li><a href="#">Piercing</a></li>
-      <li><a href="#">Joyería Personalizada</a></li>
+      <li><router-link to="/anillos">Anillos</router-link></li>
+      <li><router-link to="/pulseras">Pulseras</router-link></li>
+      <li><router-link to="/cadenas">Cadenas</router-link></li>
+      <li><router-link to="/relojes">Relojes</router-link></li>
+      <li><router-link to="/piercing">Piercing</router-link></li>
+      <li><router-link to="/joyeria-personalizada">Joyería Personalizada</router-link></li>
     </ul>
   </div>
 </template>

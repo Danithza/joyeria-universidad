@@ -9,6 +9,9 @@
 
       <!-- Contenido dinámico -->
       <router-view />
+
+      <!-- Footer -->
+      <FooterComponent class="footer" />
     </div>
   </div>
 </template>
@@ -16,11 +19,13 @@
 <script>
 import NavbarComponent from "./components/Navbar.vue";
 import SidebarComponent from "./components/Sidebar.vue";
+import FooterComponent from "./components/footer.vue"; // Ruta corregida
 
 export default {
   components: {
     NavbarComponent,
     SidebarComponent,
+    FooterComponent, // Corregido el nombre
   },
   data() {
     return {
@@ -34,6 +39,7 @@ export default {
 /* Layout principal */
 .app-container {
   display: flex;
+  flex-direction: column;
   height: 100vh;
 }
 
@@ -43,5 +49,14 @@ export default {
   display: flex;
   flex-direction: column;
   margin-left: 0; /* Ajuste dinámico */
+}
+
+/* Asegurar que el footer esté al final */
+.footer {
+  text-align: center;
+  padding: 10px;
+  background: #f8f8f8;
+  border-top: 1px solid #ddd;
+  margin-top: auto;
 }
 </style>

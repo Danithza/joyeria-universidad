@@ -273,7 +273,7 @@ export default {
 
 .gallery-item {
   width: 100%;
-  height: 480px; /* Todas las imágenes con la misma altura */
+  height: 460px; /* Todas las imágenes con la misma altura */
   overflow: hidden;
   border-radius: 10px;
   display: flex;
