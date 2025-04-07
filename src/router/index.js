@@ -6,6 +6,9 @@ import ForgotPassword from "../views/ForgotPassword.vue";
 import Soporte from "@/views/Soporte.vue";
 import Anillos from "@/views/Anillos.vue";
 
+
+
+
 const routes = [
   { path: "/", component: Home },
   { path: "/login", component: Login },
@@ -14,6 +17,7 @@ const routes = [
   { path: "/home", component: Home},
   { path:"/soporte", component:Soporte},
   { path: "/anillos", component:Anillos},
+  
 ];
 
 const router = createRouter({
@@ -22,3 +26,5 @@ const router = createRouter({
 });
 
 export default router;
+
+
