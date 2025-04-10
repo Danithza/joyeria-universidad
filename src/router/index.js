@@ -5,6 +5,7 @@ import Register from "../views/Register.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import Soporte from "@/views/Soporte.vue";
 import Anillos from "@/views/Anillos.vue";
+import Pulseras from "@/views/Pulseras.vue";
 
 
 
@@ -17,6 +18,7 @@ const routes = [
   { path: "/home", component: Home},
   { path:"/soporte", component:Soporte},
   { path: "/anillos", component:Anillos},
+  { path: "/pulseras", component:Pulseras}
   
 ];
 
