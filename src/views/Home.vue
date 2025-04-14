@@ -8,14 +8,13 @@
       <p class="slogan">{{ currentSlogan }}</p>
     </div>
 
-    <!-- Galería de imágenes -->
+
     <div class="image-gallery">
       <div class="gallery-item" v-for="(image, index) in images" :key="index">
         <img :src="image" alt="Joya" class="gallery-image">
       </div>
     </div>
 
-    <!-- Sección Sobre Nosotros, Misión y Visión en una fila -->
     <section class="info-container">
       <div class="info-box">
         <h2>Sobre Nosotros</h2>
@@ -31,7 +30,7 @@
       </div>
     </section>
 
-    <!-- Sección Ofertas y Promociones -->
+
     <section class="offers">
       <h2>Ofertas y Promociones</h2>
       <p>Encuentra descuentos exclusivos en nuestras colecciones más recientes. ¡No te lo pierdas!</p>

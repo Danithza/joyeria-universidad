@@ -17,19 +17,19 @@
 </template>
 
 <script>
-import NavbarComponent from "./components/Navbar.vue";
-import SidebarComponent from "./components/Sidebar.vue";
-import FooterComponent from "./components/footer.vue"; // Ruta corregida
+import NavbarComponent from "./components/Layout/Navbar.vue";
+import SidebarComponent from "./components/Layout/Sidebar.vue";
+import FooterComponent from "./components/Layout/footer.vue"; // Ruta corregida
 
 export default {
   components: {
     NavbarComponent,
     SidebarComponent,
-    FooterComponent, // Corregido el nombre
+    FooterComponent, 
   },
   data() {
     return {
-      sidebarOpen: false, // Estado inicial del sidebar
+      sidebarOpen: false, 
     };
   },
 };

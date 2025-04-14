@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import ForgotPassword from "../views/ForgotPassword.vue";
-import Soporte from "@/views/Soporte.vue";
-import Anillos from "@/views/Anillos.vue";
-import Pulseras from "@/views/Pulseras.vue";
+import Login from "../views/Autenticacion/Login.vue";
+import Register from "../views/Autenticacion/Register.vue";
+import ForgotPassword from "../views/Autenticacion/ForgotPassword.vue";
+import Soporte from "@/views/Soporte/Soporte.vue";
+import Anillos from "@/views/Catalogo/Anillos.vue";
+import Pulseras from "@/views/Catalogo/Pulseras.vue";
 
 
 

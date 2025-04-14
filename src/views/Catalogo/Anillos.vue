@@ -8,7 +8,7 @@
       <!-- Filtros -->
       <aside class="sidebar">
         <h2>Filtros</h2>
-        <input v-model="busqueda" placeholder="Buscar pulsera..." />
+        <input v-model="busqueda" placeholder="Buscar anillo..." />
         <div class="slider-group">
           <label>Precio mín: {{ precioMin }}</label>
           <input type="range" v-model="precioMin" min="0" max="1000" />
@@ -24,20 +24,29 @@
       <section class="galeria">
         <transition-group name="fade" tag="div" class="productos-grid">
           <div
-            v-for="pulsera in pulserasFiltradas"
-            :key="pulsera.id"
+            v-for="anillo in anillosFiltrados"
+            :key="anillo.id"
             class="tarjeta-producto"
           >
-            <div class="etiqueta" v-if="pulsera.etiqueta">{{ pulsera.etiqueta }}</div>
-            <i class="fas fa-heart icono-favorito"></i>
+            <div class="etiqueta" v-if="anillo.etiqueta">{{ anillo.etiqueta }}</div>
 
+            <!-- Ícono de favorito -->
+            <i
+              class="fas fa-heart icono-favorito"
+              :class="{ favorito: favoritos.includes(anillo.id) }"
+              @click="toggleFavorito(anillo.id)"
+              title="Añadir a favoritos"
+            ></i>
+
+            <!-- Imagen -->
             <img
-              :src="pulsera.imagen"
-              :alt="pulsera.nombre"
-              class="imagen-producto"
+              :src="anillo.imagen"
+              :alt="anillo.nombre"
+              class="imagen-anillo"
             />
 
-            <h3>{{ pulsera.nombre }}</h3>
+            <!-- Nombre -->
+            <h3>{{ anillo.nombre }}</h3>
 
             <!-- Calificación -->
             <div class="estrellas">
@@ -45,17 +54,22 @@
                 v-for="n in 5"
                 :key="n"
                 class="fa-star"
-                :class="n <= (pulsera.rating || 4) ? 'fas' : 'far'"
+                :class="n <= (anillo.rating || 4) ? 'fas' : 'far'"
               ></i>
+              <span class="rating-text">({{ anillo.rating || 4 }}/5)</span>
             </div>
 
-            <p class="precio">${{ pulsera.precio }}</p>
+            <!-- Precio -->
+            <p class="precio">${{ anillo.precio }}</p>
 
-            <p v-if="pulsera.stock === 0" class="sin-stock">Sin stock</p>
+            <!-- Stock -->
+            <p v-if="anillo.stock === 0" class="sin-stock">Sin stock</p>
+            <p v-else class="stock-disponible">{{ anillo.stock }} disponibles</p>
 
+            <!-- Botón agregar al carrito -->
             <button
-              @click="agregarAlCarrito(pulsera)"
-              :disabled="pulsera.stock === 0"
+              @click="agregarAlCarrito(anillo)"
+              :disabled="anillo.stock === 0"
             >
               <i class="fas fa-cart-plus"></i> Añadir al carrito
             </button>
@@ -63,81 +77,66 @@
         </transition-group>
       </section>
     </div>
+
+    <!-- Toast -->
+    <div v-if="toastVisible" class="toast">¡Producto añadido al carrito!</div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
-import Navbar from '@/components/Navbar.vue'
+import Navbar from '@/components/Layout/Navbar.vue'
 
-// Importar imágenes de pulseras
-import pulsera1 from '@/assets/img-pulseras/pulsera1.jpg'
-import pulsera2 from '@/assets/img-pulseras/pulsera2.jpg'
-import pulsera3 from '@/assets/img-pulseras/pulsera3.jpg'
-import pulsera4 from '@/assets/img-pulseras/pulsera4.jpg'
+// Imágenes
+import anillo1 from '@/assets/img-anillos/anillo1.jpeg'
+import anillo2 from '@/assets/img-anillos/anillo2.jpeg'
+import anillo3 from '@/assets/img-anillos/anillo3.jpeg'
+import anillo4 from '@/assets/img-anillos/anillo4.jpeg'
+import anillo5 from '@/assets/img-anillos/anillo5.jpeg'
+import anillo6 from '@/assets/img-anillos/anillo6.jpeg'
+import anillo7 from '@/assets/img-anillos/anillo7.jpeg'
+import anillo8 from '@/assets/img-anillos/anillo8.jpeg'
 
-// Carrito store
+// Store
 const cartStore = useCartStore()
 
-// Lista de pulseras con imágenes importadas
-const pulseras = ref([
-  {
-    id: 1,
-    nombre: 'Pulsera Elegante Dorada',
-    precio: 85,
-    imagen: pulsera1,
-    stock: 12,
-    etiqueta: 'Nuevo',
-    rating: 4
-  },
-  {
-    id: 2,
-    nombre: 'Pulsera Plata Brillante',
-    precio: 120,
-    imagen: pulsera2,
-    stock: 8,
-    etiqueta: 'Popular',
-    rating: 5
-  },
-  {
-    id: 3,
-    nombre: 'Pulsera Minimalista',
-    precio: 65,
-    imagen: pulsera3,
-    stock: 15,
-    etiqueta: '',
-    rating: 4
-  },
-  {
-    id: 4,
-    nombre: 'Pulsera Vintage',
-    precio: 95,
-    imagen: pulsera4,
-    stock: 10,
-    etiqueta: 'Exclusivo',
-    rating: 5
-  }
-])
-
-// Estado visual
+// Estado
 const darkMode = ref(true)
 const busqueda = ref('')
 const precioMax = ref(1000)
 const precioMin = ref(0)
+const toastVisible = ref(false)
 
-// Detectar modo oscuro del sistema automáticamente
+// Favoritos
+const favoritos = ref(JSON.parse(localStorage.getItem('favoritos') || '[]'))
+
+watch(favoritos, (val) => {
+  localStorage.setItem('favoritos', JSON.stringify(val))
+}, { deep: true })
+
+// Anillos
+const anillos = ref([
+  { id: 1, nombre: 'Anillo Elegancia 1', precio: 120, imagen: anillo1, stock: 10, etiqueta: 'Nuevo', rating: 5 },
+  { id: 2, nombre: 'Anillo Elegancia 2', precio: 150, imagen: anillo2, stock: 8, etiqueta: 'Popular', rating: 4 },
+  { id: 3, nombre: 'Anillo Clásico 3', precio: 90, imagen: anillo3, stock: 12, etiqueta: '', rating: 4 },
+  { id: 4, nombre: 'Anillo Minimalista 4', precio: 110, imagen: anillo4, stock: 9, etiqueta: 'Nuevo', rating: 3 },
+  { id: 5, nombre: 'Anillo Fino 5', precio: 200, imagen: anillo5, stock: 6, etiqueta: 'Descuento', rating: 5 },
+  { id: 6, nombre: 'Anillo Vintage 6', precio: 130, imagen: anillo6, stock: 11, etiqueta: '', rating: 4 },
+  { id: 7, nombre: 'Anillo Estrella 7', precio: 175, imagen: anillo7, stock: 5, etiqueta: 'Popular', rating: 5 },
+  { id: 8, nombre: 'Anillo Moderno 8', precio: 140, imagen: anillo8, stock: 7, etiqueta: '', rating: 3 }
+])
+
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
 
-// Computado: aplicar filtros
-const pulserasFiltradas = computed(() =>
-  pulseras.value.filter(
-    (p) =>
-      p.nombre.toLowerCase().includes(busqueda.value.toLowerCase()) &&
-      p.precio <= precioMax.value &&
-      p.precio >= precioMin.value
+const anillosFiltrados = computed(() =>
+  anillos.value.filter(
+    (a) =>
+      a.nombre.toLowerCase().includes(busqueda.value.toLowerCase()) &&
+      a.precio <= precioMax.value &&
+      a.precio >= precioMin.value
   )
 )
 
@@ -148,15 +147,27 @@ const limpiarFiltros = () => {
   precioMin.value = 0
 }
 
-const agregarAlCarrito = (pulsera) => {
-  if (pulsera.stock > 0) {
-    cartStore.agregarProducto(pulsera)
+const toggleFavorito = (id) => {
+  if (favoritos.value.includes(id)) {
+    favoritos.value = favoritos.value.filter(favId => favId !== id)
+  } else {
+    favoritos.value.push(id)
+  }
+}
+
+const agregarAlCarrito = (anillo) => {
+  if (anillo.stock > 0) {
+    cartStore.agregarProducto(anillo)
+    toastVisible.value = true
+    setTimeout(() => {
+      toastVisible.value = false
+    }, 2000)
   }
 }
 </script>
 
 <style scoped>
-/* Fondo general */
+/* Fondo y tema */
 .app-container {
   background-color: #f5f5f5;
   min-height: 100vh;
@@ -219,7 +230,7 @@ const agregarAlCarrito = (pulsera) => {
   background: #1e1e1e;
   color: #fff;
 }
-.imagen-producto {
+.imagen-anillo {
   width: 100%;
   height: 140px;
   object-fit: cover;
@@ -227,7 +238,7 @@ const agregarAlCarrito = (pulsera) => {
   margin-bottom: 0.5rem;
   transition: transform 0.4s ease;
 }
-.tarjeta-producto:hover .imagen-producto {
+.tarjeta-producto:hover .imagen-anillo {
   transform: scale(1.1);
 }
 .precio {
@@ -236,6 +247,10 @@ const agregarAlCarrito = (pulsera) => {
 }
 .dark .precio {
   color: #ddd;
+}
+.stock-disponible {
+  font-size: 0.8rem;
+  color: #666;
 }
 button {
   background: #000;
@@ -275,7 +290,7 @@ button:hover {
   transition: color 0.3s;
   cursor: pointer;
 }
-.icono-favorito:hover {
+.icono-favorito.favorito {
   color: crimson;
 }
 
@@ -286,6 +301,10 @@ button:hover {
 }
 .fa-star {
   margin: 0 1px;
+}
+.rating-text {
+  font-size: 0.7rem;
+  margin-left: 4px;
 }
 
 /* Sin stock */
@@ -304,6 +323,19 @@ button:hover {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(10px);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #333;
+  color: white;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
 }
 
 /* Responsive */

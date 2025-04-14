@@ -82,7 +82,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useCartStore } from '../stores/useCartStore'
+import { useCartStore } from '../../stores/useCartStore'
 
 const cartStore = useCartStore()
 const mostrarCarrito = ref(false)
