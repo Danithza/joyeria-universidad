@@ -3,10 +3,9 @@
     <button class="menu-btn" @click="$emit('toggleSidebar')">☰</button>
 
     <div class="logo-container">
-      <img src="/logo-joyas-.png" alt="Logo" class="logo-img" />
+      <img src="/joy_logo.png" alt="Logo" class="logo-img" />
       <h1 class="logo">Elegancia Digital en Línea</h1>
     </div>
-
     <div class="nav-icons">
       <router-link to="/" class="icon-group">
         <i class="fas fa-home"></i>

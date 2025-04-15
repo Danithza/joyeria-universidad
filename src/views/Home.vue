@@ -1,5 +1,6 @@
 <template>
   <div class="home-container">
+    <!-- Título de bienvenida -->
     <div class="welcome-container">
       <h1 class="welcome-title">
         ¡Bienvenido a nuestra joyería!
@@ -8,67 +9,56 @@
       <p class="slogan">{{ currentSlogan }}</p>
     </div>
 
-
-    <div class="image-gallery">
-      <div class="gallery-item" v-for="(image, index) in images" :key="index">
-        <img :src="image" alt="Joya" class="gallery-image">
+    <!-- Carrusel de Bootstrap -->
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div 
+          class="carousel-item" 
+          v-for="(image, index) in images" 
+          :class="{ active: index === 0 }" 
+          :key="index"
+        >
+          <img :src="image" class="d-block w-100" alt="Imagen de joya">
+        </div>
       </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+      </button>
     </div>
 
-    <section class="info-container">
-      <div class="info-box">
-        <h2>Sobre Nosotros</h2>
-        <p>Descubre nuestras joyas únicas y elegantes que reflejan la belleza y el estilo de quienes las usan.</p>
-      </div>
-      <div class="info-box">
-        <h2>Misión</h2>
-        <p>Brindar joyas de alta calidad que resalten la personalidad y el estilo de cada cliente.</p>
-      </div>
-      <div class="info-box">
-        <h2>Visión</h2>
-        <p>Ser la joyería de referencia en el mercado por nuestra exclusividad y diseño innovador.</p>
+    <!-- Nuestro catálogo -->
+    <section class="section">
+      <h2 class="section-title">📚 Nuestro Catálogo</h2>
+      <p class="section-text">Explora nuestras colecciones de joyas con diseño único y materiales de calidad.</p>
+    </section>
+
+    <!-- Ofertas destacadas -->
+    <section class="section">
+      <h2 class="section-title">🔥 Ofertas Destacadas</h2>
+      <p class="section-text">No te pierdas las promociones especiales por tiempo limitado.</p>
+      <div class="payment-icons">
+        <img src="@/assets/img-home/img-promos-detacadas/a.png" alt="A" />
+        <img src="@/assets/img-home/img-promos-detacadas/b.png" alt="B" />
+        <img src="@/assets/img-home/img-promos-detacadas/c.png" alt="C" />
+        <img src="@/assets/img-home/img-promos-detacadas/d.png" alt="D" />
       </div>
     </section>
 
-
-    <section class="offers">
-      <h2>Ofertas y Promociones</h2>
-      <p>Encuentra descuentos exclusivos en nuestras colecciones más recientes. ¡No te lo pierdas!</p>
+    <!-- Métodos de pago -->
+    <section class="section payment-methods">
+      <h2 class="section-title">💳 Métodos de Pago</h2>
+      <div class="payment-icons">
+        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" />
+        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" />
+        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" />
+      </div>
     </section>
-
-<!-- Sección Contacto -->
-<div class="contact-container">
-  <h2 class="contact-title">Contáctanos</h2>
-
-  <!-- Formulario de Contacto -->
-  <form class="contact-form">
-    <div class="input-group">
-      <label for="name">Nombre</label>
-      <input type="text" id="name" name="name" placeholder="Ingresa tu nombre" required>
-    </div>
-
-    <div class="input-group">
-      <label for="email">Correo Electrónico</label>
-      <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required>
-    </div>
-
-    <div class="input-group">
-      <label for="message">Mensaje</label>
-      <textarea id="message" name="message" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
-    </div>
-
-    <button type="submit" class="submit-btn">Enviar Mensaje</button>
-  </form>
-
-  <!-- Redes Sociales -->
-  <div class="social-icons">
-    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-    <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
   </div>
-</div>
-</div>
 </template>
 
 <script>
@@ -86,114 +76,23 @@ export default {
     };
   },
   created() {
-    // Importar todas las imágenes de la carpeta 'assets/img-home'
-    const imageFiles = import.meta.glob('@/assets/img-home/*.jpg', { eager: true });
-    
-    // Convertir el objeto en un array de URLs
+    const imageFiles = import.meta.glob('@/assets/img-home/*.png', { eager: true });
     this.images = Object.values(imageFiles).map(img => img.default);
-    
-    // Cambiar el slogan cada 2 segundos
     setInterval(() => {
       this.currentSlogan = this.slogans[Math.floor(Math.random() * this.slogans.length)];
-    }, 1500);
+    }, 1000);
   }
 };
 </script>
 
 <style scoped>
-
-.contact-container {
-  background: #fff;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 500px;
-  margin: 40px auto;
-}
-
-.contact-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #a67b5b;
-  margin-bottom: 20px;
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.input-group {
-  text-align: left;
-}
-
-.input-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #5a4743;
-}
-
-.input-group input,
-.input-group textarea {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #a67b5b;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-}
-
-.input-group input:focus,
-.input-group textarea:focus {
-  border-color: #8c654a;
-  outline: none;
-  box-shadow: 0 0 8px rgba(166, 123, 91, 0.3);
-}
-
-.submit-btn {
-  background: #a67b5b;
-  color: white;
-  padding: 12px;
-  font-size: 18px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.submit-btn:hover {
-  background: #8c654a;
-}
-
-.social-icons {
-  margin-top: 20px;
-}
-
-.social-icon {
-  font-size: 24px;
-  margin: 0 10px;
-  color: #a67b5b;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.social-icon:hover {
-  color: #7a5c4f;
-}
-
-/* Contenedor principal */
 .home-container {
-  background: linear-gradient(to bottom, #fae3d9, #fbe8dc);
-  color: #5a4743;
+  background: #000;
+  color: #fff;
   text-align: center;
   padding-top: 80px;
 }
 
-/* Contenedor del título y el diamante */
 .welcome-container {
   display: flex;
   flex-direction: column;
@@ -201,12 +100,10 @@ export default {
   justify-content: center;
 }
 
-/* Título con animación */
 .welcome-title {
   margin-top: 5%;
   font-size: 2.5rem;
   font-weight: bold;
-  color: #a67b5b;
   opacity: 0;
   transform: translateY(-30px);
   animation: fadeInSlide 1.5s ease-out forwards;
@@ -215,7 +112,6 @@ export default {
   gap: 10px;
 }
 
-/* Diamante interactivo */
 .diamond {
   font-size: 2.5rem;
   cursor: pointer;
@@ -226,13 +122,88 @@ export default {
   transform: rotate(360deg) scale(1.2);
 }
 
-/* Slogan animado */
 .slogan {
   font-size: 1.2rem;
   font-style: italic;
-  color: #7a5c4f;
   margin-top: 10px;
   animation: fadeIn 1s ease-in-out;
+}
+
+.section {
+  margin-top: 60px;
+  padding: 20px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.section-text {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.carousel-inner img {
+  max-height: 500px;
+  object-fit: contain;
+  width: 100%;
+  border-radius: 0;
+  background-color: #000;
+  padding: 20px;
+}
+
+.carousel {
+  margin: 30px auto;
+  max-width: 90%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.payment-methods {
+  padding-bottom: 60px;
+}
+
+.payment-icons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.payment-icons img {
+  width: 60px;
+  height: auto;
+  filter: brightness(1.2);
+  transition: transform 0.3s;
+}
+
+.payment-icons img:hover {
+  transform: scale(1.1);
+}
+
+.section:nth-of-type(2) .payment-icons {
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  padding: 10px 20px;
+}
+
+.section:nth-of-type(2) .payment-icons img {
+  width: 350px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.section:nth-of-type(2) .payment-icons img:hover {
+  transform: scale(1.1);
 }
 
 @keyframes fadeIn {
@@ -240,62 +211,6 @@ export default {
   to { opacity: 1; }
 }
 
-.image-gallery {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columnas fijas */
-  grid-template-rows: repeat(3, 1fr); /* 3 filas */
-  gap: 15px;
-  width: 90%;
-  margin: 30px auto;
-  padding: 20px;
-}
-
-/* Estilos para la fila de información */
-.info-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  margin: 40px auto;
-  padding: 20px;
-  max-width: 90%;
-  gap: 20px;
-}
-
-.info-box {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.gallery-item {
-  width: 100%;
-  height: 460px; /* Todas las imágenes con la misma altura */
-  overflow: hidden;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.gallery-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Evita distorsiones */
-  border-radius: 10px;
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
-}
-
-/* Efecto de escala y opacidad al pasar el cursor */
-.gallery-item:hover .gallery-image {
-  transform: scale(1.1); /* Aumenta un poco el tamaño */
-  filter: brightness(0.8) contrast(1.2); /* Ajusta brillo y contraste */
-}
-
-/* Keyframes para la animación */
 @keyframes fadeInSlide {
   from {
     opacity: 0;
