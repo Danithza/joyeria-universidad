@@ -116,7 +116,7 @@ const proceedToCheckout = () => {
 
 .menu-btn {
   font-size: 1.8rem;
-  background: #c90000;
+  background:black;
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
@@ -126,7 +126,7 @@ const proceedToCheckout = () => {
 }
 
 .menu-btn:hover {
-  background: #a70000;
+  background: #FF5722; /* Naranja más intenso */
   transform: scale(1.1);
 }
 
@@ -170,7 +170,7 @@ const proceedToCheckout = () => {
 }
 
 .icon-group:hover {
-  color: #c90000;
+  color: #FF5722; /* Naranja más intenso */
   transform: scale(1.2);
 }
 
@@ -277,37 +277,7 @@ const proceedToCheckout = () => {
   color: #333;
 }
 
-.item-details p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #666;
-}
 
-.item-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.item-total {
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.remove-item {
-  background: none;
-  border: none;
-  color: #ff4444;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.cart-summary {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
-}
 
 .total-section {
   display: flex;
@@ -318,7 +288,7 @@ const proceedToCheckout = () => {
 
 .total-amount {
   font-weight: bold;
-  color: #c90000;
+  color: #FF5722; /* Naranja más intenso */
 }
 
 .cart-buttons {
@@ -343,16 +313,17 @@ const proceedToCheckout = () => {
 }
 
 .continue-shopping:hover {
-  background-color: #e0e0e0;
+  background-color: #FF5722; /* Naranja más intenso */
+  color: white;
 }
 
 .checkout-button {
-  background-color: #c90000;
+  background-color: #FF5722; /* Naranja más intenso */
   color: white;
 }
 
 .checkout-button:hover {
-  background-color: #a70000;
+  background-color: #FF5722; /* Naranja más intenso */
 }
 
 @keyframes fadeIn {

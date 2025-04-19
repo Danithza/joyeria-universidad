@@ -58,59 +58,60 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #fbe7c6, #ffdde1);
+  background: #000; /* Fondo negro */
 }
 
 .login-card {
-  background: #fff;
-  padding: 30px;
+  background: #1a1a1a; /* Oscuro profundo */
+  padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
   text-align: center;
-  width: 350px;
+  width: 100%;
+  max-width: 380px;
 }
 
 h2 {
   font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 600;
   margin-bottom: 20px;
-  color: #ff9aa2;
+  color: #FF6B00; /* Naranja fuerte */
 }
 
 .input-group {
   text-align: left;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .input-group label {
   font-weight: 600;
   display: block;
-  margin-bottom: 5px;
-  color: #ff758f;
+  margin-bottom: 8px;
+  color: #FF6B00; /* Naranja */
 }
 
 .input-group input {
   width: 100%;
-  padding: 10px;
-  border: 2px solid #ffb7b2;
+  padding: 12px;
+  border: 2px solid #444;
   border-radius: 8px;
   font-size: 16px;
-  background: #fff5f5;
-  color: #333;
+  background: #2b2b2b;
+  color: #fff;
   transition: border 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #ff9aa2;
+  border-color: #FF6B00;
   outline: none;
 }
 
 .btn-login {
-  background: #ffb7b2;
+  background: #FF6B00;
   color: #fff;
   border: none;
-  padding: 12px;
+  padding: 14px;
   width: 100%;
   border-radius: 8px;
   font-size: 18px;
@@ -120,13 +121,13 @@ h2 {
 }
 
 .btn-login:hover {
-  background: #ff9aa2;
+  background: #e65c00;
 }
 
 .forgot-password {
   display: block;
-  margin-top: 10px;
-  color: #ff758f;
+  margin-top: 12px;
+  color: #FF6B00;
   text-decoration: none;
   font-weight: 600;
 }
@@ -136,21 +137,21 @@ h2 {
 }
 
 .register-section {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .register-section p {
   margin: 0;
   font-size: 14px;
-  color: #666;
+  color: #ccc;
 }
 
 .btn-register {
   display: inline-block;
   margin-top: 8px;
   background: transparent;
-  color: #ff758f;
-  border: 2px solid #ff758f;
+  color: #FF6B00;
+  border: 2px solid #FF6B00;
   padding: 8px 12px;
   border-radius: 8px;
   font-weight: 600;
@@ -159,16 +160,16 @@ h2 {
 }
 
 .btn-register:hover {
-  background: #ff758f;
+  background: #FF6B00;
   color: #fff;
 }
 
 .success-message {
-  background: #b5e7a0;
-  color: #333;
-  padding: 10px;
+  background: #4caf50;
+  color: #fff;
+  padding: 12px;
   border-radius: 8px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 </style>

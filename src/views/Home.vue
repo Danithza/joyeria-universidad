@@ -86,11 +86,14 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 .home-container {
   background: #000;
   color: #fff;
   text-align: center;
   padding-top: 80px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .welcome-container {
@@ -110,6 +113,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #FF6B00;
 }
 
 .diamond {
@@ -127,6 +131,7 @@ export default {
   font-style: italic;
   margin-top: 10px;
   animation: fadeIn 1s ease-in-out;
+  color: #f5f5f5;
 }
 
 .section {
@@ -137,12 +142,14 @@ export default {
 .section-title {
   font-size: 2rem;
   margin-bottom: 10px;
+  color: #FF6B00;
 }
 
 .section-text {
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
+  color: #ccc;
 }
 
 .carousel-inner img {
@@ -204,6 +211,22 @@ export default {
 
 .section:nth-of-type(2) .payment-icons img:hover {
   transform: scale(1.1);
+}
+
+.btn-home {
+  display: inline-block;
+  margin-top: 40px;
+  background: #FF6B00;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn-home:hover {
+  background: #e65c00;
 }
 
 @keyframes fadeIn {

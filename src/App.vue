@@ -1,4 +1,5 @@
 <template>
+
   <div class="app-container">
     <!-- Sidebar -->
     <SidebarComponent :isOpen="sidebarOpen" />
@@ -36,27 +37,30 @@ export default {
 </script>
 
 <style scoped>
+
+
+
 /* Layout principal */
+/* App.vue */
 .app-container {
   display: flex;
-  flex-direction: column;
-  height: 100vh;
+  height: auto;
+  flex-direction: row; /* Sidebar y contenido principal en fila */
 }
 
-/* Contenedor principal */
 .main-content {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 0; /* Ajuste dinámico */
+  flex: 1; /* Muy importante: hace que el contenido se expanda verticalmente */
+  min-height: 100vh;
 }
 
-/* Asegurar que el footer esté al final */
 .footer {
   text-align: center;
   padding: 10px;
   background: #f8f8f8;
   border-top: 1px solid #ddd;
-  margin-top: auto;
+  margin-top: auto; /* Empuja el footer hacia abajo */
 }
+
 </style>

@@ -80,7 +80,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #fddde6, #fce4d8);
+  background: #000; /* Fondo negro */
   padding: 20px;
 }
 
@@ -88,12 +88,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: white;
+  background: #1a1a1a; /* Fondo oscuro */
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   width: 90%;
-  max-width: 1000px; /* Para que no sea demasiado ancho */
+  max-width: 1000px;
 }
 
 h2 {
@@ -101,7 +101,7 @@ h2 {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
-  color: #ff6b81;
+  color: #FF6B00;
 }
 
 .form-row {
@@ -115,25 +115,27 @@ h2 {
 .input-group {
   display: flex;
   flex-direction: column;
-  width: 45%; /* Para que queden dos columnas */
+  width: 45%;
 }
 
 .input-group label {
   font-weight: 600;
   margin-bottom: 5px;
-  color: #ff6b81;
+  color: #FF6B00;
 }
 
 .input-group input {
   padding: 10px;
-  border: 2px solid #ffb6c1;
+  border: 2px solid #444;
   border-radius: 8px;
   font-size: 16px;
+  background: #2b2b2b;
+  color: #fff;
   transition: border 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #ff9aa2;
+  border-color: #FF6B00;
   outline: none;
 }
 
@@ -146,7 +148,7 @@ h2 {
 }
 
 .btn-register, .btn-back {
-  background: #ffb6c1;
+  background: #FF6B00;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -158,6 +160,6 @@ h2 {
 }
 
 .btn-register:hover, .btn-back:hover {
-  background: #ff6b81;
+  background: #e65c00;
 }
 </style>

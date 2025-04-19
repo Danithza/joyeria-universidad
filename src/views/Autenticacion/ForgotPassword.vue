@@ -46,14 +46,14 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #fbe7c6, #ffdde1);
+  background: #000; /* Fondo negro */
 }
 
 .forgot-password-card {
-  background: #fff;
+  background: #1a1a1a; /* Fondo oscuro */
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   text-align: center;
   width: 350px;
 }
@@ -63,7 +63,7 @@ h2 {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
-  color: #ff9aa2;
+  color: #FF6B00; /* Naranja vibrante */
 }
 
 .input-group {
@@ -75,27 +75,27 @@ h2 {
   font-weight: 600;
   display: block;
   margin-bottom: 5px;
-  color: #ff758f;
+  color: #FF6B00;
 }
 
 .input-group input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #ffb7b2;
+  border: 2px solid #444;
   border-radius: 8px;
   font-size: 16px;
-  background: #fff5f5;
-  color: #333;
+  background: #2b2b2b;
+  color: #fff;
   transition: border 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #ff9aa2;
+  border-color: #FF6B00;
   outline: none;
 }
 
 .btn-recover {
-  background: #ffb7b2;
+  background: #FF6B00;
   color: #fff;
   border: none;
   padding: 12px;
@@ -108,13 +108,13 @@ h2 {
 }
 
 .btn-recover:hover {
-  background: #ff9aa2;
+  background: #e65c00;
 }
 
 .back-to-login {
   display: block;
   margin-top: 10px;
-  color: #ff758f;
+  color: #FF6B00;
   text-decoration: none;
   font-weight: 600;
 }
@@ -124,8 +124,8 @@ h2 {
 }
 
 .success-message {
-  background: #b5e7a0;
-  color: #333;
+  background: #4caf50;
+  color: #fff;
   padding: 10px;
   border-radius: 8px;
   font-weight: 600;
