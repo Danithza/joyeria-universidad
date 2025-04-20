@@ -61,6 +61,19 @@
   </div>
 </section>
 
+<!-- Pulseras -->
+<section class="section">
+  <h2 class="section-title">📿 Pulseras</h2>
+  <p class="section-text">Descubre nuestra colección de pulseras elegantes y modernas.</p>
+  <div class="bracelet-icons">
+    <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" />
+    <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" />
+    <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" />
+    <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" />
+  </div>
+</section>
+
+
 
     <!-- Métodos de pago -->
     <section class="section payment-methods">
@@ -277,6 +290,28 @@ export default {
 }
 
 .ring-icons img:hover {
+  transform: scale(1.1);
+}
+
+.bracelet-icons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+}
+
+.bracelet-icons img {
+  width: 350px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.bracelet-icons img:hover {
   transform: scale(1.1);
 }
 
