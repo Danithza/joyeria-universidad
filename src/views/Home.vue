@@ -49,6 +49,19 @@
       </div>
     </section>
 
+    <!-- Anillos -->
+<section class="section">
+  <h2 class="section-title">💍 Anillos</h2>
+  <p class="section-text">Descubre nuestra colección de anillos elegantes y modernos.</p>
+  <div class="ring-icons">
+    <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" />
+    <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" />
+    <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" />
+    <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" />
+  </div>
+</section>
+
+
     <!-- Métodos de pago -->
     <section class="section payment-methods">
       <h2 class="section-title">💳 Métodos de Pago</h2>
@@ -244,4 +257,27 @@ export default {
     transform: translateY(0);
   }
 }
+
+.ring-icons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+}
+
+.ring-icons img {
+  width: 350px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.ring-icons img:hover {
+  transform: scale(1.1);
+}
+
 </style>
