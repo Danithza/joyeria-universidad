@@ -6,6 +6,9 @@ import ForgotPassword from "../views/Autenticacion/ForgotPassword.vue";
 import Soporte from "@/views/Soporte/Soporte.vue";
 import Anillos from "@/views/Catalogo/Anillos.vue";
 import Pulseras from "@/views/Catalogo/Pulseras.vue";
+import Cadenas from "@/views/Catalogo/Cadenas.vue";
+import Relojes from  "@/views/Catalogo/Relojes.vue";
+import Piercing from "@/views/Catalogo/Piercing.vue";
 
 
 
@@ -18,7 +21,10 @@ const routes = [
   { path: "/home", component: Home},
   { path:"/soporte", component:Soporte},
   { path: "/anillos", component:Anillos},
-  { path: "/pulseras", component:Pulseras}
+  { path: "/pulseras", component:Pulseras},
+  { path: "/cadenas", component:Cadenas},
+  { path: "/relojes", component:Relojes},
+  { path: "/piercing", component:Piercing},
   
 ];
 
