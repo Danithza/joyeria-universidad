@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- Título de bienvenida -->
-    <div class="welcome-container">
+    <div class="welcome-container" data-aos="fade-down" data-aos-mirror="fade-up">
       <h1 class="welcome-title">
         ¡Bienvenido a nuestra joyería!
         <span class="diamond">💎</span>
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Carrusel de Bootstrap -->
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up" data-aos-mirror="fade-down">
       <div class="carousel-inner">
         <div 
           class="carousel-item" 
@@ -32,62 +32,63 @@
     </div>
 
     <!-- Nuestro catálogo -->
-    <section class="section">
+    <section class="section" data-aos="fade-right" data-aos-mirror="fade-left">
       <h2 class="section-title">📚 Nuestro Catálogo</h2>
       <p class="section-text">Explora nuestras colecciones de joyas con diseño único y materiales de calidad.</p>
     </section>
 
     <!-- Ofertas destacadas -->
-    <section class="section">
+    <section class="section" data-aos="fade-left" data-aos-mirror="fade-right">
       <h2 class="section-title">🔥 Ofertas Destacadas</h2>
       <p class="section-text">No te pierdas las promociones especiales por tiempo limitado.</p>
       <div class="payment-icons">
-        <img src="@/assets/img-home/img-promos-detacadas/a.png" alt="A" />
-        <img src="@/assets/img-home/img-promos-detacadas/b.png" alt="B" />
-        <img src="@/assets/img-home/img-promos-detacadas/c.png" alt="C" />
-        <img src="@/assets/img-home/img-promos-detacadas/d.png" alt="D" />
+        <img src="@/assets/img-home/img-promos-detacadas/a.png" alt="A" data-aos="zoom-in" data-aos-delay="100"/>
+        <img src="@/assets/img-home/img-promos-detacadas/b.png" alt="B" data-aos="zoom-in" data-aos-delay="200"/>
+        <img src="@/assets/img-home/img-promos-detacadas/c.png" alt="C" data-aos="zoom-in" data-aos-delay="300"/>
+        <img src="@/assets/img-home/img-promos-detacadas/d.png" alt="D" data-aos="zoom-in" data-aos-delay="400"/>
       </div>
     </section>
 
     <!-- Anillos -->
-<section class="section">
-  <h2 class="section-title">💍 Anillos</h2>
-  <p class="section-text">Descubre nuestra colección de anillos elegantes y modernos.</p>
-  <div class="ring-icons">
-    <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" />
-    <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" />
-    <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" />
-    <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" />
-  </div>
-</section>
+    <section class="section" data-aos="fade-up-right" data-aos-mirror="fade-up-left">
+      <h2 class="section-title">💍 Anillos</h2>
+      <p class="section-text">Descubre nuestra colección de anillos elegantes y modernos.</p>
+      <div class="ring-icons">
+        <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" data-aos="flip-left" data-aos-delay="100"/>
+        <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" data-aos="flip-left" data-aos-delay="200"/>
+        <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" data-aos="flip-left" data-aos-delay="300"/>
+        <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" data-aos="flip-left" data-aos-delay="400"/>
+      </div>
+    </section>
 
-<!-- Pulseras -->
-<section class="section">
-  <h2 class="section-title">📿 Pulseras</h2>
-  <p class="section-text">Descubre nuestra colección de pulseras elegantes y modernas.</p>
-  <div class="bracelet-icons">
-    <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" />
-    <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" />
-    <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" />
-    <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" />
-  </div>
-</section>
-
-
+    <!-- Pulseras -->
+    <section class="section" data-aos="fade-up-left" data-aos-mirror="fade-up-right">
+      <h2 class="section-title">📿 Pulseras</h2>
+      <p class="section-text">Descubre nuestra colección de pulseras elegantes y modernas.</p>
+      <div class="bracelet-icons">
+        <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" data-aos="flip-right" data-aos-delay="100"/>
+        <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" data-aos="flip-right" data-aos-delay="200"/>
+        <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" data-aos="flip-right" data-aos-delay="300"/>
+        <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" data-aos="flip-right" data-aos-delay="400"/>
+      </div>
+    </section>
 
     <!-- Métodos de pago -->
-    <section class="section payment-methods">
+    <section class="section payment-methods" data-aos="zoom-in" data-aos-mirror="zoom-out">
       <h2 class="section-title">💳 Métodos de Pago</h2>
       <div class="payment-icons">
-        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" />
-        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" />
-        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" />
+        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" data-aos="fade-up" data-aos-delay="100"/>
+        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" data-aos="fade-up" data-aos-delay="200"/>
+        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" data-aos="fade-up" data-aos-delay="300"/>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 export default {
   data() {
     return {
@@ -107,6 +108,19 @@ export default {
     setInterval(() => {
       this.currentSlogan = this.slogans[Math.floor(Math.random() * this.slogans.length)];
     }, 1000);
+  },
+  mounted() {
+    AOS.init({
+      duration: 800,
+      once: false,
+      mirror: true,
+      easing: 'ease-in-out-back',
+      offset: 120,
+      delay: 50
+    });
+  },
+  updated() {
+    AOS.refresh();
   }
 };
 </script>
@@ -315,4 +329,8 @@ export default {
   transform: scale(1.1);
 }
 
+/* Ajustes para animaciones AOS */
+[data-aos] {
+  transition-property: transform, opacity;
+}
 </style>

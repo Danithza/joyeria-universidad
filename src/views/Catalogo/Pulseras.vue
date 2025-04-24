@@ -1,66 +1,61 @@
 <template>
   <div :class="['app-container', darkMode ? 'dark' : '']">
-    <!-- Navbar -->
     <Navbar :cartCount="cartStore.totalItems" />
 
-    <!-- Layout -->
     <div class="main-layout">
-      <!-- Filtros -->
+      <!-- FILTROS -->
       <aside class="sidebar">
-        <h2>Filtros</h2>
-        <input v-model="busqueda" placeholder="Buscar pulsera..." />
-        <div class="slider-group">
-          <label>Precio mín: {{ precioMin }}</label>
-          <input type="range" v-model="precioMin" min="0" max="1000" />
+        <h2 class="titulo-filtros"><i class="fas fa-filter"></i> Filtrar pulseras</h2>
+        <div class="card-filtro">
+          <label><i class="fas fa-search"></i> Buscar:</label>
+          <input v-model="busqueda" placeholder="Buscar pulsera..." />
         </div>
-        <div class="slider-group">
-          <label>Precio máx: {{ precioMax }}</label>
-          <input type="range" v-model="precioMax" min="0" max="1000" />
+        <div class="card-filtro">
+          <label><i class="fas fa-dollar-sign"></i> Precio mínimo</label>
+          <input type="range" v-model="precioMin" min="0" max="1000000" />
+          <span>${{ precioMin.toLocaleString() }} COP</span>
         </div>
-        <button @click="limpiarFiltros">Limpiar</button>
+        <div class="card-filtro">
+          <label><i class="fas fa-dollar-sign"></i> Precio máximo</label>
+          <input type="range" v-model="precioMax" min="0" max="1000000" />
+          <span>${{ precioMax.toLocaleString() }} COP</span>
+        </div>
+        <button @click="limpiarFiltros">
+          <i class="fas fa-times-circle"></i> Limpiar filtros
+        </button>
       </aside>
 
-      <!-- Galería -->
+      <!-- GALERÍA -->
       <section class="galeria">
-        <transition-group name="fade" tag="div" class="productos-grid">
+        <div class="grid-horizontal">
           <div
             v-for="pulsera in pulserasFiltradas"
             :key="pulsera.id"
-            class="tarjeta-producto"
+            class="tarjeta-producto horizontal"
           >
-            <div class="etiqueta" v-if="pulsera.etiqueta">{{ pulsera.etiqueta }}</div>
-            <i class="fas fa-heart icono-favorito"></i>
-
             <img
               :src="pulsera.imagen"
               :alt="pulsera.nombre"
-              class="imagen-producto"
+              class="imagen-horizontal"
             />
-
-            <h3>{{ pulsera.nombre }}</h3>
-
-            <!-- Calificación -->
-            <div class="estrellas">
-              <i
-                v-for="n in 5"
-                :key="n"
-                class="fa-star"
-                :class="n <= (pulsera.rating || 4) ? 'fas' : 'far'"
-              ></i>
+            <div class="info-horizontal">
+              <h3>{{ pulsera.nombre }}</h3>
+              <div class="estrellas">
+                <i
+                  v-for="n in 5"
+                  :key="n"
+                  class="fa-star"
+                  :class="n <= (pulsera.rating || 4) ? 'fas' : 'far'"
+                ></i>
+                <span class="rating-num">({{ pulsera.rating }}/5)</span>
+              </div>
+              <p class="precio">${{ pulsera.precio.toLocaleString() }} COP</p>
+              <button @click="agregarAlCarrito(pulsera)">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
+              </button>
             </div>
-
-            <p class="precio">${{ pulsera.precio }}</p>
-
-            <p v-if="pulsera.stock === 0" class="sin-stock">Sin stock</p>
-
-            <button
-              @click="agregarAlCarrito(pulsera)"
-              :disabled="pulsera.stock === 0"
-            >
-              <i class="fas fa-cart-plus"></i> Añadir al carrito
-            </button>
           </div>
-        </transition-group>
+        </div>
       </section>
     </div>
   </div>
@@ -71,67 +66,53 @@ import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
 import Navbar from '@/components/Layout/Navbar.vue'
 
-// Importar imágenes de pulseras
 import pulsera1 from '@/assets/img-pulseras/pulsera1.jpg'
 import pulsera2 from '@/assets/img-pulseras/pulsera2.jpg'
 import pulsera3 from '@/assets/img-pulseras/pulsera3.jpg'
 import pulsera4 from '@/assets/img-pulseras/pulsera4.jpg'
 
-// Carrito store
 const cartStore = useCartStore()
 
-// Lista de pulseras con imágenes importadas
 const pulseras = ref([
   {
     id: 1,
     nombre: 'Pulsera Elegante Dorada',
-    precio: 85,
+    precio: 85000,
     imagen: pulsera1,
-    stock: 12,
-    etiqueta: 'Nuevo',
     rating: 4
   },
   {
     id: 2,
     nombre: 'Pulsera Plata Brillante',
-    precio: 120,
+    precio: 120000,
     imagen: pulsera2,
-    stock: 8,
-    etiqueta: 'Popular',
     rating: 5
   },
   {
     id: 3,
     nombre: 'Pulsera Minimalista',
-    precio: 65,
+    precio: 65000,
     imagen: pulsera3,
-    stock: 15,
-    etiqueta: '',
     rating: 4
   },
   {
     id: 4,
     nombre: 'Pulsera Vintage',
-    precio: 95,
+    precio: 95000,
     imagen: pulsera4,
-    stock: 10,
-    etiqueta: 'Exclusivo',
     rating: 5
   }
 ])
 
-// Estado visual
 const darkMode = ref(true)
 const busqueda = ref('')
-const precioMax = ref(1000)
+const precioMax = ref(1000000)
 const precioMin = ref(0)
 
-// Detectar modo oscuro del sistema automáticamente
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
 
-// Computado: aplicar filtros
 const pulserasFiltradas = computed(() =>
   pulseras.value.filter(
     (p) =>
@@ -141,22 +122,18 @@ const pulserasFiltradas = computed(() =>
   )
 )
 
-// Métodos
 const limpiarFiltros = () => {
   busqueda.value = ''
-  precioMax.value = 1000
+  precioMax.value = 1000000
   precioMin.value = 0
 }
 
 const agregarAlCarrito = (pulsera) => {
-  if (pulsera.stock > 0) {
-    cartStore.agregarProducto(pulsera)
-  }
+  cartStore.agregarProducto(pulsera)
 }
 </script>
 
 <style scoped>
-/* Fondo general */
 .app-container {
   background-color: #f5f5f5;
   min-height: 100vh;
@@ -167,119 +144,124 @@ const agregarAlCarrito = (pulsera) => {
   color: #fff;
 }
 
-/* Layout */
 .main-layout {
   display: flex;
   gap: 2rem;
   padding: 2rem;
 }
+
 .sidebar {
-  width: 200px;
+  width: 240px;
   background: #1c1c1c;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 1.5rem;
+  border-radius: 16px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.titulo-filtros {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.card-filtro {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.card-filtro input[type='range'] {
+  cursor: pointer;
 }
 .sidebar input,
 .sidebar button {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding: 0.4rem;
-  border-radius: 6px;
+  border-radius: 8px;
+  padding: 0.5rem;
   border: none;
 }
-.slider-group {
+.sidebar input {
+  background: #f0f0f0;
+  color: #000;
+}
+.sidebar button {
+  background: #e91e63;
+  color: #fff;
+  font-weight: bold;
   margin-top: 1rem;
+  transition: background 0.3s;
+}
+.sidebar button:hover {
+  background: #c2185b;
 }
 
-/* Galería */
 .galeria {
   flex: 1;
 }
-.productos-grid {
+.grid-horizontal {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-/* Tarjeta */
 .tarjeta-producto {
-  position: relative;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   padding: 1rem;
-  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease;
 }
 .tarjeta-producto:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .dark .tarjeta-producto {
   background: #1e1e1e;
   color: #fff;
 }
-.imagen-producto {
-  width: 100%;
+
+.tarjeta-producto.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+
+.imagen-horizontal {
+  width: 140px;
   height: 140px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-  transition: transform 0.4s ease;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
-.tarjeta-producto:hover .imagen-producto {
-  transform: scale(1.1);
+
+.info-horizontal {
+  flex: 1;
 }
+
 .precio {
   font-weight: bold;
+  margin-top: 0.5rem;
   color: #333;
 }
 .dark .precio {
   color: #ddd;
 }
+
 button {
   background: #000;
   color: #fff;
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   margin-top: 0.5rem;
   cursor: pointer;
   transition: background 0.3s;
 }
-button:disabled {
-  background: #888;
-  cursor: not-allowed;
-}
 button:hover {
   background: #444;
 }
 
-/* Etiquetas */
-.etiqueta {
-  background: crimson;
-  color: #fff;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.7rem;
-  border-radius: 10px;
-  display: inline-block;
-  margin-bottom: 0.4rem;
-}
-
-/* Icono favorito */
-.icono-favorito {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #bbb;
-  transition: color 0.3s;
-  cursor: pointer;
-}
-.icono-favorito:hover {
-  color: crimson;
-}
-
-/* Estrellas */
 .estrellas {
   color: gold;
   margin: 0.3rem 0;
@@ -288,31 +270,21 @@ button:hover {
   margin: 0 1px;
 }
 
-/* Sin stock */
-.sin-stock {
-  color: crimson;
-  font-weight: bold;
+.rating-num {
   font-size: 0.9rem;
+  margin-left: 6px;
+  color: #bbb;
 }
 
-/* Transición */
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.4s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .main-layout {
     flex-direction: column;
   }
   .sidebar {
     width: 100%;
+  }
+  .grid-horizontal {
+    grid-template-columns: 1fr;
   }
 }
 </style>
