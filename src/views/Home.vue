@@ -1,16 +1,7 @@
 <template>
   <div class="home-container">
-    <!-- Título de bienvenida -->
-    <div class="welcome-container" data-aos="fade-down" data-aos-mirror="fade-up">
-      <h1 class="welcome-title">
-        ¡Bienvenido a nuestra joyería!
-        <span class="diamond">💎</span>
-      </h1>
-      <p class="slogan">{{ currentSlogan }}</p>
-    </div>
-
     <!-- Carrusel de Bootstrap -->
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up" data-aos-mirror="fade-down">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div 
           class="carousel-item" 
@@ -31,306 +22,278 @@
       </button>
     </div>
 
-    <!-- Nuestro catálogo -->
-    <section class="section" data-aos="fade-right" data-aos-mirror="fade-left">
-      <h2 class="section-title">📚 Nuestro Catálogo</h2>
-      <p class="section-text">Explora nuestras colecciones de joyas con diseño único y materiales de calidad.</p>
-    </section>
+    <!-- Slogan dinámico -->
+    <div class="slogan">
+      <transition name="fade" mode="out-in">
+        <h1 :key="currentIndex">{{ phrases[currentIndex] }}</h1>
+      </transition>
+    </div>
 
-    <!-- Ofertas destacadas -->
-    <section class="section" data-aos="fade-left" data-aos-mirror="fade-right">
-      <h2 class="section-title">🔥 Ofertas Destacadas</h2>
-      <p class="section-text">No te pierdas las promociones especiales por tiempo limitado.</p>
-      <div class="payment-icons">
-        <img src="@/assets/img-home/img-promos-detacadas/a.png" alt="A" data-aos="zoom-in" data-aos-delay="100"/>
-        <img src="@/assets/img-home/img-promos-detacadas/b.png" alt="B" data-aos="zoom-in" data-aos-delay="200"/>
-        <img src="@/assets/img-home/img-promos-detacadas/c.png" alt="C" data-aos="zoom-in" data-aos-delay="300"/>
-        <img src="@/assets/img-home/img-promos-detacadas/d.png" alt="D" data-aos="zoom-in" data-aos-delay="400"/>
-      </div>
-    </section>
+    <!-- Nuestro Catálogo -->
+<section class="section">
+  <h2 class="section-title">📚 Nuestro Catálogo</h2>
+  <div class="icon-grid catalogo-grid">
+    <div
+      v-for="(item, index) in catalogo"
+      :key="index"
+      class="catalogo-item"
+    >
+      <router-link :to="item.link" class="catalogo-link">
+        <img :src="item.imagen" :alt="item.nombre" />
+        <div class="catalogo-label">{{ item.nombre }}</div>
+      </router-link>
+    </div>
+  </div>
+</section>
+
 
     <!-- Anillos -->
-    <section class="section" data-aos="fade-up-right" data-aos-mirror="fade-up-left">
+    <section class="section">
       <h2 class="section-title">💍 Anillos</h2>
-      <p class="section-text">Descubre nuestra colección de anillos elegantes y modernos.</p>
-      <div class="ring-icons">
-        <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" data-aos="flip-left" data-aos-delay="100"/>
-        <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" data-aos="flip-left" data-aos-delay="200"/>
-        <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" data-aos="flip-left" data-aos-delay="300"/>
-        <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" data-aos="flip-left" data-aos-delay="400"/>
+      <div class="icon-grid">
+        <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" />
+        <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" />
+        <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" />
+        <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" />
       </div>
     </section>
 
     <!-- Pulseras -->
-    <section class="section" data-aos="fade-up-left" data-aos-mirror="fade-up-right">
+    <section class="section">
       <h2 class="section-title">📿 Pulseras</h2>
-      <p class="section-text">Descubre nuestra colección de pulseras elegantes y modernas.</p>
-      <div class="bracelet-icons">
-        <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" data-aos="flip-right" data-aos-delay="100"/>
-        <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" data-aos="flip-right" data-aos-delay="200"/>
-        <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" data-aos="flip-right" data-aos-delay="300"/>
-        <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" data-aos="flip-right" data-aos-delay="400"/>
+      <div class="icon-grid">
+        <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" />
+        <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" />
+        <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" />
+        <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" />
+      </div>
+    </section>
+
+      <!-- Cadenas -->
+      <section class="section">
+      <h2 class="section-title">📿 Cadenas</h2>
+      <div class="icon-grid">
+        <img src="@/assets/img-home/img-promos-cadenas/collar1.jpg" alt="Cadena A" />
+        <img src="@/assets/img-home/img-promos-cadenas/collar2.jpg" alt="Cadena B" />
+        <img src="@/assets/img-home/img-promos-cadenas/collar3.jpg" alt="Cadena C" />
+        <img src="@/assets/img-home/img-promos-cadenas/collar4.jpg" alt="Cadena D" />
       </div>
     </section>
 
     <!-- Métodos de pago -->
-    <section class="section payment-methods" data-aos="zoom-in" data-aos-mirror="zoom-out">
+    <section class="section">
       <h2 class="section-title">💳 Métodos de Pago</h2>
-      <div class="payment-icons">
-        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" data-aos="fade-up" data-aos-delay="100"/>
-        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" data-aos="fade-up" data-aos-delay="200"/>
-        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" data-aos="fade-up" data-aos-delay="300"/>
+      <div class="icon-grid">
+        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" />
+        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" />
+        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" />
       </div>
     </section>
   </div>
+
+   
 </template>
 
 <script>
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
 export default {
   data() {
     return {
       images: [],
-      slogans: [
-        "Brilla con nuestra joyería.",
-        "Cada joya cuenta una historia.",
-        "Lujo y elegancia a tu alcance.",
-        "Descubre la belleza en cada detalle."
+      phrases: [
+        "✨ Encuentra la joya perfecta para cada ocasión",
+        "💎 Elegancia que brilla contigo",
+        "🎁 Regalos inolvidables para quien amas",
+        "👑 Tu estilo merece lo mejor"
       ],
-      currentSlogan: "Brilla con nuestra joyería."
+      catalogo: [],
+      currentIndex: 0
     };
   },
   created() {
-    const imageFiles = import.meta.glob('@/assets/img-home/*.png', { eager: true });
+    const imageFiles = import.meta.glob('@/assets/img-home/*.{jpg,jpeg,png,webp}', { eager: true });
     this.images = Object.values(imageFiles).map(img => img.default);
-    setInterval(() => {
-      this.currentSlogan = this.slogans[Math.floor(Math.random() * this.slogans.length)];
-    }, 1000);
-  },
-  mounted() {
-    AOS.init({
-      duration: 800,
-      once: false,
-      mirror: true,
-      easing: 'ease-in-out-back',
-      offset: 120,
-      delay: 50
+
+    // Configuración estática y clara
+    const catalogoConfig = [
+      { nombre: "Anillos", archivo: "anillos.webp", ruta: "/anillos" },
+      { nombre: "Cadenas", archivo: "collar.jpg", ruta: "/cadenas" },
+      { nombre: "Piercing", archivo: "piercing.jpg", ruta: "/piercing" },
+      { nombre: "Pulseras", archivo: "pulceras.jpg", ruta: "/pulseras" },  // ojo: sin mayúscula ni tilde
+      { nombre: "Relojes", archivo: "reloj.jpg", ruta: "/relojes" }       // ojo: sin mayúscula
+    ];
+
+    const catalogoImages = import.meta.glob('@/assets/img-home/catalogo/*.{jpg,jpeg,png,webp}', { eager: true });
+
+    this.catalogo = catalogoConfig.map(item => {
+      const ruta = Object.keys(catalogoImages).find(path =>
+        path.toLowerCase().includes(item.archivo.toLowerCase())
+      );
+      return {
+        nombre: item.nombre,
+        imagen: catalogoImages[ruta]?.default || '',
+        link: item.ruta
+      };
     });
-  },
-  updated() {
-    AOS.refresh();
+
+    // Frases animadas
+    setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.phrases.length;
+    }, 2000);
   }
-};
+}
 </script>
 
+
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-.home-container {
-  background: #000;
-  color: #fff;
-  text-align: center;
-  padding-top: 80px;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.welcome-container {
+.catalogo-item {
+  width: 180px;
+  height: 220px;
+  background: #d1d1d1; /* Gris clarito para la base */
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  overflow: hidden;
+  transition: transform 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
-.welcome-title {
-  margin-top: 5%;
-  font-size: 2.5rem;
-  font-weight: bold;
-  opacity: 0;
-  transform: translateY(-30px);
-  animation: fadeInSlide 1.5s ease-out forwards;
+.catalogo-item:hover {
+  transform: scale(1.05);
+}
+
+.catalogo-link {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  color: #FF6B00;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  height: 100%;
+  margin-top: 13px;
 }
 
-.diamond {
-  font-size: 2.5rem;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
+.catalogo-label {
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
 }
 
-.diamond:hover {
-  transform: rotate(360deg) scale(1.2);
+.home-container {
+  background: linear-gradient(to bottom, #ffffff, #e0e0e0);
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  padding-top: 80px; /* separado del navbar */
 }
 
+.carousel-inner img {
+  padding-top:4%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.carousel {
+  margin-bottom: 30px;
+  max-width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Slogan */
 .slogan {
-  font-size: 1.2rem;
-  font-style: italic;
-  margin-top: 10px;
-  animation: fadeIn 1s ease-in-out;
-  color: #f5f5f5;
+  top: 100px;
+  margin-bottom: 50px;
 }
 
+.slogan h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #b88c3a;
+}
+
+/* Secciones */
 .section {
-  margin-top: 60px;
-  padding: 20px;
+  margin: 60px 20px;
 }
 
 .section-title {
   font-size: 2rem;
-  margin-bottom: 10px;
-  color: #FF6B00;
+  margin-bottom: 15px;
+  color: #444;
 }
 
 .section-text {
   font-size: 1.1rem;
+  color: #666;
   max-width: 600px;
-  margin: 0 auto;
-  color: #ccc;
+  margin: 0 auto 40px;
 }
 
-.carousel-inner img {
-  max-height: 500px;
-  object-fit: contain;
-  width: 100%;
-  border-radius: 0;
-  background-color: #000;
-  padding: 20px;
-}
-
-.carousel {
-  margin: 30px auto;
-  max-width: 90%;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-}
-
-.payment-methods {
-  padding-bottom: 60px;
-}
-
-.payment-icons {
-  margin-top: 15px;
+.icon-grid {
   display: flex;
-  justify-content: center;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-.payment-icons img {
-  width: 60px;
-  height: auto;
-  filter: brightness(1.2);
+/* Estilos para las imágenes dentro del catálogo */
+.catalogo-grid img {
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+}
+
+/* Estilos para las imágenes de anillos, pulseras, métodos de pago */
+.icon-grid > img {
+  width: 228px;
+  height: 299px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s;
 }
 
-.payment-icons img:hover {
-  transform: scale(1.1);
+.icon-grid > img:hover {
+  transform: scale(1.05);
 }
 
-.section:nth-of-type(2) .payment-icons {
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  padding: 10px 20px;
-}
 
-.section:nth-of-type(2) .payment-icons img {
-  width: 350px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
-  transition: transform 0.3s ease;
-  object-fit: cover;
-}
-
-.section:nth-of-type(2) .payment-icons img:hover {
-  transform: scale(1.1);
-}
-
-.btn-home {
-  display: inline-block;
-  margin-top: 40px;
-  background: #FF6B00;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.3s ease;
-}
-
-.btn-home:hover {
-  background: #e65c00;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeInSlide {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
+/* Responsivo */
+@media (max-width: 768px) {
+  .carousel-inner img {
+    height: 300px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .slogan h1 {
+    font-size: 1.7rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .carousel-inner img {
+    height: 200px;
+  }
+
+  .icon-grid img {
+    width: 100px;
+    height: 100px;
   }
 }
 
-.ring-icons {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 10px 20px;
+/* Transición entre frases */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.8s;
 }
-
-.ring-icons img {
-  width: 350px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
-  transition: transform 0.3s ease;
-  object-fit: cover;
-}
-
-.ring-icons img:hover {
-  transform: scale(1.1);
-}
-
-.bracelet-icons {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 10px 20px;
-}
-
-.bracelet-icons img {
-  width: 350px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
-  transition: transform 0.3s ease;
-  object-fit: cover;
-}
-
-.bracelet-icons img:hover {
-  transform: scale(1.1);
-}
-
-/* Ajustes para animaciones AOS */
-[data-aos] {
-  transition-property: transform, opacity;
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
