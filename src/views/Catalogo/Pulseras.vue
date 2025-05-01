@@ -37,6 +37,7 @@
               :src="pulsera.imagen"
               :alt="pulsera.nombre"
               class="imagen-horizontal"
+              @click="abrirModal(pulsera)"
             />
             <div class="info-horizontal">
               <h3>{{ pulsera.nombre }}</h3>
@@ -58,6 +59,40 @@
         </div>
       </section>
     </div>
+
+    <!-- MODAL DE DETALLES -->
+    <div v-if="modalAbierto" class="modal-overlay" @click.self="cerrarModal">
+      <div class="modal-contenido">
+        <button class="modal-cerrar" @click="cerrarModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-imagen-container">
+          <img :src="pulseraSeleccionada.imagen" :alt="pulseraSeleccionada.nombre" class="modal-imagen" />
+        </div>
+        <div class="modal-info">
+          <h2>{{ pulseraSeleccionada.nombre }}</h2>
+          <div class="estrellas">
+            <i
+              v-for="n in 5"
+              :key="n"
+              class="fa-star"
+              :class="n <= (pulseraSeleccionada.rating || 4) ? 'fas' : 'far'"
+            ></i>
+            <span class="rating-num">({{ pulseraSeleccionada.rating }}/5)</span>
+          </div>
+          <p class="modal-precio">${{ pulseraSeleccionada.precio.toLocaleString() }} COP</p>
+          <p class="modal-descripcion">Pulseras ultramega radiantes</p>
+          <div class="modal-botones">
+            <button @click="agregarAlCarrito(pulseraSeleccionada)" class="modal-comprar">
+              <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
+            <button @click="cerrarModal" class="modal-cerrar-btn">
+              <i class="fas fa-times"></i> Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,10 +101,15 @@ import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
 import Navbar from '@/components/Layout/Navbar.vue'
 
+// Importaciones actualizadas para coincidir con tus nombres de archivo
 import pulsera1 from '@/assets/img-pulseras/pulsera1.jpg'
 import pulsera2 from '@/assets/img-pulseras/pulsera2.jpg'
 import pulsera3 from '@/assets/img-pulseras/pulsera3.jpg'
 import pulsera4 from '@/assets/img-pulseras/pulsera4.jpg'
+import pulsera5 from '@/assets/img-pulseras/pulsera5.jpg'
+import pulsera6 from '@/assets/img-pulseras/pulsera6.jpg'
+import pulsera7 from '@/assets/img-pulseras/pulsera7.jpg'
+import pulsera8 from '@/assets/img-pulseras/pulsera8.jpg'
 
 const cartStore = useCartStore()
 
@@ -79,28 +119,64 @@ const pulseras = ref([
     nombre: 'Pulsera Elegante Dorada',
     precio: 85000,
     imagen: pulsera1,
-    rating: 4
+    rating: 4,
+    descripcion: 'Pulsera dorada con detalles elegantes, perfecta para ocasiones especiales.'
   },
   {
     id: 2,
     nombre: 'Pulsera Plata Brillante',
     precio: 120000,
     imagen: pulsera2,
-    rating: 5
+    rating: 5,
+    descripcion: 'Pulsera de plata con acabado brillante que destaca en cualquier ocasión.'
   },
   {
     id: 3,
     nombre: 'Pulsera Minimalista',
     precio: 65000,
     imagen: pulsera3,
-    rating: 4
+    rating: 4,
+    descripcion: 'Diseño minimalista para quienes prefieren la elegancia sencilla.'
   },
   {
     id: 4,
     nombre: 'Pulsera Vintage',
     precio: 95000,
     imagen: pulsera4,
-    rating: 5
+    rating: 5,
+    descripcion: 'Estilo vintage con un toque retro que nunca pasa de moda.'
+  },
+  {
+    id: 5,
+    nombre: 'Pulsera Perlas Elegantes',
+    precio: 110000,
+    imagen: pulsera5,
+    rating: 5,
+    descripcion: 'Pulsera con perlas naturales que añaden un toque de sofisticación.'
+  },
+  {
+    id: 6,
+    nombre: 'Pulsera Corazón Romántica',
+    precio: 75000,
+    imagen: pulsera6,
+    rating: 4,
+    descripcion: 'Diseño romántico con detalles en forma de corazón, ideal para regalar.'
+  },
+  {
+    id: 7,
+    nombre: 'Pulsera Bohemia Colorida',
+    precio: 88000,
+    imagen: pulsera7,
+    rating: 4,
+    descripcion: 'Estilo bohemio con colores vibrantes para un look alegre y juvenil.'
+  },
+  {
+    id: 8,
+    nombre: 'Pulsera Diamante Lujoso',
+    precio: 150000,
+    imagen: pulsera8,
+    rating: 5,
+    descripcion: 'Pulsera con incrustaciones que simulan diamantes para ocasiones especiales.'
   }
 ])
 
@@ -108,6 +184,8 @@ const darkMode = ref(true)
 const busqueda = ref('')
 const precioMax = ref(1000000)
 const precioMin = ref(0)
+const modalAbierto = ref(false)
+const pulseraSeleccionada = ref(null)
 
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -130,6 +208,17 @@ const limpiarFiltros = () => {
 
 const agregarAlCarrito = (pulsera) => {
   cartStore.agregarProducto(pulsera)
+}
+
+const abrirModal = (pulsera) => {
+  pulseraSeleccionada.value = pulsera
+  modalAbierto.value = true
+  document.body.style.overflow = 'hidden'
+}
+
+const cerrarModal = () => {
+  modalAbierto.value = false
+  document.body.style.overflow = 'auto'
 }
 </script>
 
@@ -233,6 +322,11 @@ const agregarAlCarrito = (pulsera) => {
   object-fit: cover;
   border-radius: 12px;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.imagen-horizontal:hover {
+  transform: scale(1.05);
 }
 
 .info-horizontal {
@@ -276,6 +370,129 @@ button:hover {
   color: #bbb;
 }
 
+/* Estilos del Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: #fff;
+  border-radius: 16px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.dark .modal-contenido {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+.dark .modal-cerrar {
+  color: #aaa;
+}
+.modal-cerrar:hover {
+  color: #000;
+}
+.dark .modal-cerrar:hover {
+  color: #fff;
+}
+
+.modal-imagen-container {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-imagen {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.modal-info {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-precio {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: #333;
+}
+.dark .modal-precio {
+  color: #ddd;
+}
+
+.modal-descripcion {
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: #666;
+}
+.dark .modal-descripcion {
+  color: #aaa;
+}
+
+.modal-botones {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.modal-comprar {
+  background: #e91e63;
+  color: white;
+  flex: 1;
+  padding: 0.8rem;
+}
+.modal-comprar:hover {
+  background: #c2185b;
+}
+
+.modal-cerrar-btn {
+  background: #666;
+  color: white;
+  flex: 1;
+  padding: 0.8rem;
+}
+.modal-cerrar-btn:hover {
+  background: #555;
+}
+.dark .modal-cerrar-btn {
+  background: #444;
+}
+.dark .modal-cerrar-btn:hover {
+  background: #333;
+}
+
 @media (max-width: 768px) {
   .main-layout {
     flex-direction: column;
@@ -285,6 +502,24 @@ button:hover {
   }
   .grid-horizontal {
     grid-template-columns: 1fr;
+  }
+  
+  .modal-contenido {
+    flex-direction: column;
+    width: 90%;
+    max-height: 90vh;
+  }
+  
+  .modal-imagen-container {
+    padding: 1rem;
+  }
+  
+  .modal-info {
+    padding: 1.5rem;
+  }
+  
+  .modal-botones {
+    flex-direction: column;
   }
 }
 </style>

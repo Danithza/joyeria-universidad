@@ -1,144 +1,106 @@
 <template>
-  <!-- Contenedor principal con clase dinámica para modo oscuro -->
   <div :class="['app-container', darkMode ? 'dark' : '']">
-    <!-- Componente Navbar con el número de items en el carrito -->
     <Navbar :cartCount="cartStore.totalItems" />
 
-    <!-- Layout principal con sidebar y galería -->
     <div class="main-layout">
-      <!-- Sidebar con filtros -->
+      <!-- FILTROS -->
       <aside class="sidebar">
-        <h2 class="titulo-filtros">Filtrar anillos</h2>
-
-        <!-- Filtro de búsqueda -->
-        <div class="filtro">
-          <label for="busqueda">Buscar</label>
-          <input v-model="busqueda" id="busqueda" placeholder="Buscar anillo..." />
+        <h2 class="titulo-filtros"><i class="fas fa-filter"></i> Filtrar anillos</h2>
+        <div class="card-filtro">
+          <label><i class="fas fa-search"></i> Buscar:</label>
+          <input v-model="busqueda" placeholder="Buscar anillo..." />
         </div>
-
-        <!-- Filtro de precio con rango -->
-        <div class="filtro">
-          <label>Precio</label>
-          <div class="rangos">
-            <input type="range" v-model="precioMin" min="0" max="100000" />
-            <input type="range" v-model="precioMax" min="0" max="100000" />
-          </div>
-          <div class="valores-precio">
-            <span>Mín: ${{ precioMin }}</span>
-            <span>Máx: ${{ precioMax }}</span>
-          </div>
+        <div class="card-filtro">
+          <label><i class="fas fa-dollar-sign"></i> Precio mínimo</label>
+          <input type="range" v-model="precioMin" min="0" max="1000000" />
+          <span>${{ precioMin.toLocaleString() }} COP</span>
         </div>
-
-        <!-- Botón para limpiar filtros -->
-        <button class="btn-limpiar" @click="limpiarFiltros">Limpiar filtros</button>
+        <div class="card-filtro">
+          <label><i class="fas fa-dollar-sign"></i> Precio máximo</label>
+          <input type="range" v-model="precioMax" min="0" max="1000000" />
+          <span>${{ precioMax.toLocaleString() }} COP</span>
+        </div>
+        <button @click="limpiarFiltros">
+          <i class="fas fa-times-circle"></i> Limpiar filtros
+        </button>
       </aside>
 
-      <!-- Sección de galería de productos -->
+      <!-- GALERÍA -->
       <section class="galeria">
-        <!-- Lista de productos con animación de transición -->
-        <transition-group name="fade" tag="div" class="productos-grid">
-          <!-- Tarjeta de producto individual -->
+        <div class="grid-horizontal">
           <div
             v-for="anillo in anillosFiltrados"
             :key="anillo.id"
-            class="tarjeta-producto"
-            @click="verDetalles(anillo)"
+            class="tarjeta-producto horizontal"
           >
-            <!-- Icono de favoritos -->
-            <i
-              class="fas fa-heart icono-favorito"
-              :class="{ favorito: favoritos.includes(anillo.id) }"
-              @click.stop="toggleFavorito(anillo.id)"
-              title="Añadir a favoritos"
-            ></i>
-
-            <!-- Imagen del producto -->
-            <img :src="anillo.imagen" :alt="anillo.nombre" class="imagen-anillo" />
-            <h3>{{ anillo.nombre }}</h3>
-
-            <!-- Valoración con estrellas -->
-            <div class="estrellas">
-              <i v-for="n in 5" :key="n" class="fa-star" :class="n <= (anillo.rating || 4) ? 'fas' : 'far'"></i>
-              <span class="rating-text">({{ anillo.rating || 4 }}/5)</span>
+            <img
+              :src="anillo.imagen"
+              :alt="anillo.nombre"
+              class="imagen-horizontal"
+              @click="abrirModal(anillo)"
+            />
+            <div class="info-horizontal">
+              <h3>{{ anillo.nombre }}</h3>
+              <div class="estrellas">
+                <i
+                  v-for="n in 5"
+                  :key="n"
+                  class="fa-star"
+                  :class="n <= (anillo.rating || 4) ? 'fas' : 'far'"
+                ></i>
+                <span class="rating-num">({{ anillo.rating }}/5)</span>
+              </div>
+              <p class="precio">${{ anillo.precio.toLocaleString() }} COP</p>
+              <button @click="agregarAlCarrito(anillo)">
+                <i class="fas fa-cart-plus"></i> Añadir al carrito
+              </button>
             </div>
-
-            <!-- Precio del producto -->
-            <p class="precio">${{ anillo.precio.toLocaleString('es-MX') }}</p>
-
-            <!-- Botón para añadir al carrito -->
-            <button @click.stop="agregarAlCarrito(anillo)">
-              <i class="fas fa-cart-plus"></i> Añadir al carrito
-            </button>
           </div>
-        </transition-group>
+        </div>
       </section>
     </div>
 
-    <!-- Modal para detalles del producto -->
-    <div v-if="modalVisible" class="modal-overlay" @click.self="cerrarModal">
-      <div class="modal-content">
-        <!-- Botón para cerrar el modal -->
-        <button class="modal-close" @click="cerrarModal">&times;</button>
-        
-        <!-- Cuerpo del modal -->
-        <div class="modal-body">
-          <!-- Contenedor de la imagen -->
-          <div class="modal-image-container">
-            <img :src="anilloSeleccionado.imagen" :alt="anilloSeleccionado.nombre" class="modal-image" />
+    <!-- MODAL DE DETALLES -->
+    <div v-if="modalAbierto" class="modal-overlay" @click.self="cerrarModal">
+      <div class="modal-contenido">
+        <button class="modal-cerrar" @click="cerrarModal">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-imagen-container">
+          <img :src="anilloSeleccionado.imagen" :alt="anilloSeleccionado.nombre" class="modal-imagen" />
+        </div>
+        <div class="modal-info">
+          <h2>{{ anilloSeleccionado.nombre }}</h2>
+          <div class="estrellas">
+            <i
+              v-for="n in 5"
+              :key="n"
+              class="fa-star"
+              :class="n <= (anilloSeleccionado.rating || 4) ? 'fas' : 'far'"
+            ></i>
+            <span class="rating-num">({{ anilloSeleccionado.rating }}/5)</span>
           </div>
-          
-          <!-- Detalles del producto -->
-          <div class="modal-details">
-            <h2>{{ anilloSeleccionado.nombre }}</h2>
-            
-            <!-- Fila de detalle: Precio -->
-            <div class="detail-row">
-              <span class="detail-label">Precio:</span>
-              <span class="detail-value">${{ anilloSeleccionado.precio.toLocaleString('es-MX') }}</span>
-            </div>
-            
-            <!-- Fila de detalle: Material -->
-            <div class="detail-row">
-              <span class="detail-label">Material:</span>
-              <span class="detail-value">{{ anilloSeleccionado.material }}</span>
-            </div>
-            
-            <!-- Fila de detalle: Tamaño -->
-            <div class="detail-row">
-              <span class="detail-label">Tamaño:</span>
-              <span class="detail-value">{{ anilloSeleccionado.tamano }}</span>
-            </div>
-            
-            <!-- Fila de detalle: Descripción -->
-            <div class="detail-row description">
-              <span class="detail-label">Descripción:</span>
-              <p class="detail-value">{{ anilloSeleccionado.descripcion }}</p>
-            </div>
-            
-            <!-- Acciones del modal -->
-            <div class="modal-actions">
-              <button class="btn-add-to-cart" @click="agregarAlCarrito(anilloSeleccionado)">
-                <i class="fas fa-cart-plus"></i> Añadir al carrito
-              </button>
-              <button class="btn-close" @click="cerrarModal">Cerrar</button>
-            </div>
+          <p class="modal-precio">${{ anilloSeleccionado.precio.toLocaleString() }} COP</p>
+          <p class="modal-descripcion">{{ anilloSeleccionado.descripcion }}</p>
+          <div class="modal-botones">
+            <button @click="agregarAlCarrito(anilloSeleccionado)" class="modal-comprar">
+              <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
+            <button @click="cerrarModal" class="modal-cerrar-btn">
+              <i class="fas fa-times"></i> Cerrar
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Notificación toast para añadir al carrito -->
-    <div v-if="toastVisible" class="toast">¡Producto añadido al carrito!</div>
   </div>
 </template>
 
 <script setup>
-// Importaciones de Vue y componentes
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
 import Navbar from '@/components/Layout/Navbar.vue'
 
-// Importación de imágenes de anillos
 import anillo1 from '@/assets/img-anillos/anillo1.jpeg'
 import anillo2 from '@/assets/img-anillos/anillo2.jpeg'
 import anillo3 from '@/assets/img-anillos/anillo3.jpeg'
@@ -148,44 +110,86 @@ import anillo6 from '@/assets/img-anillos/anillo6.jpeg'
 import anillo7 from '@/assets/img-anillos/anillo7.jpeg'
 import anillo8 from '@/assets/img-anillos/anillo8.jpeg'
 
-// Inicialización del store del carrito
 const cartStore = useCartStore()
 
-// Variables reactivas
-const darkMode = ref(true) // Control del modo oscuro
-const busqueda = ref('') // Texto de búsqueda
-const precioMax = ref(100000) // Precio máximo para filtrar
-const precioMin = ref(0) // Precio mínimo para filtrar
-const toastVisible = ref(false) // Visibilidad del toast
-const modalVisible = ref(false) // Visibilidad del modal
-const anilloSeleccionado = ref({}) // Anillo seleccionado para el modal
-
-// Favoritos almacenados en localStorage
-const favoritos = ref(JSON.parse(localStorage.getItem('favoritos') || '[]'))
-
-// Watcher para guardar favoritos en localStorage
-watch(favoritos, (val) => {
-  localStorage.setItem('favoritos', JSON.stringify(val))
-}, { deep: true })
-
-// Lista de anillos disponibles
 const anillos = ref([
-  { id: 1, nombre: 'Anillo Plata Clásico', precio: 950, imagen: anillo1, material: 'Plata', tamano: 'Tamaño Único', descripcion: 'Anillo clásico de plata con acabado pulido.', rating: 5 },
-  { id: 2, nombre: 'Anillo Elegancia Oro Rosa', precio: 1200, imagen: anillo2, material: 'Oro Rosa', tamano: 'Tamaño 7', descripcion: 'Anillo elegante con oro rosa y detalles finos.', rating: 4 },
-  { id: 3, nombre: 'Anillo Diamante Sutil', precio: 1750, imagen: anillo3, material: 'Plata', tamano: 'Tamaño 6', descripcion: 'Anillo con un pequeño diamante en el centro.', rating: 4 },
-  { id: 4, nombre: 'Anillo Minimalista Acero', precio: 820, imagen: anillo4, material: 'Acero', tamano: 'Tamaño 8', descripcion: 'Anillo simple y minimalista de acero inoxidable.', rating: 3 },
-  { id: 5, nombre: 'Anillo Flor de Plata', precio: 1350, imagen: anillo5, material: 'Plata', tamano: 'Tamaño 6', descripcion: 'Anillo con diseño de flor en plata.', rating: 5 },
-  { id: 6, nombre: 'Anillo Vintage Dorado', precio: 1100, imagen: anillo6, material: 'Oro', tamano: 'Tamaño 7', descripcion: 'Anillo dorado de estilo vintage.', rating: 4 },
-  { id: 7, nombre: 'Anillo Moderno Cubic', precio: 1490, imagen: anillo7, material: 'Acero', tamano: 'Tamaño 9', descripcion: 'Anillo moderno con detalles de cubic.', rating: 5 },
-  { id: 8, nombre: 'Anillo Perla Clásica', precio: 980, imagen: anillo8, material: 'Plata', tamano: 'Tamaño 7', descripcion: 'Anillo clásico con perla blanca.', rating: 3 }
+  {
+    id: 1,
+    nombre: 'Anillo Clásico Oro',
+    precio: 120000,
+    imagen: anillo1,
+    rating: 4,
+    descripcion: 'Anillo en oro de 18k con diseño clásico y elegante, perfecto para cualquier ocasión.'
+  },
+  {
+    id: 2,
+    nombre: 'Anillo Diamante Solitario',
+    precio: 250000,
+    imagen: anillo2,
+    rating: 5,
+    descripcion: 'Anillo con diamante solitario en montura de plata esterlina, ideal para compromisos.'
+  },
+  {
+    id: 3,
+    nombre: 'Anillo Plata Grabado',
+    precio: 85000,
+    imagen: anillo3,
+    rating: 4,
+    descripcion: 'Anillo de plata con grabados artesanales y detalles únicos.'
+  },
+  {
+    id: 4,
+    nombre: 'Anillo Moderno Oro Blanco',
+    precio: 180000,
+    imagen: anillo4,
+    rating: 4,
+    descripcion: 'Diseño contemporáneo en oro blanco con líneas limpias y sofisticadas.'
+  },
+  {
+    id: 5,
+    nombre: 'Anillo Piedras Preciosas',
+    precio: 150000,
+    imagen: anillo5,
+    rating: 5,
+    descripcion: 'Anillo con combinación de piedras preciosas en diversos colores.'
+  },
+  {
+    id: 6,
+    nombre: 'Anillo Minimalista Plata',
+    precio: 70000,
+    imagen: anillo6,
+    rating: 4,
+    descripcion: 'Diseño minimalista en plata pura para un look discreto pero elegante.'
+  },
+  {
+    id: 7,
+    nombre: 'Anillo Vintage',
+    precio: 95000,
+    imagen: anillo7,
+    rating: 4,
+    descripcion: 'Estilo vintage inspirado en diseños antiguos con un toque romántico.'
+  },
+  {
+    id: 8,
+    nombre: 'Anillo Boda Oro Amarillo',
+    precio: 200000,
+    imagen: anillo8,
+    rating: 5,
+    descripcion: 'Anillo de boda en oro amarillo de 18k con acabado pulido brillante.'
+  }
 ])
 
-// Al montar el componente, verificar preferencia de modo oscuro del sistema
+const darkMode = ref(true)
+const busqueda = ref('')
+const precioMax = ref(1000000)
+const precioMin = ref(0)
+const modalAbierto = ref(false)
+const anilloSeleccionado = ref(null)
+
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
 
-// Computed: Filtra los anillos según búsqueda y rango de precios
 const anillosFiltrados = computed(() =>
   anillos.value.filter(
     (a) =>
@@ -195,249 +199,177 @@ const anillosFiltrados = computed(() =>
   )
 )
 
-// Función para limpiar todos los filtros
 const limpiarFiltros = () => {
   busqueda.value = ''
-  precioMax.value = 100000
+  precioMax.value = 1000000
   precioMin.value = 0
 }
 
-// Función para alternar un anillo como favorito
-const toggleFavorito = (id) => {
-  favoritos.value = favoritos.value.includes(id)
-    ? favoritos.value.filter(f => f !== id)
-    : [...favoritos.value, id]
-}
-
-// Función para añadir un anillo al carrito
 const agregarAlCarrito = (anillo) => {
   cartStore.agregarProducto(anillo)
-  toastVisible.value = true
-  setTimeout(() => {
-    toastVisible.value = false
-  }, 2000)
 }
 
-// Función para mostrar detalles de un anillo en el modal
-const verDetalles = (anillo) => {
+const abrirModal = (anillo) => {
   anilloSeleccionado.value = anillo
-  modalVisible.value = true
+  modalAbierto.value = true
+  document.body.style.overflow = 'hidden'
 }
 
-// Función para cerrar el modal
 const cerrarModal = () => {
-  modalVisible.value = false
+  modalAbierto.value = false
+  document.body.style.overflow = 'auto'
 }
 </script>
 
 <style scoped>
-/* Estilos del contenedor principal */
 .app-container {
   background-color: #f5f5f5;
   min-height: 100vh;
   padding-top: 100px;
 }
-
-/* Estilos para modo oscuro */
 .dark {
   background-color: #121212;
   color: #fff;
 }
 
-/* Layout principal */
 .main-layout {
   display: flex;
   gap: 2rem;
   padding: 2rem;
-  flex-wrap: wrap;
 }
 
-/* Estilos del sidebar */
 .sidebar {
-  width: 250px;
+  width: 240px;
   background: #1c1c1c;
   padding: 1.5rem;
-  border-radius: 12px;
+  border-radius: 16px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-
-/* Título de los filtros */
 .titulo-filtros {
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-
-/* Estilos de cada filtro */
-.filtro {
-  margin-bottom: 1.5rem;
-}
-
-/* Etiquetas de los filtros */
-.filtro label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: bold;
-}
-
-/* Input de texto para búsqueda */
-.filtro input[type="text"] {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: none;
-}
-
-/* Contenedor de rangos de precio */
-.rangos input {
-  width: 100%;
-  margin-bottom: 0.3rem;
-}
-
-/* Valores de precio mínimo y máximo */
-.valores-precio {
+.card-filtro {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 0.8rem;
   display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
+  flex-direction: column;
+  gap: 0.4rem;
 }
-
-/* Botón para limpiar filtros */
-.btn-limpiar {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 8px;
-  border: none;
-  background-color: crimson;
-  color: #fff;
-  font-weight: bold;
+.card-filtro input[type='range'] {
   cursor: pointer;
 }
+.sidebar input,
+.sidebar button {
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: none;
+}
+.sidebar input {
+  background: #f0f0f0;
+  color: #000;
+}
+.sidebar button {
+  background: #e91e63;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 1rem;
+  transition: background 0.3s;
+}
+.sidebar button:hover {
+  background: #c2185b;
+}
 
-/* Estilos de la galería */
 .galeria {
   flex: 1;
 }
-
-/* Grid de productos */
-.productos-grid {
+.grid-horizontal {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 }
 
-/* Tarjeta de producto individual */
 .tarjeta-producto {
-  position: relative;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   padding: 1rem;
-  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s ease;
-  cursor: pointer;
 }
-
-/* Efecto hover en tarjeta de producto */
 .tarjeta-producto:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
-
-/* Modo oscuro para tarjetas de producto */
 .dark .tarjeta-producto {
   background: #1e1e1e;
   color: #fff;
 }
 
-/* Imagen del anillo */
-.imagen-anillo {
-  width: 100%;
-  height: 180px;
+.tarjeta-producto.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-align: left;
+}
+
+.imagen-horizontal {
+  width: 140px;
+  height: 140px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
-  transition: transform 0.4s ease;
+  border-radius: 12px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.imagen-horizontal:hover {
+  transform: scale(1.05);
 }
 
-/* Efecto hover en imagen */
-.tarjeta-producto:hover .imagen-anillo {
-  transform: scale(1.1);
+.info-horizontal {
+  flex: 1;
 }
 
-/* Estilos del precio */
 .precio {
   font-weight: bold;
+  margin-top: 0.5rem;
   color: #333;
 }
-
-/* Modo oscuro para precio */
 .dark .precio {
   color: #ddd;
 }
 
-/* Estilos generales de botones */
 button {
   background: #000;
   color: #fff;
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
   margin-top: 0.5rem;
   cursor: pointer;
   transition: background 0.3s;
 }
-
-/* Botón deshabilitado */
-button:disabled {
-  background: #888;
-  cursor: not-allowed;
-}
-
-/* Efecto hover en botones */
 button:hover {
   background: #444;
 }
 
-/* Icono de favoritos */
-.icono-favorito {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #bbb;
-  transition: color 0.3s;
-  cursor: pointer;
-}
-
-/* Estado activo de favoritos */
-.icono-favorito.favorito {
-  color: crimson;
-}
-
-/* Estilos de valoración con estrellas */
 .estrellas {
   color: gold;
   margin: 0.3rem 0;
 }
-
-/* Estilos individuales de estrellas */
 .fa-star {
   margin: 0 1px;
 }
 
-/* Texto de rating */
-.rating-text {
-  font-size: 0.7rem;
-  margin-left: 4px;
+.rating-num {
+  font-size: 0.9rem;
+  margin-left: 6px;
+  color: #bbb;
 }
 
-/* Animaciones de transición */
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 1s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
-/* Estilos del modal overlay */
+/* Estilos del Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -449,235 +381,144 @@ button:hover {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  backdrop-filter: blur(5px);
-  animation: fadeIn 0.3s ease;
 }
 
-/* Contenido del modal */
-.modal-content {
+.modal-contenido {
   background: #fff;
-  border-radius: 12px;
-  width: 90%;
+  border-radius: 16px;
+  width: 80%;
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
   position: relative;
-  animation: slideUp 0.4s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
-
-/* Modo oscuro para modal */
-.dark .modal-content {
-  background: #2a2a2a;
+.dark .modal-contenido {
+  background: #1e1e1e;
   color: #fff;
 }
 
-/* Botón para cerrar modal */
-.modal-close {
+.modal-cerrar {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
   color: #666;
-  transition: color 0.2s;
-  z-index: 10;
 }
-
-/* Efecto hover en botón de cerrar */
-.modal-close:hover {
-  color: #000;
-}
-
-/* Modo oscuro para botón de cerrar */
-.dark .modal-close {
+.dark .modal-cerrar {
   color: #aaa;
 }
-
-.dark .modal-close:hover {
+.modal-cerrar:hover {
+  color: #000;
+}
+.dark .modal-cerrar:hover {
   color: #fff;
 }
 
-/* Cuerpo del modal */
-.modal-body {
-  display: flex;
-  flex-direction: column;
+.modal-imagen-container {
+  flex: 1;
   padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Contenedor de imagen en modal */
-.modal-image-container {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-/* Imagen en modal */
-.modal-image {
+.modal-imagen {
   max-width: 100%;
-  max-height: 300px;
-  border-radius: 8px;
+  max-height: 400px;
+  border-radius: 12px;
   object-fit: contain;
 }
 
-/* Detalles del producto en modal */
-.modal-details {
+.modal-info {
   flex: 1;
-}
-
-/* Título en modal */
-.modal-details h2 {
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 1.8rem;
-}
-
-/* Modo oscuro para título en modal */
-.dark .modal-details h2 {
-  color: #fff;
-}
-
-/* Fila de detalle */
-.detail-row {
+  padding: 2rem;
   display: flex;
-  margin-bottom: 1rem;
-  align-items: flex-start;
-}
-
-/* Fila de descripción */
-.detail-row.description {
   flex-direction: column;
 }
 
-/* Etiqueta de detalle */
-.detail-label {
+.modal-precio {
+  font-size: 1.5rem;
   font-weight: bold;
-  min-width: 120px;
-  color: #555;
-}
-
-/* Modo oscuro para etiqueta */
-.dark .detail-label {
-  color: #ccc;
-}
-
-/* Valor de detalle */
-.detail-value {
-  flex: 1;
+  margin: 1rem 0;
   color: #333;
 }
-
-/* Modo oscuro para valor */
-.dark .detail-value {
-  color: #eee;
+.dark .modal-precio {
+  color: #ddd;
 }
 
-/* Acciones del modal */
-.modal-actions {
+.modal-descripcion {
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: #666;
+}
+.dark .modal-descripcion {
+  color: #aaa;
+}
+
+.modal-botones {
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
-  justify-content: flex-end;
+  margin-top: auto;
 }
 
-/* Botón para añadir al carrito */
-.btn-add-to-cart {
-  background-color: #4CAF50;
+.modal-comprar {
+  background: #e91e63;
   color: white;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex: 1;
+  padding: 0.8rem;
+}
+.modal-comprar:hover {
+  background: #c2185b;
 }
 
-/* Efecto hover en botón de añadir */
-.btn-add-to-cart:hover {
-  background-color: #3e8e41;
-}
-
-/* Botón para cerrar modal */
-.btn-close {
-  background-color: #f44336;
+.modal-cerrar-btn {
+  background: #666;
   color: white;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  flex: 1;
+  padding: 0.8rem;
+}
+.modal-cerrar-btn:hover {
+  background: #555;
+}
+.dark .modal-cerrar-btn {
+  background: #444;
+}
+.dark .modal-cerrar-btn:hover {
+  background: #333;
 }
 
-/* Efecto hover en botón de cerrar */
-.btn-close:hover {
-  background-color: #d32f2f;
-}
-
-/* Animación de fade in */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Animación de slide up */
-@keyframes slideUp {
-  from { 
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Estilos responsivos */
 @media (max-width: 768px) {
-  .modal-body {
+  .main-layout {
     flex-direction: column;
   }
-  
-  .modal-image {
-    max-height: 200px;
-  }
-  
-  .modal-actions {
-    flex-direction: column;
-  }
-  
-  .btn-add-to-cart, .btn-close {
+  .sidebar {
     width: 100%;
-    justify-content: center;
   }
-}
-
-/* Estilos del toast */
-.toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  animation: slideIn 0.3s ease, fadeOut 0.5s ease 1.5s forwards;
-}
-
-/* Animación de slide in para toast */
-@keyframes slideIn {
-  from { bottom: -50px; opacity: 0; }
-  to { bottom: 20px; opacity: 1; }
-}
-
-/* Animación de fade out para toast */
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  .grid-horizontal {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-contenido {
+    flex-direction: column;
+    width: 90%;
+    max-height: 90vh;
+  }
+  
+  .modal-imagen-container {
+    padding: 1rem;
+  }
+  
+  .modal-info {
+    padding: 1.5rem;
+  }
+  
+  .modal-botones {
+    flex-direction: column;
+  }
 }
 </style>

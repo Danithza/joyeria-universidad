@@ -4,6 +4,7 @@
 
     <div class="main-content">
       <NavbarComponent @toggle-sidebar="toggleSidebar" />
+      
 
       <router-view />
 
