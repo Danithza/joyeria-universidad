@@ -71,37 +71,35 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 .register-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #000; /* Fondo negro */
-  padding: 20px;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 100px;
+  background: #eeeeee; /* Fondo gris claro */
 }
 
 .register-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #1a1a1a; /* Fondo oscuro */
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  width: 90%;
-  max-width: 1000px;
+  background: #f5f5f5;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  border: 1px solid #ddd;
+  text-align: center;
 }
 
 h2 {
   font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #FF6B00;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #b88c3a;
 }
 
 .form-row {
@@ -109,57 +107,67 @@ h2 {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  width: 100%;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  width: 45%;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .input-group {
+    width: 48%;
+  }
 }
 
 .input-group label {
   font-weight: 600;
-  margin-bottom: 5px;
-  color: #FF6B00;
+  margin-bottom: 8px;
+  color: #b88c3a;
+  font-size: 14px;
+  text-align: left;
 }
 
 .input-group input {
-  padding: 10px;
-  border: 2px solid #444;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #2b2b2b;
-  color: #fff;
-  transition: border 0.3s ease;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  font-size: 14px;
+  background: #fafafa;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #FF6B00;
+  background: #fff;
+  box-shadow: 0 0 0 2px #b88c3a;
   outline: none;
 }
 
 .button-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .btn-register, .btn-back {
-  background: #FF6B00;
+  background: linear-gradient(135deg, #b88c3a, #d6a441);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 18px;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-register:hover, .btn-back:hover {
-  background: #e65c00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(184, 140, 58, 0.3);
 }
 </style>

@@ -37,86 +37,92 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 .forgot-password-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #000; /* Fondo negro */
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 100px;
+  background: #eeeeee; /* gris clarito */
 }
 
 .forgot-password-card {
-  background: #1a1a1a; /* Fondo oscuro */
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  background: #f5f5f5;
+  padding: 30px 25px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 350px;
+  width: 100%;
+  max-width: 340px;
+  border: 1px solid #ddd;
 }
 
 h2 {
   font-family: 'Montserrat', sans-serif;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 600;
-  margin-bottom: 20px;
-  color: #FF6B00; /* Naranja vibrante */
+  margin-bottom: 18px;
+  color: #b88c3a;
 }
 
 .input-group {
   text-align: left;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .input-group label {
   font-weight: 600;
   display: block;
-  margin-bottom: 5px;
-  color: #FF6B00;
+  margin-bottom: 6px;
+  color: #b88c3a;
+  font-size: 14px;
 }
 
 .input-group input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #444;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #2b2b2b;
-  color: #fff;
-  transition: border 0.3s ease;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fafafa;
+  color: #333;
+  transition: all 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #FF6B00;
+  background: #fff;
+  box-shadow: 0 0 0 2px #b88c3a;
   outline: none;
 }
 
 .btn-recover {
-  background: #FF6B00;
+  background: linear-gradient(135deg, #b88c3a, #d6a441);
   color: #fff;
   border: none;
   padding: 12px;
   width: 100%;
-  border-radius: 8px;
-  font-size: 18px;
+  border-radius: 10px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-recover:hover {
-  background: #e65c00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(184, 140, 58, 0.3);
 }
 
 .back-to-login {
   display: block;
   margin-top: 10px;
-  color: #FF6B00;
+  color: #b88c3a;
   text-decoration: none;
   font-weight: 600;
+  font-size: 13px;
 }
 
 .back-to-login:hover {
@@ -129,6 +135,7 @@ h2 {
   padding: 10px;
   border-radius: 8px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
+  font-size: 14px;
 }
 </style>

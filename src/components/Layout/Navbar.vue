@@ -1,29 +1,37 @@
 <template>
   <nav class="navbar">
-    <button class="menu-btn" @click="$emit('toggleSidebar')">☰</button>
+    <!-- Botón de menú para abrir el sidebar -->
+    <button class="menu-btn" @click="$emit('toggle-sidebar')">
+      <i class="fas fa-bars"></i>
+    </button>
 
+    <!-- Logo -->
     <div class="logo-container">
       <img src="/joy_logo.png" alt="Logo" class="logo-img" />
-      <h1 class="logo">Elegancia Digital en Línea</h1>
+      <h1 class="logo">Elegancia Digital</h1>
     </div>
+
+    <!-- Íconos de navegación -->
     <div class="nav-icons">
       <router-link to="/" class="icon-group">
-        <i class="fas fa-home"></i>
+        <i class="fas fa-house"></i>
         <span>Inicio</span>
       </router-link>
 
       <router-link to="/soporte" class="icon-group">
-        <i class="fas fa-headset"></i>
+        <i class="fas fa-bell"></i>
         <span>Soporte</span>
       </router-link>
 
       <router-link to="/login" class="icon-group">
         <i class="fas fa-user"></i>
+        <span>Cuenta</span>
       </router-link>
 
-      <!-- Carrito con integración del store -->
+      <!-- Carrito -->
       <div class="icon-group cart-icon" @click="mostrarCarrito = true">
-        <i class="fas fa-shopping-cart"></i>
+        <i class="fas fa-cart-shopping"></i>
+        <span>Carrito</span>
         <span class="cart-count" v-if="cartStore.totalItems > 0">
           {{ cartStore.totalItems }}
         </span>
@@ -34,7 +42,10 @@
   <!-- Modal del Carrito -->
   <div class="modal-overlay" v-if="mostrarCarrito" @click.self="mostrarCarrito = false">
     <div class="modal-content">
-      <button class="close-modal" @click="mostrarCarrito = false">&times;</button>
+      <button class="close-modal" @click="mostrarCarrito = false">
+        <i class="fas fa-times"></i>
+      </button>
+
       <h2>🛍 Tu Carrito ({{ cartStore.totalItems }})</h2>
 
       <div v-if="cartStore.items.length === 0" class="empty-cart">
@@ -45,7 +56,7 @@
       <div v-else>
         <div class="cart-items">
           <div v-for="item in cartStore.items" :key="item.id" class="cart-item">
-            <img :src="item.imagen" :alt="item.nombre" class="item-image">
+            <img :src="item.imagen" :alt="item.nombre" class="item-image" />
             <div class="item-details">
               <h3>{{ item.nombre }}</h3>
               <p>${{ item.precio }} x {{ item.cantidad }}</p>
@@ -53,7 +64,7 @@
             <div class="item-actions">
               <span class="item-total">${{ (item.precio * item.cantidad).toFixed(2) }}</span>
               <button @click="cartStore.eliminarProducto(item.id)" class="remove-item">
-                <i class="fas fa-trash"></i>
+                <i class="fas fa-trash-alt"></i>
               </button>
             </div>
           </div>
@@ -88,7 +99,6 @@ const mostrarCarrito = ref(false)
 
 const proceedToCheckout = () => {
   if (cartStore.items.length > 0) {
-    // Aquí puedes redirigir a la página de checkout
     alert('Redirigiendo al proceso de pago...')
     mostrarCarrito.value = false
   }
@@ -96,38 +106,28 @@ const proceedToCheckout = () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Playfair+Display:wght@700&display=swap');
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f5f5f5;
-  padding: 15px 30px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   position: fixed;
   width: 100%;
   top: 0;
-  left: 0;
   z-index: 1000;
 }
 
 .menu-btn {
-  font-size: 1.8rem;
-  background: #c90000;
+  font-size: 1.5rem;
+  background: none;
   border: none;
-  border-radius: 8px;
-  padding: 10px 15px;
+  color: #333;
   cursor: pointer;
-  color: white;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.menu-btn:hover {
-  background: #a70000;
-  transform: scale(1.1);
 }
 
 .logo-container {
@@ -137,17 +137,15 @@ const proceedToCheckout = () => {
 }
 
 .logo-img {
-  width: 97px;
+  width: 60px;
   height: auto;
-  border-radius: 8px;
 }
 
 .logo {
-  font-family: 'Great Vibes', cursive;
-  font-size: 2.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.8rem;
   color: black;
-  font-weight: bold;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
 }
 
 .nav-icons {
@@ -158,35 +156,43 @@ const proceedToCheckout = () => {
 
 .icon-group {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  font-size: 1.4rem;
-  color: black;
+  font-size: 1rem;
+  color: #444;
   text-decoration: none;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: color 0.3s, transform 0.2s;
   position: relative;
-  cursor: pointer;
+}
+
+.icon-group i {
+  font-size: 1.5rem;
+}
+
+.icon-group span {
+  margin-top: 5px;
+  font-size: 0.8rem;
 }
 
 .icon-group:hover {
-  color: #c90000;
-  transform: scale(1.2);
+  color: black;
+  transform: translateY(-2px);
 }
 
 .cart-count {
   background-color: #c90000;
   color: white;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: bold;
   border-radius: 50%;
-  padding: 3px 7px;
+  padding: 2px 6px;
   position: absolute;
-  top: -8px;
+  top: -5px;
   right: -10px;
 }
 
-/* Estilos mejorados para el modal del carrito */
+/* Estilos del modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -226,7 +232,7 @@ const proceedToCheckout = () => {
 
 .modal-content h2 {
   margin-bottom: 20px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1.8rem;
   color: #333;
   text-align: center;
@@ -364,44 +370,5 @@ const proceedToCheckout = () => {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Estilos para modo oscuro */
-.dark .modal-content {
-  background-color: #1e1e1e;
-  color: white;
-}
-
-.dark .modal-content h2 {
-  color: white;
-}
-
-.dark .cart-item {
-  border-bottom-color: #333;
-}
-
-.dark .item-details h3 {
-  color: white;
-}
-
-.dark .item-details p {
-  color: #aaa;
-}
-
-.dark .item-total {
-  color: white;
-}
-
-.dark .total-section {
-  border-top-color: #333;
-}
-
-.dark .continue-shopping {
-  background-color: #333;
-  color: white;
-}
-
-.dark .continue-shopping:hover {
-  background-color: #444;
 }
 </style>
