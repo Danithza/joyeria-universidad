@@ -16,11 +16,6 @@
         </div>
         
         <div class="input-group">
-          <label for="phone">Teléfono</label>
-          <input type="tel" id="phone" v-model="phone" required />
-        </div>
-        
-        <div class="input-group">
           <label for="message">Mensaje</label>
           <textarea id="message" v-model="message" rows="4" required></textarea>
         </div>
@@ -46,13 +41,12 @@ export default {
     return {
       name: "",
       email: "",
-      phone: "",
       message: "",
     };
   },
   methods: {
     submitSupport() {
-      console.log(`Enviando mensaje de soporte de ${this.name} (${this.email}, ${this.phone}): ${this.message}`);
+      console.log(`Enviando mensaje de soporte de ${this.name} (${this.email}): ${this.message}`);
       alert("Tu mensaje ha sido enviado. Te responderemos pronto.");
     },
   },
@@ -66,78 +60,61 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 20px;
-  min-height: 100vh;
-  background-color: #000;
-  padding-top: 190px;
+  height: 100vh;
+  background: linear-gradient(135deg, #fbe7c6, #ffdde1);
 }
 
 .support-card {
-  background: #1a1a1a;
-  padding: 40px;
+  background: white;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 100%;
-  max-width: 600px;
-  border: 1px solid #2b2b2b;
+  width: 400px;
 }
 
 h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 20px;
-  color: #FF6B00;
-}
-
-p {
-  font-size: 16px;
-  color: #ccc;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  color: #ff9aa2;
 }
 
 .input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 15px;
 }
 
 .input-group label {
   font-weight: 600;
   display: block;
-  margin-bottom: 8px;
-  color: #FF6B00;
+  margin-bottom: 5px;
+  color: #ff758f;
 }
 
 .input-group input,
 .input-group textarea {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #444;
+  padding: 10px;
+  border: 2px solid #ffb7b2;
   border-radius: 8px;
   font-size: 16px;
-  background: #2b2b2b;
-  color: #fff;
-  transition: border-color 0.3s ease;
+  background: #fff5f5;
+  color: #333;
+  transition: border 0.3s ease;
 }
 
 .input-group input:focus,
 .input-group textarea:focus {
-  border-color: #FF6B00;
+  border-color: #ff9aa2;
   outline: none;
 }
 
-.input-group textarea {
-  resize: none;
-}
-
 .btn-submit {
-  background: #FF6B00;
+  background: #ffb7b2;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 12px;
   width: 100%;
   border-radius: 8px;
   font-size: 18px;
@@ -147,21 +124,18 @@ p {
 }
 
 .btn-submit:hover {
-  background: #e65c00;
+  background: #ff9aa2;
 }
 
 .faq-section {
-  margin-top: 30px;
+  margin-top: 20px;
   text-align: left;
-  font-size: 16px;
-  color: #ccc;
 }
 
 .faq-section h3 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
-  margin-bottom: 15px;
-  color: #FF6B00;
+  margin-bottom: 10px;
 }
 
 .faq-section ul {
@@ -169,24 +143,8 @@ p {
 }
 
 .faq-section li {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  .input-group {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .input-group label {
-    width: 30%;
-  }
-
-  .input-group input,
-  .input-group textarea {
-    width: 65%;
-  }
+  color: #555;
 }
 </style>
