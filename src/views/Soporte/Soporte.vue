@@ -16,14 +16,11 @@
         </div>
 
         <div class="input-group">
-<<<<<<< HEAD
-=======
           <label for="phone">Teléfono</label>
           <input type="tel" id="phone" v-model="phone" required placeholder="(000) 000-0000" />
         </div>
 
         <div class="input-group">
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
           <label for="message">Mensaje</label>
           <textarea id="message" v-model="message" rows="4" required placeholder="Escribe tu consulta..."></textarea>
         </div>
@@ -54,13 +51,8 @@ export default {
   },
   methods: {
     submitSupport() {
-<<<<<<< HEAD
-      console.log(`Enviando mensaje de soporte de ${this.name} (${this.email}): ${this.message}`);
-      alert("Tu mensaje ha sido enviado. Te responderemos pronto.");
-=======
       console.log(`Enviando mensaje de soporte de ${this.name} (${this.email}, ${this.phone}): ${this.message}`);
       alert("Tu mensaje ha sido enviado exitosamente. ¡Gracias por contactarnos!");
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
     },
   },
 };
@@ -73,31 +65,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD
-  height: 100vh;
-  background: linear-gradient(135deg, #fbe7c6, #ffdde1);
-}
-
-.support-card {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 400px;
-}
-
-h2 {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: #ff9aa2;
-}
-
-.input-group {
-  text-align: left;
-  margin-bottom: 15px;
-=======
   padding: 100px 20px;
   min-height: 100vh;
   background: #eeeeee;
@@ -139,33 +106,17 @@ p {
   display: flex;
   flex-direction: column;
   text-align: left;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
 }
 
 .input-group label {
   font-weight: 600;
-<<<<<<< HEAD
-  display: block;
-  margin-bottom: 5px;
-  color: #ff758f;
-=======
   color: #b88c3a;
   margin-bottom: 8px;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
 }
 
 .input-group input,
 .input-group textarea {
   width: 100%;
-<<<<<<< HEAD
-  padding: 10px;
-  border: 2px solid #ffb7b2;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #fff5f5;
-  color: #333;
-  transition: border 0.3s ease;
-=======
   padding: 14px;
   border: 1px solid #ccc;
   border-radius: 14px;
@@ -173,35 +124,21 @@ p {
   color: #333;
   font-size: 15px;
   transition: all 0.3s ease;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
 }
 
 .input-group input:focus,
 .input-group textarea:focus {
-<<<<<<< HEAD
-  border-color: #ff9aa2;
-=======
   background: #fff;
   box-shadow: 0 0 0 2px #b88c3a;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
   outline: none;
 }
 
 .btn-submit {
-<<<<<<< HEAD
-  background: #ffb7b2;
-  color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 8px;
-=======
   background: linear-gradient(135deg, #b88c3a, #d6a441); /* dorado degradado */
   color: #fff;
   padding: 6px;
   border: none;
   border-radius: 14px;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -209,20 +146,6 @@ p {
 }
 
 .btn-submit:hover {
-<<<<<<< HEAD
-  background: #ff9aa2;
-}
-
-.faq-section {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.faq-section h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 10px;
-=======
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(184, 140, 58, 0.4);
 }
@@ -239,7 +162,6 @@ p {
   font-weight: 700;
   margin-bottom: 15px;
   color: #b88c3a;
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
 }
 
 .faq-section ul {
@@ -248,11 +170,6 @@ p {
 }
 
 .faq-section li {
-<<<<<<< HEAD
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #555;
-=======
   margin-bottom: 20px;
   font-size: 15px;
   padding-bottom: 12px;
@@ -274,7 +191,6 @@ p {
   .input-group textarea {
     width: 65%;
   }
->>>>>>> 0ad0209818e0bfbbea897939a049b05633a89cab
 }
 </style>
 
