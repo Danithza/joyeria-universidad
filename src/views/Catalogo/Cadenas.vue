@@ -1,1103 +1,683 @@
 <template>
-  <div :class="['app-container', { 'dark-mode': darkMode }]">
-    <!-- Navbar simplificado -->
-    <nav class="navbar">
-      <div class="navbar-left">
-        <h1>Joyería Universidad</h1>
-      </div>
-      <div class="navbar-right">
-        <button class="theme-toggle" @click="toggleTheme">
-          <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'"></i>
-        </button>
-        <div class="cart-icon">
-          <i class="fas fa-shopping-cart"></i>
-          <span class="cart-count">{{ cartCount }}</span>
+  <!-- Contenedor principal con clase dinámica para modo oscuro -->
+  <div :class="['app-container', darkMode ? 'dark' : '']">
+    <!-- Componente Navbar con el número de items en el carrito -->
+    <Navbar :cartCount="cartStore.totalItems" />
+
+    <!-- Layout principal con sidebar y galería -->
+    <div class="main-layout">
+      <!-- Sidebar con filtros -->
+      <aside class="sidebar">
+        <h2 class="titulo-filtros">Filtrar relojes</h2>
+
+        <!-- Filtro de búsqueda -->
+        <div class="filtro">
+          <label for="busqueda">Buscar</label>
+          <input v-model="busqueda" id="busqueda" placeholder="Buscar reloj..." />
         </div>
-      </div>
-    </nav>
-    
-    <!-- Contenido principal -->
-    <main class="content-wrapper">
-      <!-- Panel de filtros -->
-      <aside class="filters-panel">
-        <div class="filters-header">
-          <h2>Filtros</h2>
-          <button class="clear-filters" @click="resetFilters">
-            <i class="fas fa-sync-alt"></i> Reiniciar
-          </button>
-        </div>
-        
-        <div class="filter-group">
-          <label for="search">Buscar</label>
-          <div class="search-input">
-            <i class="fas fa-search"></i>
-            <input 
-              id="search"
-              v-model="searchQuery" 
-              placeholder="Buscar cadenas..." 
-              type="search"
-            />
+
+        <!-- Filtro de precio con rango -->
+        <div class="filtro">
+          <label>Precio</label>
+          <div class="rangos">
+            <input type="range" v-model="precioMin" min="0" max="100000" />
+            <input type="range" v-model="precioMax" min="0" max="100000" />
+          </div>
+          <div class="valores-precio">
+            <span>Mín: ${{ precioMin }}</span>
+            <span>Máx: ${{ precioMax }}</span>
           </div>
         </div>
-        
-        <div class="filter-group">
-          <label>Rango de precios</label>
-          <div class="price-range-display">
-            <span>${{ priceRange[0] }}</span>
-            <span>${{ priceRange[1] }}</span>
-          </div>
-          <div class="range-slider">
-            <input 
-              type="range" 
-              v-model="priceRange[0]" 
-              :min="0" 
-              :max="1000"
-              class="slider"
-            >
-            <input 
-              type="range" 
-              v-model="priceRange[1]" 
-              :min="0" 
-              :max="1000"
-              class="slider"
-            >
-          </div>
-        </div>
-        
-        <div class="filter-group">
-          <label>Material</label>
-          <div class="checkbox-group">
-            <label v-for="material in materials" :key="material">
-              <input 
-                type="checkbox" 
-                v-model="selectedMaterials" 
-                :value="material"
-              />
-              {{ material }}
-            </label>
-          </div>
-        </div>
-        
-        <div class="filter-group">
-          <label>Ordenar por</label>
-          <select v-model="sortBy" class="sort-select">
-            <option value="default">Por defecto</option>
-            <option value="price-asc">Precio: menor a mayor</option>
-            <option value="price-desc">Precio: mayor a menor</option>
-            <option value="rating">Mejor valorados</option>
-            <option value="newest">Más nuevos</option>
-          </select>
-        </div>
+
+        <!-- Botón para limpiar filtros -->
+        <button class="btn-limpiar" @click="limpiarFiltros">Limpiar filtros</button>
       </aside>
-      
-      <!-- Galería de productos -->
-      <section class="products-gallery">
-        <div class="gallery-header">
-          <h2>Cadenas de Oro</h2>
-          <p class="results-count">{{ filteredChains.length }} productos encontrados</p>
-        </div>
-        
-        <div v-if="loading" class="loading-overlay">
-          <div class="spinner"></div>
-        </div>
-        
-        <div v-if="filteredChains.length === 0" class="no-results">
-          <i class="fas fa-search"></i>
-          <h3>No se encontraron productos</h3>
-          <p>Intenta ajustar tus filtros de búsqueda</p>
-          <button @click="resetFilters">Limpiar todos los filtros</button>
-        </div>
-        
-        <transition-group v-else name="fade-list" tag="div" class="products-grid">
-          <div v-for="chain in filteredChains" :key="chain.id" class="product-card">
-            <!-- Etiquetas -->
-            <div v-if="chain.isNew" class="product-badge new">Nuevo</div>
-            <div v-if="chain.isPopular" class="product-badge popular">Popular</div>
-            
-            <!-- Favorito -->
-            <i 
-              class="fas fa-heart favorite-icon" 
-              :class="{ 'active': favorites.includes(chain.id) }"
-              @click="toggleFavorite(chain.id)"
+
+      <!-- Sección de galería de productos -->
+      <section class="galeria">
+        <!-- Lista de productos con animación de transición -->
+        <transition-group name="fade" tag="div" class="productos-grid">
+          <!-- Tarjeta de producto individual -->
+          <div
+            v-for="reloj in relojesFiltrados"
+            :key="reloj.id"
+            class="tarjeta-producto"
+            @click="verDetalles(reloj)"
+          >
+            <!-- Icono de favoritos -->
+            <i
+              class="fas fa-heart icono-favorito"
+              :class="{ favorito: favoritos.includes(reloj.id) }"
+              @click.stop="toggleFavorito(reloj.id)"
+              title="Añadir a favoritos"
             ></i>
-            
+
             <!-- Imagen del producto -->
-            <div class="product-image-container">
-              <img 
-                :src="chain.image" 
-                :alt="chain.name" 
-                class="product-image"
-                @click="showQuickView(chain)"
-              >
+            <img :src="reloj.imagen" :alt="reloj.nombre" class="imagen-reloj" />
+            <h3>{{ reloj.nombre }}</h3>
+
+            <!-- Valoración con estrellas -->
+            <div class="estrellas">
+              <i v-for="n in 5" :key="n" class="fa-star" :class="n <= (reloj.rating || 4) ? 'fas' : 'far'"></i>
+              <span class="rating-text">({{ reloj.rating || 4 }}/5)</span>
             </div>
-            
-            <!-- Información del producto -->
-            <div class="product-info">
-              <h3 class="product-name">{{ chain.name }}</h3>
-              
-              <div class="product-rating">
-                <i 
-                  v-for="n in 5" 
-                  :key="n"
-                  :class="n <= Math.round(chain.rating) ? 'fas fa-star' : 'far fa-star'"
-                ></i>
-                <span>({{ chain.reviews }})</span>
-              </div>
-              
-              <p class="product-price">${{ chain.price }}</p>
-              
-              <p class="product-stock" :class="{ 'out-of-stock': chain.stock === 0 }">
-                {{ chain.stock === 0 ? 'Agotado' : `${chain.stock} disponibles` }}
-              </p>
-              
-              <button 
-                class="add-to-cart" 
-                @click="addToCart(chain)"
-                :disabled="chain.stock === 0"
-              >
-                <i class="fas fa-cart-plus"></i> Añadir al carrito
-              </button>
-            </div>
+
+            <!-- Precio del producto -->
+            <p class="precio">${{ reloj.precio.toLocaleString('es-MX') }}</p>
+
+            <!-- Botón para añadir al carrito -->
+            <button @click.stop="agregarAlCarrito(reloj)">
+              <i class="fas fa-cart-plus"></i> Añadir al carrito
+            </button>
           </div>
         </transition-group>
       </section>
-    </main>
-    
-    <!-- Toast notification -->
-    <div v-if="toastVisible" class="toast-notification">
-      <div class="toast-content">
-        <i class="fas fa-check-circle"></i>
-        <span>¡Producto añadido al carrito!</span>
-      </div>
     </div>
-    
-    <!-- Quick View Modal -->
-    <div v-if="quickViewProduct" class="modal-overlay" @click.self="quickViewProduct = null">
-      <div class="quick-view-modal">
-        <button class="close-modal" @click="quickViewProduct = null">
-          <i class="fas fa-times"></i>
-        </button>
+
+    <!-- Modal para detalles del producto -->
+    <div v-if="modalVisible" class="modal-overlay" @click.self="cerrarModal">
+      <div class="modal-content">
+        <!-- Botón para cerrar el modal -->
+        <button class="modal-close" @click="cerrarModal">&times;</button>
         
-        <div class="modal-content">
-          <div class="modal-images">
-            <img :src="quickViewProduct.image" :alt="quickViewProduct.name">
+        <!-- Cuerpo del modal -->
+        <div class="modal-body">
+          <!-- Contenedor de la imagen -->
+          <div class="modal-image-container">
+            <img :src="relojSeleccionado.imagen" :alt="relojSeleccionado.nombre" class="modal-image" />
           </div>
           
-          <div class="modal-info">
-            <h2>{{ quickViewProduct.name }}</h2>
+          <!-- Detalles del producto -->
+          <div class="modal-details">
+            <h2>{{ relojSeleccionado.nombre }}</h2>
             
-            <div class="modal-rating">
-              <i 
-                v-for="n in 5" 
-                :key="n"
-                :class="n <= Math.round(quickViewProduct.rating) ? 'fas fa-star' : 'far fa-star'"
-              ></i>
-              <span>{{ quickViewProduct.rating }} ({{ quickViewProduct.reviews }} reseñas)</span>
+            <!-- Fila de detalle: Precio -->
+            <div class="detail-row">
+              <span class="detail-label">Precio:</span>
+              <span class="detail-value">${{ relojSeleccionado.precio.toLocaleString('es-MX') }}</span>
             </div>
             
-            <p class="modal-price">${{ quickViewProduct.price }}</p>
-            
-            <p class="modal-description">{{ quickViewProduct.description }}</p>
-            
-            <div class="modal-details">
-              <p><strong>Material:</strong> {{ quickViewProduct.material }}</p>
-              <p><strong>Peso:</strong> {{ quickViewProduct.weight }}g</p>
-              <p><strong>Longitud:</strong> {{ quickViewProduct.length }}cm</p>
+            <!-- Fila de detalle: Material -->
+            <div class="detail-row">
+              <span class="detail-label">Material:</span>
+              <span class="detail-value">{{ relojSeleccionado.material }}</span>
             </div>
             
+            <!-- Fila de detalle: Tamaño -->
+            <div class="detail-row">
+              <span class="detail-label">Tamaño:</span>
+              <span class="detail-value">{{ relojSeleccionado.tamano }}</span>
+            </div>
+            
+            <!-- Fila de detalle: Descripción -->
+            <div class="detail-row description">
+              <span class="detail-label">Descripción:</span>
+              <p class="detail-value">{{ relojSeleccionado.descripcion }}</p>
+            </div>
+            
+            <!-- Acciones del modal -->
             <div class="modal-actions">
-              <button 
-                class="add-to-cart"
-                @click="addToCart(quickViewProduct)"
-                :disabled="quickViewProduct.stock === 0"
-              >
+              <button class="btn-add-to-cart" @click="agregarAlCarrito(relojSeleccionado)">
                 <i class="fas fa-cart-plus"></i> Añadir al carrito
               </button>
+              <button class="btn-close" @click="cerrarModal">Cerrar</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Notificación toast para añadir al carrito -->
+    <div v-if="toastVisible" class="toast">¡Producto añadido al carrito!</div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+// Importaciones de Vue y componentes
+import { ref, computed, onMounted, watch } from 'vue'
+import { useCartStore } from '@/stores/useCartStore'
+import Navbar from '@/components/Layout/Navbar.vue'
 
-// Estado de la aplicación
-const darkMode = ref(false)
-const cartCount = ref(0)
-const loading = ref(false)
-const toastVisible = ref(false)
-const quickViewProduct = ref(null)
+// Importación de imágenes de relojs
+import reloj1 from '@/assets/img-collares/collar1.jpg'
+import reloj2 from '@/assets/img-collares/collar2.jpg'
+import reloj3 from '@/assets/img-collares/collar3.jpg'
+import reloj4 from '@/assets/img-collares/collar4.jpg'
+import reloj5 from '@/assets/img-collares/collar5.jpg'
+import reloj6 from '@/assets/img-collares/collar6.jpg'
+import reloj7 from '@/assets/img-collares/collar7.jpg'
+import reloj8 from '@/assets/img-collares/collar8.jpg'
 
-// Filtros
-const searchQuery = ref('')
-const priceRange = ref([0, 1000])
-const selectedMaterials = ref([])
-const sortBy = ref('default')
-const favorites = ref([])
+// Inicialización del store del carrito
+const cartStore = useCartStore()
 
-// Datos de productos
-const chains = ref([
-  {
-    id: 1,
-    name: 'Cadena de Oro Italiana 14k',
-    price: 299,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Oro+14k',
-    stock: 15,
-    material: 'Oro 14k',
-    weight: 8.5,
-    length: 50,
-    rating: 4.8,
-    reviews: 124,
-    isNew: true,
-    isPopular: true,
-    description: 'Cadena de oro italiana de 14k con eslabones gruesos, ideal para uso diario o ocasiones especiales.'
-  },
-  {
-    id: 2,
-    name: 'Cadena de Oro Blanco 18k',
-    price: 450,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Oro+Blanco',
-    stock: 8,
-    material: 'Oro Blanco 18k',
-    weight: 10.2,
-    length: 45,
-    rating: 4.6,
-    reviews: 87,
-    isNew: false,
-    isPopular: true,
-    description: 'Elegante cadena de oro blanco de 18k con acabado pulido para un look sofisticado.'
-  },
-  {
-    id: 3,
-    name: 'Cadena de Plata Sterling',
-    price: 120,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Plata',
-    stock: 22,
-    material: 'Plata',
-    weight: 12.5,
-    length: 55,
-    rating: 4.3,
-    reviews: 56,
-    isNew: true,
-    isPopular: false,
-    description: 'Cadena de plata sterling 925 con diseño clásico y resistente para uso diario.'
-  },
-  {
-    id: 4,
-    name: 'Cadena de Oro Rolo 10k',
-    price: 180,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Oro+Rolo',
-    stock: 0,
-    material: 'Oro 10k',
-    weight: 7.8,
-    length: 60,
-    rating: 4.0,
-    reviews: 34,
-    isNew: false,
-    isPopular: false,
-    description: 'Cadena de oro rolo de 10k con eslabones redondos y brillo intenso.'
-  },
-  {
-    id: 5,
-    name: 'Cadena de Oro Figaro 14k',
-    price: 350,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Figaro',
-    stock: 12,
-    material: 'Oro 14k',
-    weight: 9.3,
-    length: 50,
-    rating: 4.9,
-    reviews: 156,
-    isNew: false,
-    isPopular: true,
-    description: 'Clásica cadena figaro de oro 14k con patrón distintivo y gran durabilidad.'
-  },
-  {
-    id: 6,
-    name: 'Cadena de Oro Cubana 24k',
-    price: 850,
-    image: 'https://via.placeholder.com/300x300?text=Cadena+Cubana',
-    stock: 5,
-    material: 'Oro 24k',
-    weight: 22.7,
-    length: 70,
-    rating: 4.7,
-    reviews: 42,
-    isNew: true,
-    isPopular: false,
-    description: 'Lujosa cadena cubana de oro 24k con eslabones planos y gran presencia.'
-  }
+// Variables reactivas
+const darkMode = ref(true) // Control del modo oscuro
+const busqueda = ref('') // Texto de búsqueda
+const precioMax = ref(100000) // Precio máximo para filtrar
+const precioMin = ref(0) // Precio mínimo para filtrar
+const toastVisible = ref(false) // Visibilidad del toast
+const modalVisible = ref(false) // Visibilidad del modal
+const relojSeleccionado = ref({}) // reloj seleccionado para el modal
+
+// Favoritos almacenados en localStorage
+const favoritos = ref(JSON.parse(localStorage.getItem('favoritos') || '[]'))
+
+// Watcher para guardar favoritos en localStorage
+watch(favoritos, (val) => {
+  localStorage.setItem('favoritos', JSON.stringify(val))
+}, { deep: true })
+
+// Lista de relojs disponibles
+const relojes = ref([
+  { id: 1, nombre: 'Cadena Oro Brillante Clásica', precio: 95000, imagen: reloj1, material: 'Oro', tamano: 'Tamaño Único', descripcion: 'Una cadena de oro tradicional con eslabones finos y acabado pulido. Ideal para quienes buscan elegancia sin excesos. Perfecta para uso diario o combinar con dijes delicados.', rating: 5 },
+  { id: 2, nombre: 'Cadena de Oro Gruesa Trenzada', precio: 920000, imagen: reloj2, material: 'Oro Rosa', tamano: 'Tamaño 7', descripcion: 'Diseño robusto y llamativo con trenzado artesanal. Esta cadena impone presencia y estilo, ideal para quienes buscan destacar en cualquier ocasión.', rating: 4 },
+  { id: 3, nombre: 'Cadena Oro Rosa Minimalista', precio: 75000, imagen: reloj3, material: 'Oro', tamano: 'Tamaño 6', descripcion: 'Fina, delicada y moderna. El tono suave del oro rosa la convierte en la elección ideal para quienes aprecian los detalles sutiles y el diseño contemporáneo.', rating: 4 },
+  { id: 4, nombre: 'Cadena de Oro con Dije de Cruz', precio: 82000, imagen: reloj4, material: 'Oro', tamano: 'Tamaño 8', descripcion: 'Cadena delgada de oro de 14k con un dije de cruz elegante. Representa estilo y espiritualidad con un diseño clásico y duradero.', rating: 3 },
+  { id: 5, nombre: 'Cadena de Oro Cubana Maciza', precio: 83500, imagen: reloj5, material: 'Oro Blanco', tamano: 'Tamaño 6', descripcion: 'Cadena de eslabones anchos tipo cubana, pulida a mano. El complemento perfecto para un look urbano con clase, resistente y con peso real.', rating: 5 },
+  { id: 6, nombre: 'Cadena de Oro con Eslabón Figaro', precio: 98000, imagen: reloj6, material: 'Oro', tamano: 'Tamaño 7', descripcion: 'Combinación de eslabones largos y cortos en un patrón tradicional italiano. Un estilo sofisticado que nunca pasa de moda.', rating: 4 },
+  { id: 7, nombre: 'Cadena de Oro Texturizada Mate', precio: 64900, imagen: reloj7, material: 'Oro', tamano: 'Tamaño 9', descripcion: 'Un diseño único con acabado mate y detalles texturizados. Ideal para quienes prefieren un estilo sobrio y elegante. .', rating: 5 },
+  { id: 8, nombre: 'Cadena de Oro con Chapa Personalizada', precio: 79800, imagen: reloj8, material: 'Oro', tamano: 'Tamaño 7', descripcion: 'Cadena delicada que incluye una chapa para grabado. Perfecta para regalar con iniciales, nombres o fechas especiales.', rating: 3 }
 ])
 
-const materials = ['Oro 10k', 'Oro 14k', 'Oro 18k', 'Oro 24k', 'Plata', 'Oro Blanco']
-
-// Computed
-const filteredChains = computed(() => {
-  let results = chains.value.filter(chain => {
-    // Filtro de búsqueda
-    const matchesSearch = chain.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
-                         chain.description.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    // Filtro de precio
-    const matchesPrice = chain.price >= priceRange.value[0] && chain.price <= priceRange.value[1]
-    
-    // Filtro de material
-    const matchesMaterial = selectedMaterials.value.length === 0 || 
-                           selectedMaterials.value.includes(chain.material)
-    
-    return matchesSearch && matchesPrice && matchesMaterial
-  })
-  
-  // Ordenamiento
-  switch(sortBy.value) {
-    case 'price-asc':
-      return results.sort((a, b) => a.price - b.price)
-    case 'price-desc':
-      return results.sort((a, b) => b.price - a.price)
-    case 'rating':
-      return results.sort((a, b) => b.rating - a.rating)
-    case 'newest':
-      return results.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0))
-    default:
-      return results.sort((a, b) => (b.isPopular ? 1 : 0) - (a.isPopular ? 1 : 0))
-  }
-})
-
-// Métodos
-const toggleTheme = () => {
-  darkMode.value = !darkMode.value
-}
-
-const resetFilters = () => {
-  searchQuery.value = ''
-  priceRange.value = [0, 1000]
-  selectedMaterials.value = []
-  sortBy.value = 'default'
-}
-
-const toggleFavorite = (id) => {
-  const index = favorites.value.indexOf(id)
-  if (index > -1) {
-    favorites.value.splice(index, 1)
-  } else {
-    favorites.value.push(id)
-  }
-  // Guardar en localStorage
-  localStorage.setItem('favorites', JSON.stringify(favorites.value))
-}
-
-const addToCart = (product) => {
-  if (product.stock > 0) {
-    cartCount.value += 1
-    toastVisible.value = true
-    setTimeout(() => toastVisible.value = false, 3000)
-  }
-}
-
-const showQuickView = (product) => {
-  quickViewProduct.value = product
-}
-
-// Lifecycle
+// Al montar el componente, verificar preferencia de modo oscuro del sistema
 onMounted(() => {
-  // Simular carga de datos
-  loading.value = true
-  setTimeout(() => loading.value = false, 800)
-  
-  // Cargar favoritos del localStorage
-  const savedFavorites = localStorage.getItem('favorites')
-  if (savedFavorites) {
-    favorites.value = JSON.parse(savedFavorites)
-  }
+  darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
+
+// Computed: Filtra los relojes según búsqueda y rango de precios
+const relojesFiltrados = computed(() =>
+relojes.value.filter(
+    (a) =>
+      a.nombre.toLowerCase().includes(busqueda.value.toLowerCase()) &&
+      a.precio <= precioMax.value &&
+      a.precio >= precioMin.value
+  )
+)
+
+// Función para limpiar todos los filtros
+const limpiarFiltros = () => {
+  busqueda.value = ''
+  precioMax.value = 100000
+  precioMin.value = 0
+}
+
+// Función para alternar un reloj como favorito
+const toggleFavorito = (id) => {
+  favoritos.value = favoritos.value.includes(id)
+    ? favoritos.value.filter(f => f !== id)
+    : [...favoritos.value, id]
+}
+
+// Función para añadir un reloj al carrito
+const agregarAlCarrito = (reloj) => {
+  cartStore.agregarProducto(reloj)
+  toastVisible.value = true
+  setTimeout(() => {
+    toastVisible.value = false
+  }, 2000)
+}
+
+// Función para mostrar detalles de un reloj en el modal
+const verDetalles = (reloj) => {
+  relojSeleccionado.value = reloj
+  modalVisible.value = true
+}
+
+// Función para cerrar el modal
+const cerrarModal = () => {
+  modalVisible.value = false
+}
 </script>
 
 <style scoped>
-/* Variables CSS para el tema */
-:root {
-  --bg-color: #f8f9fa;
-  --text-color: #333333;
-  --card-bg: #ffffff;
-  --border-color: #e0e0e0;
-  --secondary-text: #666666;
-  --input-bg: #ffffff;
-  --hover-bg: #f5f5f5;
-  --primary-color: #1976d2;
-  --primary-hover: #1565c0;
-  --success-color: #4caf50;
-  --danger-color: #f44336;
-  --warning-color: #ff9800;
-  --star-color: #ffc107;
-}
-
-.dark-mode {
-  --bg-color: #121212;
-  --text-color: #ffffff;
-  --card-bg: #1e1e1e;
-  --border-color: #333;
-  --secondary-text: #b0b0b0;
-  --input-bg: #2d2d2d;
-  --hover-bg: #2a2a2a;
-}
-
-/* Estilos base */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-}
-
+/* Estilos del contenedor principal */
 .app-container {
+  background-color: #f5f5f5;
   min-height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: 100px;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--card-bg);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
-
-.navbar h1 {
-  font-size: 1.5rem;
-  color: var(--primary-color);
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.theme-toggle {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.cart-icon {
-  position: relative;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.7rem;
-  font-weight: bold;
+/* Estilos para modo oscuro */
+.dark {
+  background-color: #121212;
+  color: #fff;
 }
 
 /* Layout principal */
-.content-wrapper {
+.main-layout {
   display: flex;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 6rem 20px 20px;
-  gap: 30px;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
 }
 
-/* Panel de filtros */
-.filters-panel {
-  width: 280px;
-  flex-shrink: 0;
-  background: var(--card-bg);
+/* Estilos del sidebar */
+.sidebar {
+  width: 250px;
+  background: #1c1c1c;
+  padding: 1.5rem;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--border-color);
-  height: fit-content;
+  color: #fff;
 }
 
-.dark-mode .filters-panel {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+/* Título de los filtros */
+.titulo-filtros {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
-.filters-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+/* Estilos de cada filtro */
+.filtro {
+  margin-bottom: 1.5rem;
 }
 
-.filters-header h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.clear-filters {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  cursor: pointer;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px;
-}
-
-.clear-filters:hover {
-  text-decoration: underline;
-}
-
-.filter-group {
-  margin-bottom: 25px;
-}
-
-.filter-group label {
+/* Etiquetas de los filtros */
+.filtro label {
   display: block;
-  font-weight: 500;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
 }
 
-.search-input {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-input i {
-  position: absolute;
-  left: 12px;
-  color: var(--secondary-text);
-}
-
-.search-input input {
+/* Input de texto para búsqueda */
+.filtro input[type="text"] {
   width: 100%;
-  padding: 10px 15px 10px 35px;
-  border: 1px solid var(--border-color);
+  padding: 0.5rem;
   border-radius: 8px;
-  background: var(--input-bg);
-  color: var(--text-color);
-  font-size: 0.9rem;
+  border: none;
 }
 
-.price-range-display {
+/* Contenedor de rangos de precio */
+.rangos input {
+  width: 100%;
+  margin-bottom: 0.3rem;
+}
+
+/* Valores de precio mínimo y máximo */
+.valores-precio {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
   font-size: 0.85rem;
-  color: var(--secondary-text);
+  margin-top: 0.3rem;
 }
 
-.range-slider {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.slider {
+/* Botón para limpiar filtros */
+.btn-limpiar {
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--border-color);
-  outline: none;
-  -webkit-appearance: none;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-}
-
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: normal;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.checkbox-group input {
-  accent-color: var(--primary-color);
-}
-
-.sort-select {
-  width: 100%;
-  padding: 10px;
+  padding: 0.6rem;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
-  background: var(--input-bg);
-  color: var(--text-color);
-  font-size: 0.9rem;
+  border: none;
+  background-color: crimson;
+  color: #fff;
+  font-weight: bold;
   cursor: pointer;
 }
 
-/* Galería de productos */
-.products-gallery {
+/* Estilos de la galería */
+.galeria {
   flex: 1;
 }
 
-.gallery-header {
-  margin-bottom: 25px;
-}
-
-.gallery-header h2 {
-  font-size: 1.5rem;
-  margin: 0 0 5px 0;
-  color: var(--text-color);
-}
-
-.results-count {
-  color: var(--secondary-text);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.products-grid {
+/* Grid de productos */
+.productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
-/* Tarjeta de producto */
-.product-card {
+/* Tarjeta de producto individual */
+.tarjeta-producto {
   position: relative;
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.product-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  z-index: 1;
-}
-
-.product-badge.new {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.product-badge.popular {
-  background-color: var(--success-color);
-  color: white;
-}
-
-.favorite-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.2rem;
-  color: var(--secondary-text);
-  cursor: pointer;
-  z-index: 1;
-  transition: color 0.2s ease;
-}
-
-.favorite-icon.active {
-  color: var(--danger-color);
-}
-
-.favorite-icon:hover {
-  color: var(--danger-color);
-}
-
-.product-image-container {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 15px;
-  overflow: hidden;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.product-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  text-align: center;
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
-.product-image:hover {
+/* Efecto hover en tarjeta de producto */
+.tarjeta-producto:hover {
   transform: scale(1.05);
 }
 
-.product-info {
-  padding: 0 5px;
+/* Modo oscuro para tarjetas de producto */
+.dark .tarjeta-producto {
+  background: #1e1e1e;
+  color: #fff;
 }
 
-.product-name {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.product-rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 8px;
-  color: var(--star-color);
-}
-
-.product-rating i {
-  font-size: 0.9rem;
-}
-
-.product-rating span {
-  font-size: 0.8rem;
-  color: var(--secondary-text);
-}
-
-.product-price {
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: var(--text-color);
-}
-
-.product-stock {
-  font-size: 0.85rem;
-  margin-bottom: 12px;
-  color: var(--secondary-text);
-}
-
-.product-stock.out-of-stock {
-  color: var(--danger-color);
-}
-
-.add-to-cart {
+/* Imagen del reloj */
+.imagen-reloj {
   width: 100%;
-  padding: 10px;
-  background-color: var(--primary-color);
-  color: white;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: transform 0.4s ease;
+}
+
+/* Efecto hover en imagen */
+.tarjeta-producto:hover .imagen-reloj {
+  transform: scale(1.1);
+}
+
+/* Estilos del precio */
+.precio {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Modo oscuro para precio */
+.dark .precio {
+  color: #ddd;
+}
+
+/* Estilos generales de botones */
+button {
+  background: #000;
+  color: #fff;
   border: none;
+  padding: 0.5rem;
   border-radius: 8px;
-  font-weight: 500;
+  margin-top: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  transition: background 0.3s;
 }
 
-.add-to-cart:hover {
-  background-color: var(--primary-hover);
-}
-
-.add-to-cart:disabled {
-  background-color: var(--secondary-text);
+/* Botón deshabilitado */
+button:disabled {
+  background: #888;
   cursor: not-allowed;
 }
 
-/* Loading overlay */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* Efecto hover en botones */
+button:hover {
+  background: #444;
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* No results */
-.no-results {
-  text-align: center;
-  padding: 50px 20px;
-  color: var(--secondary-text);
-}
-
-.no-results i {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: var(--secondary-text);
-}
-
-.no-results h3 {
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  color: var(--text-color);
-}
-
-.no-results p {
-  margin-bottom: 20px;
-}
-
-.no-results button {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+/* Icono de favoritos */
+.icono-favorito {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #bbb;
+  transition: color 0.3s;
   cursor: pointer;
-  font-weight: 500;
 }
 
-.no-results button:hover {
-  background: var(--primary-hover);
+/* Estado activo de favoritos */
+.icono-favorito.favorito {
+  color: crimson;
 }
 
-/* Toast notification */
-.toast-notification {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
-  animation: slideIn 0.3s ease-out;
+/* Estilos de valoración con estrellas */
+.estrellas {
+  color: gold;
+  margin: 0.3rem 0;
 }
 
-.toast-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  background-color: var(--success-color);
-  color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* Estilos individuales de estrellas */
+.fa-star {
+  margin: 0 1px;
 }
 
-.toast-content i {
-  font-size: 1.2rem;
+/* Texto de rating */
+.rating-text {
+  font-size: 0.7rem;
+  margin-left: 4px;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+/* Animaciones de transición */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
-/* Modal de vista rápida */
+/* Estilos del modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
 }
 
-.quick-view-modal {
-  background-color: var(--card-bg);
+/* Contenido del modal */
+.modal-content {
+  background: #fff;
   border-radius: 12px;
   width: 90%;
-  max-width: 900px;
+  max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   position: relative;
+  animation: slideUp 0.4s ease;
 }
 
-.close-modal {
+/* Modo oscuro para modal */
+.dark .modal-content {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* Botón para cerrar modal */
+.modal-close {
   position: absolute;
   top: 15px;
   right: 15px;
   background: none;
   border: none;
-  font-size: 1.2rem;
-  color: var(--secondary-text);
+  font-size: 24px;
   cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+  z-index: 10;
 }
 
-.modal-content {
+/* Efecto hover en botón de cerrar */
+.modal-close:hover {
+  color: #000;
+}
+
+/* Modo oscuro para botón de cerrar */
+.dark .modal-close {
+  color: #aaa;
+}
+
+.dark .modal-close:hover {
+  color: #fff;
+}
+
+/* Cuerpo del modal */
+.modal-body {
   display: flex;
-  gap: 30px;
+  flex-direction: column;
+  padding: 2rem;
 }
 
-.modal-images {
-  flex: 1;
+/* Contenedor de imagen en modal */
+.modal-image-container {
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.modal-images img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: contain;
+/* Imagen en modal */
+.modal-image {
+  max-width: 100%;
+  max-height: 300px;
   border-radius: 8px;
+  object-fit: contain;
 }
 
-.modal-info {
+/* Detalles del producto en modal */
+.modal-details {
   flex: 1;
-  padding: 10px;
 }
 
-.modal-info h2 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
+/* Título en modal */
+.modal-details h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
 }
 
-.modal-rating {
+/* Modo oscuro para título en modal */
+.dark .modal-details h2 {
+  color: #fff;
+}
+
+/* Fila de detalle */
+.detail-row {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+/* Fila de descripción */
+.detail-row.description {
+  flex-direction: column;
+}
+
+/* Etiqueta de detalle */
+.detail-label {
+  font-weight: bold;
+  min-width: 120px;
+  color: #555;
+}
+
+/* Modo oscuro para etiqueta */
+.dark .detail-label {
+  color: #ccc;
+}
+
+/* Valor de detalle */
+.detail-value {
+  flex: 1;
+  color: #333;
+}
+
+/* Modo oscuro para valor */
+.dark .detail-value {
+  color: #eee;
+}
+
+/* Acciones del modal */
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-end;
+}
+
+/* Botón para añadir al carrito */
+.btn-add-to-cart {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 15px;
-  color: var(--star-color);
+  gap: 0.5rem;
 }
 
-.modal-price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: var(--text-color);
+/* Efecto hover en botón de añadir */
+.btn-add-to-cart:hover {
+  background-color: #3e8e41;
 }
 
-.modal-description {
-  margin-bottom: 20px;
-  color: var(--secondary-text);
-  line-height: 1.6;
+/* Botón para cerrar modal */
+.btn-close {
+  background-color: #f44336;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.modal-details {
-  margin-bottom: 20px;
+/* Efecto hover en botón de cerrar */
+.btn-close:hover {
+  background-color: #d32f2f;
 }
 
-.modal-details p {
-  margin-bottom: 8px;
+/* Animación de fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.modal-actions {
-  margin-top: 25px;
-}
-
-/* Transiciones */
-.fade-list-move,
-.fade-list-enter-active,
-.fade-list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.fade-list-enter-from,
-.fade-list-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.fade-list-leave-active {
-  position: absolute;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .content-wrapper {
-    flex-direction: column;
+/* Animación de slide up */
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .filters-panel {
-    width: 100%;
-  }
-  
-  .modal-content {
-    flex-direction: column;
+  to { 
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* Estilos responsivos */
 @media (max-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  .modal-body {
+    flex-direction: column;
   }
   
-  .navbar {
-    padding: 1rem;
+  .modal-image {
+    max-height: 200px;
   }
   
-  .navbar h1 {
-    font-size: 1.2rem;
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .btn-add-to-cart, .btn-close {
+    width: 100%;
+    justify-content: center;
   }
 }
 
-@media (max-width: 480px) {
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .content-wrapper {
-    padding: 6rem 15px 15px;
-  }
-  
-  .quick-view-modal {
-    width: 95%;
-    padding: 15px;
-  }
+/* Estilos del toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease, fadeOut 0.5s ease 1.5s forwards;
+}
+
+/* Animación de slide in para toast */
+@keyframes slideIn {
+  from { bottom: -50px; opacity: 0; }
+  to { bottom: 20px; opacity: 1; }
+}
+
+/* Animación de fade out para toast */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 </style>
