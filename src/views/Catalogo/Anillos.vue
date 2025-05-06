@@ -1,6 +1,16 @@
 <template>
   <div :class="['app-container', darkMode ? 'dark' : '']">
-    <Navbar :cartCount="cartStore.totalItems" />
+    <!-- Navbar con el botón hamburguesa -->
+    <Navbar 
+      :cartCount="cartStore.totalItems" 
+      @toggle-sidebar="isSidebarOpen = !isSidebarOpen" 
+    />
+
+    <!-- Sidebar controlado por isSidebarOpen -->
+    <Sidebar 
+      :isOpen="isSidebarOpen" 
+      @close="isSidebarOpen = false" 
+    />
 
     <div class="main-layout">
       <!-- FILTROS -->
@@ -97,9 +107,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
 import Navbar from '@/components/Layout/Navbar.vue'
+import Sidebar from '@/components/Layout/Sidebar.vue'
 
 import anillo1 from '@/assets/img-anillos/anillo1.jpeg'
 import anillo2 from '@/assets/img-anillos/anillo2.jpeg'
@@ -111,6 +122,7 @@ import anillo7 from '@/assets/img-anillos/anillo7.jpeg'
 import anillo8 from '@/assets/img-anillos/anillo8.jpeg'
 
 const cartStore = useCartStore()
+const isSidebarOpen = ref(false)
 
 const anillos = ref([
   {
@@ -186,6 +198,11 @@ const precioMin = ref(0)
 const modalAbierto = ref(false)
 const anilloSeleccionado = ref(null)
 
+// Control del scroll al abrir/cerrar sidebar
+watch(isSidebarOpen, (newVal) => {
+  document.body.style.overflow = newVal ? 'hidden' : 'auto'
+})
+
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
@@ -217,9 +234,36 @@ const abrirModal = (anillo) => {
 
 const cerrarModal = () => {
   modalAbierto.value = false
-  document.body.style.overflow = 'auto'
+  document.body.style.overflow = isSidebarOpen.value ? 'hidden' : 'auto'
 }
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.main-layout {
+  display: flex;
+  padding: 20px;
+  margin-top: 80px; /* Ajuste para el navbar fijo */
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.galeria {
+  flex: 1;
+}
+
+</style>
 
 <style scoped>
 .app-container {

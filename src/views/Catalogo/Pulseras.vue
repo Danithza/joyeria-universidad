@@ -1,14 +1,24 @@
 <template>
   <div :class="['app-container', darkMode ? 'dark' : '']">
-    <Navbar :cartCount="cartStore.totalItems" />
+    <!-- Navbar con el botón hamburguesa -->
+    <Navbar 
+      :cartCount="cartStore.totalItems" 
+      @toggle-sidebar="isSidebarOpen = !isSidebarOpen" 
+    />
+
+    <!-- Sidebar controlado por isSidebarOpen -->
+    <Sidebar 
+      :isOpen="isSidebarOpen" 
+      @close="isSidebarOpen = false" 
+    />
 
     <div class="main-layout">
       <!-- FILTROS -->
       <aside class="sidebar">
-        <h2 class="titulo-filtros"><i class="fas fa-filter"></i> Filtrar pulseras</h2>
+        <h2 class="titulo-filtros"><i class="fas fa-filter"></i> Filtrar Pulseras</h2>
         <div class="card-filtro">
           <label><i class="fas fa-search"></i> Buscar:</label>
-          <input v-model="busqueda" placeholder="Buscar pulsera..." />
+          <input v-model="busqueda" placeholder="Buscar anillo..." />
         </div>
         <div class="card-filtro">
           <label><i class="fas fa-dollar-sign"></i> Precio mínimo</label>
@@ -97,9 +107,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useCartStore } from '@/stores/useCartStore'
 import Navbar from '@/components/Layout/Navbar.vue'
+import Sidebar from '@/components/Layout/Sidebar.vue'
 
 // Importaciones actualizadas para coincidir con tus nombres de archivo
 import pulsera1 from '@/assets/img-pulseras/pulsera1.jpg'
@@ -112,6 +123,7 @@ import pulsera7 from '@/assets/img-pulseras/pulsera7.jpg'
 import pulsera8 from '@/assets/img-pulseras/pulsera8.jpg'
 
 const cartStore = useCartStore()
+const isSidebarOpen = ref(false)
 
 const pulseras = ref([
   {
@@ -187,6 +199,11 @@ const precioMin = ref(0)
 const modalAbierto = ref(false)
 const pulseraSeleccionada = ref(null)
 
+// Control del scroll al abrir/cerrar sidebar
+watch(isSidebarOpen, (newVal) => {
+  document.body.style.overflow = newVal ? 'hidden' : 'auto'
+})
+
 onMounted(() => {
   darkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 })
@@ -218,9 +235,37 @@ const abrirModal = (pulsera) => {
 
 const cerrarModal = () => {
   modalAbierto.value = false
-  document.body.style.overflow = 'auto'
+  document.body.style.overflow = isSidebarOpen.value ? 'hidden' : 'auto'
 }
 </script>
+
+<style scoped>
+.app-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.main-layout {
+  display: flex;
+  padding: 20px;
+  margin-top: 80px; /* Ajuste para el navbar fijo */
+}
+
+.sidebar-filters {
+  width: 250px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.galeria {
+  flex: 1;
+}
+
+
+</style>
 
 <style scoped>
 .app-container {

@@ -2,6 +2,17 @@
   <!-- Contenedor principal con clase dinámica para modo oscuro -->
   <div :class="['app-container', darkMode ? 'dark' : '']">
     <!-- Componente Navbar con el número de items en el carrito -->
+     <!-- Navbar con el botón hamburguesa -->
+    <Navbar 
+      :cartCount="cartStore.totalItems" 
+      @toggle-sidebar="isSidebarOpen = !isSidebarOpen" 
+    />
+
+    <!-- Sidebar controlado por isSidebarOpen -->
+    <Sidebar 
+      :isOpen="isSidebarOpen" 
+      @close="isSidebarOpen = false" 
+    />
     <Navbar :cartCount="cartStore.totalItems" />
 
     <!-- Layout principal con sidebar y galería -->
