@@ -63,12 +63,38 @@ export default {
         alert("Las contraseñas no coinciden");
         return;
       }
-      console.log(`Registrando a ${this.name} con ${this.email}, Teléfono: ${this.phone}, Dirección: ${this.address}`);
+
+      // Crear el nuevo usuario
+      const newUser = {
+        nombre: this.name,
+        email: this.email,
+        phone: this.phone,
+        address: this.address,
+        password: this.password,
+        foto: null,
+        historialCompras: []
+      };
+
+      // Guardar en localStorage
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      
+      // Verificar si el usuario ya existe
+      const userExists = users.some(user => user.email === newUser.email);
+      if (userExists) {
+        alert("Este correo electrónico ya está registrado");
+        return;
+      }
+      
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("¡Registro exitoso! Serás redirigido al login");
+      this.$router.push("/login");
     },
     goToLogin() {
       this.$router.push("/login");
     }
-  },
+  }
 };
 </script>
 <style scoped>

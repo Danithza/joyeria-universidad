@@ -9,9 +9,8 @@ import Pulseras from "@/views/Catalogo/Pulseras.vue";
 import Cadenas from "@/views/Catalogo/Cadenas.vue";
 import Relojes from  "@/views/Catalogo/Relojes.vue";
 import Piercing from "@/views/Catalogo/Piercing.vue";
-
-
-
+import checkout from "@/views/Catalogo/checkout.vue";
+import perfil from "@/views/Autenticacion/perfil.vue";
 
 const routes = [
   { path: "/", component: Home },
@@ -25,6 +24,8 @@ const routes = [
   { path: "/cadenas", component:Cadenas},
   { path: "/relojes", component:Relojes},
   { path: "/piercing", component:Piercing},
+  { path: "/checkout", component:checkout},
+  { path: "/perfil", component:perfil},
   
 ];
 

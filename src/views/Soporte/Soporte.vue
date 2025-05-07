@@ -7,32 +7,43 @@
       <form @submit.prevent="submitSupport" class="support-form">
         <div class="input-group">
           <label for="name">Nombre</label>
-          <input type="text" id="name" v-model="name" required placeholder="Ingresa tu nombre completo" />
+          <input type="text" id="name" v-model="formData.name" required placeholder="Ingresa tu nombre completo" />
         </div>
 
         <div class="input-group">
           <label for="email">Correo</label>
-          <input type="email" id="email" v-model="email" required placeholder="correo@ejemplo.com" />
+          <input type="email" id="email" v-model="formData.email" required placeholder="correo@ejemplo.com" />
         </div>
 
         <div class="input-group">
           <label for="phone">Teléfono</label>
-          <input type="tel" id="phone" v-model="phone" required placeholder="(000) 000-0000" />
+          <input type="tel" id="phone" v-model="formData.phone" required placeholder="(000) 000-0000" />
         </div>
 
         <div class="input-group">
           <label for="message">Mensaje</label>
-          <textarea id="message" v-model="message" rows="4" required placeholder="Escribe tu consulta..."></textarea>
+          <textarea id="message" v-model="formData.message" rows="4" required placeholder="Escribe tu consulta..."></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">Enviar Mensaje</button>
+        <button type="submit" class="btn-submit" :disabled="loading">
+          {{ loading ? 'Enviando...' : 'Enviar Mensaje' }}
+        </button>
       </form>
+
+      <!-- Modal de confirmación simplificado -->
+      <div v-if="showModal" class="modal-overlay">
+        <div class="modal-content">
+          <h3>¡Mensaje enviado con éxito!</h3>
+          <p>Hemos recibido tu solicitud y te responderemos a la brevedad.</p>
+          <button @click="closeModal" class="btn-close">Aceptar</button>
+        </div>
+      </div>
 
       <div class="faq-section">
         <h3>Preguntas Frecuentes</h3>
         <ul>
           <li><strong>¿Cómo recuperar mi contraseña?</strong><br />Haz clic en "Olvidé mi contraseña" en la página de inicio de sesión.</li>
-          <li><strong>¿Cómo contactar soporte?</strong><br />Llena este formulario o escríbenos directamente al correo soporte@empresa.com.</li>
+          <li><strong>¿Cómo contactar soporte?</strong><br />Llena este formulario o escríbenos directamente al correo ndlarrotta01@gmail.com.</li>
         </ul>
       </div>
     </div>
@@ -40,21 +51,63 @@
 </template>
 
 <script>
+import emailjs from 'emailjs-com';
+
 export default {
   name: "Support",
   data() {
     return {
-      name: "",
-      email: "",
-      message: "",
+      formData: {
+        name: "",
+        email: "",
+        phone: "",
+        message: ""
+      },
+      loading: false,
+      error: null,
+      showModal: false
     };
   },
-  methods: {
-    submitSupport() {
-      console.log(`Enviando mensaje de soporte de ${this.name} (${this.email}, ${this.phone}): ${this.message}`);
-      alert("Tu mensaje ha sido enviado exitosamente. ¡Gracias por contactarnos!");
-    },
+  mounted() {
+    emailjs.init('aLLW6NtjL_Xivl8c8');
   },
+  methods: {
+    async submitSupport() {
+      if (!this.formData.name || !this.formData.email || !this.formData.message) {
+        this.error = "Por favor complete los campos obligatorios";
+        return;
+      }
+
+      this.loading = true;
+      this.error = null;
+
+      try {
+        await emailjs.send(
+          'service_ghxccd9',
+          'template_ofnxskv',
+          {
+            name: this.formData.name.trim(),
+            email: this.formData.email.trim(),
+            phone: this.formData.phone.trim(),
+            message: this.formData.message.trim(),
+            reply_to: this.formData.email.trim()
+          }
+        );
+
+        this.showModal = true;
+        this.formData = { name: "", email: "", phone: "", message: "" };
+
+      } catch (error) {
+        this.error = "Error al enviar el mensaje. Por favor intente nuevamente.";
+        console.error("Error al enviar:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    closeModal() {
+      this.showModal = false;
+    }
+  }
 };
 </script>
 
@@ -72,7 +125,7 @@ export default {
 }
 
 .support-card {
-  background-color: #f5f5f5;  /* blanco */
+  background-color: #f5f5f5;
   padding: 50px 40px;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -80,13 +133,14 @@ export default {
   max-width: 600px;
   text-align: center;
   border: 1px solid #ddd;
+  position: relative;
 }
 
 h2 {
   font-family: 'Poppins', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #b88c3a; /* dorado suave */
+  color: #b88c3a;
   margin-bottom: 10px;
 }
 
@@ -134,9 +188,9 @@ p {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #b88c3a, #d6a441); /* dorado degradado */
+  background: linear-gradient(135deg, #b88c3a, #d6a441);
   color: #fff;
-  padding: 6px;
+  padding: 16px;
   border: none;
   border-radius: 14px;
   font-size: 18px;
@@ -176,6 +230,52 @@ p {
   border-bottom: 1px solid #ddd;
 }
 
+/* Estilos para el modal simplificado */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.btn-close {
+  width: 15%;
+  background: #b88c3a;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0px;
+  align-items: center;
+}
+
+.btn-close:hover {
+  background: #a07b32;
+}
+
 @media (min-width: 768px) {
   .input-group {
     flex-direction: row;
@@ -193,4 +293,3 @@ p {
   }
 }
 </style>
-

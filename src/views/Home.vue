@@ -30,31 +30,30 @@
     </div>
 
     <!-- Nuestro Catálogo -->
-<section class="section">
-  <h2 class="section-title">📚 Nuestro Catálogo</h2>
-  <div class="icon-grid catalogo-grid">
-    <div
-      v-for="(item, index) in catalogo"
-      :key="index"
-      class="catalogo-item"
-    >
-      <router-link :to="item.link" class="catalogo-link">
-        <img :src="item.imagen" :alt="item.nombre" />
-        <div class="catalogo-label">{{ item.nombre }}</div>
-      </router-link>
-    </div>
-  </div>
-</section>
-
+    <section class="section">
+      <h2 class="section-title">📚 Nuestro Catálogo</h2>
+      <div class="icon-grid catalogo-grid">
+        <div
+          v-for="(item, index) in catalogo"
+          :key="index"
+          class="catalogo-item"
+        >
+          <router-link :to="item.link" class="catalogo-link">
+            <img :src="item.imagen" :alt="item.nombre" />
+            <div class="catalogo-label">{{ item.nombre }}</div>
+          </router-link>
+        </div>
+      </div>
+    </section>
 
     <!-- Anillos -->
     <section class="section">
       <h2 class="section-title">💍 Anillos</h2>
       <div class="icon-grid">
-        <img src="@/assets/img-home/img-promo-anillos/ani1.jpeg" alt="Anillo A" />
-        <img src="@/assets/img-home/img-promo-anillos/ani2.jpeg" alt="Anillo B" />
-        <img src="@/assets/img-home/img-promo-anillos/ani3.jpeg" alt="Anillo C" />
-        <img src="@/assets/img-home/img-promo-anillos/ani4.jpeg" alt="Anillo D" />
+        <img src="@/assets/img-home/img-promo-anillos/1.png" alt="Anillo A" />
+        <img src="@/assets/img-home/img-promo-anillos/2.png" alt="Anillo B" />
+        <img src="@/assets/img-home/img-promo-anillos/3.png" alt="Anillo C" />
+        <img src="@/assets/img-home/img-promo-anillos/4.png" alt="Anillo D" />
       </div>
     </section>
 
@@ -62,15 +61,15 @@
     <section class="section">
       <h2 class="section-title">📿 Pulseras</h2>
       <div class="icon-grid">
-        <img src="@/assets/img-home/img-promo-pulseras/pul1.jpeg" alt="Pulsera A" />
-        <img src="@/assets/img-home/img-promo-pulseras/pul2.jpeg" alt="Pulsera B" />
-        <img src="@/assets/img-home/img-promo-pulseras/pul3.jpeg" alt="Pulsera C" />
-        <img src="@/assets/img-home/img-promo-pulseras/pul4.jpeg" alt="Pulsera D" />
+        <img src="@/assets/img-home/img-promo-pulseras/1.png" alt="Pulsera A" />
+        <img src="@/assets/img-home/img-promo-pulseras/2.png" alt="Pulsera B" />
+        <img src="@/assets/img-home/img-promo-pulseras/3.png" alt="Pulsera C" />
+        <img src="@/assets/img-home/img-promo-pulseras/4.png" alt="Pulsera D" />
       </div>
     </section>
 
-      <!-- Cadenas -->
-      <section class="section">
+    <!-- Cadenas -->
+    <section class="section">
       <h2 class="section-title">📿 Cadenas</h2>
       <div class="icon-grid">
         <img src="@/assets/img-home/img-promos-cadenas/collar1.jpg" alt="Cadena A" />
@@ -79,20 +78,9 @@
         <img src="@/assets/img-home/img-promos-cadenas/collar4.jpg" alt="Cadena D" />
       </div>
     </section>
-
-    <!-- Métodos de pago -->
-    <section class="section">
-      <h2 class="section-title">💳 Métodos de Pago</h2>
-      <div class="icon-grid">
-        <img src="@/assets/img-home/img-metodos-pago/bancolombia.jpg" alt="Bancolombia" />
-        <img src="@/assets/img-home/img-metodos-pago/nequi.avif" alt="Nequi" />
-        <img src="@/assets/img-home/img-metodos-pago/pse-.png" alt="Pse" />
-      </div>
-    </section>
   </div>
-
-   
 </template>
+
 
 <script>
 export default {
@@ -192,8 +180,6 @@ export default {
 }
 
 .carousel-inner img {
-  padding-top:4%;
-  height: 460px;
   object-fit: cover;
   border-radius: 10px;
 }

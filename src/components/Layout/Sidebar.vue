@@ -28,7 +28,6 @@ export default {
         { label: 'Cadenas', to: '/cadenas' },
         { label: 'Relojes', to: '/relojes' },
         { label: 'Piercing', to: '/piercing' },
-        { label: 'Joyería Personalizada', to: '/joyeria-personalizada' },
       ],
     };
   },

@@ -3,10 +3,12 @@
     <div class="login-card">
       <h2>Iniciar Sesión</h2>
 
+      <!-- Mensaje de éxito -->
       <div v-if="loginSuccess" class="success-message">
         ¡Inicio de sesión exitoso! Redirigiendo...
       </div>
 
+      <!-- Formulario de login -->
       <form v-else @submit.prevent="login">
         <div class="input-group">
           <label for="email">Correo Electrónico</label>
@@ -16,6 +18,11 @@
         <div class="input-group">
           <label for="password">Contraseña</label>
           <input type="password" id="password" v-model="password" required />
+        </div>
+
+        <!-- Mostrar mensaje de error en caso de fallos -->
+        <div v-if="loginError" class="error-message">
+          Correo o contraseña incorrectos. Por favor, intente nuevamente.
         </div>
 
         <button type="submit" class="btn-login">Ingresar</button>
@@ -34,6 +41,8 @@
 </template>
 
 <script>
+import { useAuthStore } from "@/stores/useAuthStore"; // Si usas Pinia para manejar el estado
+
 export default {
   name: "Login",
   data() {
@@ -41,17 +50,34 @@ export default {
       email: "",
       password: "",
       loginSuccess: false,
+      loginError: false,
     };
   },
   methods: {
     login() {
-      console.log(`Iniciando sesión con ${this.email}`);
-      this.loginSuccess = true;
-      this.$router.push("/home");
-    },
-  },
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      
+      // Buscar usuario por email y contraseña
+      const user = users.find(
+        u => u.email === this.email && u.password === this.password
+      );
+
+      if (user) {
+        // Guardar usuario en localStorage como "currentUser"
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        
+        this.loginSuccess = true;
+        setTimeout(() => {
+          this.$router.push("/perfil");
+        }, 1500);
+      } else {
+        this.loginError = true;
+      }
+    }
+  }
 };
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
@@ -176,6 +202,16 @@ h2 {
 
 .success-message {
   background: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.error-message {
+  background: #f44336;
   color: #fff;
   padding: 10px;
   border-radius: 8px;
