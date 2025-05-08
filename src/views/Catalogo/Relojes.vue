@@ -126,31 +126,31 @@ const isSidebarOpen = ref(false)
 
 const relojes = ref([
   {
-    id: 1,
-    nombre: 'reloj Clásico Oro',
-    precio: 80000,
+    id: 21,
+    nombre: 'Reloj Dorado Clásico',
+    precio: 250000 ,
     imagen: reloj1,
-    rating: 4,
-    descripcion: 'reloj en oro de 18k con diseño clásico y elegante, perfecto para cualquier ocasión.'
+    rating: 5,
+    descripcion: 'Elegancia atemporal con correa metálica brillante.'
   },
   {
-    id: 2,
+    id: 22,
     nombre: 'reloj Diamante Solitario',
     precio: 250000,
     imagen: reloj2,
     rating: 5,
-    descripcion: 'reloj con diamante solitario en montura de plata esterlina, ideal para compromisos.'
+    descripcion: 'Diseño fino y versátil para cualquier ocasión.'
   },
   {
-    id: 3,
-    nombre: 'reloj Plata Grabado',
-    precio: 140000,
+    id: 23,
+    nombre: 'Reloj Minimal Gold',
+    precio: 215000,
     imagen: reloj3,
     rating: 4,
-    descripcion: 'reloj de plata con grabados artesanales y detalles únicos.'
+    descripcion: 'Inspirado en los años 80, con toque retro sofisticado.'
   },
   {
-    id: 4,
+    id: 24,
     nombre: 'reloj Moderno Oro Blanco',
     precio: 190000,
     imagen: reloj4,
@@ -158,36 +158,36 @@ const relojes = ref([
     descripcion: 'Diseño contemporáneo en oro blanco con líneas limpias y sofisticadas.'
   },
   {
-    id: 5,
-    nombre: 'reloj Piedras Preciosas',
-    precio: 200000,
+    id: 25,
+    nombre: 'Reloj Slim Elegance',
+    precio: 195000,
     imagen: reloj5,
     rating: 5,
-    descripcion: 'reloj con combinación de piedras preciosas en diversos colores.'
+    descripcion: 'Delgado y elegante, ideal para muñecas finas.'
   },
   {
-    id: 6,
-    nombre: 'reloj Minimalista Plata',
+    id: 26,
+    nombre: 'Reloj Smart Golden Touch',
     precio: 170000,
     imagen: reloj6,
     rating: 4,
     descripcion: 'Diseño minimalista en plata pura para un look discreto pero elegante.'
   },
   {
-    id: 7,
-    nombre: 'reloj Vintage',
-    precio: 45000,
+    id: 27,
+    nombre: 'Reloj Cronógrafo Gold Steel',
+    precio: 320000,
     imagen: reloj7,
     rating: 4,
-    descripcion: 'Estilo vintage inspirado en diseños antiguos con un toque romántico.'
+    descripcion: 'Estilo ejecutivo con cronómetro funcional.'
   },
   {
-    id: 8,
-    nombre: 'reloj Boda Oro Amarillo',
-    precio: 190000,
+    id: 28,
+    nombre: 'Reloj Dorado con Malla Milanesa',
+    precio: 265000,
     imagen: reloj8,
     rating: 5,
-    descripcion: 'reloj de boda en oro amarillo de 18k con acabado pulido brillante.'
+    descripcion: 'Moderno y ligero con correa tipo malla.'
   }
 ])
 

@@ -126,68 +126,68 @@ const isSidebarOpen = ref(false)
 
 const piercings = ref([
   {
-    id: 1,
-    nombre: 'piercing Clásico Oro',
+    id: 5,
+    nombre: 'Piercing Clásico Oro',
     precio: 80000,
     imagen: piercing1,
     rating: 4,
-    descripcion: 'piercing en oro de 18k con diseño clásico y elegante, perfecto para cualquier ocasión.'
-  },
-  {
-    id: 2,
-    nombre: 'piercing Diamante Solitario',
-    precio: 250000,
-    imagen: piercing2,
-    rating: 5,
-    descripcion: 'piercing con diamante solitario en montura de plata esterlina, ideal para compromisos.'
-  },
-  {
-    id: 3,
-    nombre: 'piercing Plata Grabado',
-    precio: 140000,
-    imagen: piercing3,
-    rating: 4,
-    descripcion: 'piercing de plata con grabados artesanales y detalles únicos.'
-  },
-  {
-    id: 4,
-    nombre: 'piercing Moderno Oro Blanco',
-    precio: 190000,
-    imagen: piercing4,
-    rating: 4,
-    descripcion: 'Diseño contemporáneo en oro blanco con líneas limpias y sofisticadas.'
-  },
-  {
-    id: 5,
-    nombre: 'piercing Piedras Preciosas',
-    precio: 200000,
-    imagen: piercing5,
-    rating: 5,
-    descripcion: 'piercing con combinación de piedras preciosas en diversos colores.'
+    descripcion: 'Elegancia sencilla con un diseño tradicional en oro'
   },
   {
     id: 6,
-    nombre: 'piercing Minimalista Plata',
+    nombre: 'Piercing Diamante Solitario',
+    precio: 250000,
+    imagen: piercing2,
+    rating: 5,
+    descripcion: 'Toque lujoso con brillo intenso, ideal para nariz .'
+  },
+  {
+    id: 7,
+    nombre: 'Piercing Plata Grabado',
+    precio: 140000,
+    imagen: piercing3,
+    rating: 4,
+    descripcion: 'Estilo industrial con detalles sutiles grabados.'
+  },
+  {
+    id: 8,
+    nombre: 'Piercing Moderno Oro Blanco',
+    precio: 190000,
+    imagen: piercing4,
+    rating: 4,
+    descripcion: 'Brillo refinado con doble esfera en oro blanco.'
+  },
+  {
+    id: 9,
+    nombre: 'Piercing Piedras Preciosas',
+    precio: 200000,
+    imagen: piercing5,
+    rating: 5,
+    descripcion: 'Incrustaciones finas que capturan la luz con elegancia.'
+  },
+  {
+    id: 10,
+    nombre: 'Piercing Minimalista Plata',
     precio: 170000,
     imagen: piercing6,
     rating: 4,
     descripcion: 'Diseño minimalista en plata pura para un look discreto pero elegante.'
   },
   {
-    id: 7,
-    nombre: 'piercing Vintage',
+    id: 11,
+    nombre: 'Piercing Minimalista Plata',
     precio: 45000,
     imagen: piercing7,
     rating: 4,
-    descripcion: 'Estilo vintage inspirado en diseños antiguos con un toque romántico.'
+    descripcion: 'Diseño sobrio y delicado para un look moderno.'
   },
   {
-    id: 8,
-    nombre: 'piercing Boda Oro Amarillo',
+    id: 12,
+    nombre: 'Piercing Boda Oro Amarillo',
     precio: 190000,
     imagen: piercing8,
     rating: 5,
-    descripcion: 'piercing de boda en oro amarillo de 18k con acabado pulido brillante.'
+    descripcion: 'Conjunto ideal para ocasiones especiales, con brillo sutil.'
   }
 ])
 

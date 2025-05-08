@@ -126,31 +126,31 @@ const isSidebarOpen = ref(false)
 
 const collares = ref([
   {
-    id: 1,
-    nombre: 'collar Clásico Oro',
-    precio: 80000,
+    id: 13,
+    nombre: 'Collar Corazón de Oro',
+    precio: 120000,
     imagen: collar1,
     rating: 4,
-    descripcion: 'collar en oro de 18k con diseño clásico y elegante, perfecto para cualquier ocasión.'
+    descripcion: 'Perfecto para expresar amor con estilo.'
   },
   {
-    id: 2,
-    nombre: 'collar Diamante Solitario',
-    precio: 250000,
+    id: 14,
+    nombre: 'Collar Inicial Personalizada',
+    precio: 110000,
     imagen: collar2,
     rating: 5,
-    descripcion: 'collar con diamante solitario en montura de plata esterlina, ideal para compromisos.'
+    descripcion: 'Tu letra favorita, grabada en oro.'
   },
   {
-    id: 3,
-    nombre: 'collar Plata Grabado',
+    id: 15,
+    nombre: 'Collar Cadena Cubana Oro',
     precio: 140000,
     imagen: collar3,
     rating: 4,
-    descripcion: 'collar de plata con grabados artesanales y detalles únicos.'
+    descripcion: 'Gruesa y llamativa, con presencia imponente'
   },
   {
-    id: 4,
+    id: 16,
     nombre: 'collar Moderno Oro Blanco',
     precio: 190000,
     imagen: collar4,
@@ -158,36 +158,36 @@ const collares = ref([
     descripcion: 'Diseño contemporáneo en oro blanco con líneas limpias y sofisticadas.'
   },
   {
-    id: 5,
-    nombre: 'collar Piedras Preciosas',
-    precio: 200000,
+    id: 17,
+    nombre: 'Collar Media Luna Dorada',
+    precio: 115000,
     imagen: collar5,
     rating: 5,
-    descripcion: 'collar con combinación de piedras preciosas en diversos colores.'
+    descripcion: 'Místico y moderno, para looks nocturnos.'
   },
   {
-    id: 6,
-    nombre: 'collar Minimalista Plata',
-    precio: 170000,
+    id: 18,
+    nombre: 'Collar Minimalista de Oro',
+    precio: 95000,
     imagen: collar6,
     rating: 4,
-    descripcion: 'Diseño minimalista en plata pura para un look discreto pero elegante.'
+    descripcion: 'Discreto, elegante, siempre combinable.'
   },
   {
-    id: 7,
-    nombre: 'collar Vintage',
-    precio: 45000,
+    id: 19,
+    nombre: 'Collar Infinito de Oro',
+    precio: 105000 ,
     imagen: collar7,
     rating: 4,
-    descripcion: 'Estilo vintage inspirado en diseños antiguos con un toque romántico.'
+    descripcion: 'Amor eterno en una joya ligera.'
   },
   {
-    id: 8,
-    nombre: 'collar Boda Oro Amarillo',
-    precio: 190000,
+    id: 20,
+    nombre: 'Collar con Dije de Mariposa',
+    precio: 112000,
     imagen: collar8,
     rating: 5,
-    descripcion: 'collar de boda en oro amarillo de 18k con acabado pulido brillante.'
+    descripcion: 'Delicado símbolo de transformación.'
   }
 ])
 
