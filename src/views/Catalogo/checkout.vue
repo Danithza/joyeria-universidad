@@ -87,7 +87,7 @@
       <section class="resumen-carrito">
         <h2>Resumen de tu compra</h2>
         <ul>
-          <li v-for="(item, index) in carrito" :key="index">
+          <li v-for="(item, index) in cartStore.items" :key="index">
             {{ item.nombre }} (x{{ item.cantidad }}) - ${{ item.precio * item.cantidad }}
           </li>
         </ul>
@@ -105,7 +105,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useCartStore } from '../../stores/useCartStore'
 
+const cartStore = useCartStore()
+
+// Form data
 const contacto = ref('')
 const nombre = ref('')
 const apellido = ref('')
@@ -119,22 +123,33 @@ const codigoPostal = ref('')
 const telefono = ref('')
 const opcionesElegidas = ref([])
 
-// Simulación de productos en el carrito
-const carrito = ref([
-  { nombre: 'Collar perla', cantidad: 2, precio: 15000 },
-  { nombre: 'Pulsera oro', cantidad: 1, precio: 25000 }
-])
-
 const envio = 8000
 
 const subtotal = computed(() =>
-  carrito.value.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
+  cartStore.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
 )
 
 const total = computed(() => subtotal.value + envio)
 
 const pagar = () => {
-  alert('Pago realizado. ¡Gracias por tu compra!')
+  alert('¡Compra exitosa! Gracias por tu pago.')
+
+  // Limpiar formulario
+  contacto.value = ''
+  nombre.value = ''
+  apellido.value = ''
+  direccion.value = ''
+  tarjeta.value = ''
+  numeroNit.value = ''
+  direccionEspe.value = ''
+  ciudad.value = ''
+  provincia.value = ''
+  codigoPostal.value = ''
+  telefono.value = ''
+  opcionesElegidas.value = []
+
+  // Limpiar carrito
+  cartStore.clearCart()
 }
 </script>
 
