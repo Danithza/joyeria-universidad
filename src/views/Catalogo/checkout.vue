@@ -9,11 +9,6 @@
         Correo o Teléfono:
         <input type="text" v-model="contacto" required />
       </label>
-
-      <label class="checkbox-label">
-        <input type="checkbox" value="notificaciones" v-model="opcionesElegidas" />
-        Enviarme novedades por correo electrónico 
-      </label>
     </section>
 
     <!-- Formulario principal -->
@@ -73,18 +68,13 @@
         <input type="text" v-model="telefono" placeholder="Teléfono" required />
       </label>
 
-      <label class="checkbox-label">
-        <input type="checkbox" checked disabled />
-        Envío tradicional
-      </label>
-
       <label>
         Tarjeta:
         <input type="text" v-model="tarjeta" required />
       </label>
 
       <!-- Resumen del carrito -->
-      <section class="resumen-carrito">
+      <section class="resumen-carrito" v-if="cartStore.items.length">
         <h2>Resumen de tu compra</h2>
         <ul>
           <li v-for="(item, index) in cartStore.items" :key="index">
@@ -109,7 +99,7 @@ import { useCartStore } from '../../stores/useCartStore'
 
 const cartStore = useCartStore()
 
-// Form data
+// Datos del formulario
 const contacto = ref('')
 const nombre = ref('')
 const apellido = ref('')
@@ -134,7 +124,7 @@ const total = computed(() => subtotal.value + envio)
 const pagar = () => {
   alert('¡Compra exitosa! Gracias por tu pago.')
 
-  // Limpiar formulario
+  // Limpiar campos del formulario
   contacto.value = ''
   nombre.value = ''
   apellido.value = ''
@@ -157,7 +147,7 @@ const pagar = () => {
 .checkout-form {
   padding: 2rem;
   max-width: 700px;
-  margin: auto;
+  margin: 7rem auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f7f7f7;
   border-radius: 12px;
