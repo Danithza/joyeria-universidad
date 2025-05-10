@@ -11,32 +11,40 @@
       <h1 class="logo">Elegancia Digital</h1>
     </div>
 
-    <!-- Íconos de navegación -->
+    <!-- Íconos de navegación - Siempre visibles -->
     <div class="nav-icons">
-      <router-link to="/" class="icon-group">
+      <router-link to="/" class="icon-group" title="Inicio">
         <i class="fas fa-house"></i>
-        <span>Inicio</span>
+        <span class="icon-text">Inicio</span>
       </router-link>
 
-      <router-link to="/soporte" class="icon-group">
+      <router-link to="/soporte" class="icon-group" title="Soporte">
         <i class="fas fa-bell"></i>
-        <span>Soporte</span>
+        <span class="icon-text">Soporte</span>
       </router-link>
 
-      <router-link to="/login" class="icon-group">
+      <router-link to="/login" class="icon-group" title="Cuenta">
         <i class="fas fa-user"></i>
-        <span>Cuenta</span>
+        <span class="icon-text">Cuenta</span>
       </router-link>
 
-      <!-- Carrito -->
-      <div class="icon-group cart-icon" @click="mostrarCarrito = true">
+      <!-- Carrito - Versión desktop -->
+      <div class="icon-group cart-icon desktop-cart" @click="mostrarCarrito = true" title="Carrito">
         <i class="fas fa-cart-shopping"></i>
-        <span>Carrito</span>
+        <span class="icon-text">Carrito</span>
         <span class="cart-count" v-if="cartStore.totalItems > 0">
           {{ cartStore.totalItems }}
         </span>
       </div>
     </div>
+
+    <!-- Carrito - Versión móvil -->
+    <button class="mobile-cart-btn" @click="mostrarCarrito = true" title="Carrito">
+      <i class="fas fa-cart-shopping"></i>
+      <span class="cart-count" v-if="cartStore.totalItems > 0">
+        {{ cartStore.totalItems }}
+      </span>
+    </button>
   </nav>
 
   <!-- Modal del Carrito -->
@@ -108,10 +116,12 @@ const proceedToCheckout = () => {
   }
 }
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
+/* Estilos base */
 .navbar {
   display: flex;
   align-items: center;
@@ -131,6 +141,7 @@ const proceedToCheckout = () => {
   border: none;
   color: #333;
   cursor: pointer;
+  display: block;
 }
 
 .logo-container {
@@ -140,21 +151,24 @@ const proceedToCheckout = () => {
 }
 
 .logo-img {
-  width: 60px;
+  width: 40px;
   height: auto;
+  transition: all 0.3s ease;
 }
 
 .logo {
   font-family: 'Inter', sans-serif;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   color: black;
   font-weight: 700;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .icon-group {
@@ -165,17 +179,20 @@ const proceedToCheckout = () => {
   color: #444;
   text-decoration: none;
   font-family: 'Inter', sans-serif;
-  transition: color 0.3s, transform 0.2s;
+  transition: all 0.3s ease;
   position: relative;
+  min-width: 50px;
 }
 
 .icon-group i {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  transition: all 0.3s ease;
 }
 
-.icon-group span {
+.icon-text {
   margin-top: 5px;
   font-size: 0.8rem;
+  transition: all 0.3s ease;
 }
 
 .icon-group:hover {
@@ -193,6 +210,29 @@ const proceedToCheckout = () => {
   position: absolute;
   top: -5px;
   right: -10px;
+}
+
+/* Versión móvil del carrito */
+.mobile-cart-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+}
+
+.mobile-cart-btn .cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #c90000;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
 }
 
 /* Estilos del modal */
@@ -284,6 +324,9 @@ const proceedToCheckout = () => {
   margin: 0;
   font-size: 1rem;
   color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .item-details p {
@@ -333,17 +376,18 @@ const proceedToCheckout = () => {
 .cart-buttons {
   display: flex;
   gap: 10px;
+  flex-direction: column;
 }
 
 .continue-shopping,
 .checkout-button {
-  flex: 1;
   padding: 12px;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  width: 100%;
 }
 
 .continue-shopping {
@@ -372,6 +416,124 @@ const proceedToCheckout = () => {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Media Queries para Responsive */
+@media (max-width: 992px) {
+  .logo {
+    font-size: 1.1rem;
+  }
+  
+  .logo-img {
+    width: 35px;
+  }
+  
+  .nav-icons {
+    gap: 12px;
+  }
+  
+  .icon-group i {
+    font-size: 1.2rem;
+  min-width: 40px;
+  }
+  
+  .icon-text {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1rem;
+  }
+  
+  .logo-img {
+    width: 30px;
+  }
+  
+  .icon-group i {
+    font-size: 1.2rem;
+  }
+  
+  .icon-text {
+    display: none; /* Ocultamos el texto en móviles */
+  }
+  
+  .desktop-cart {
+    display: none; /* Ocultamos carrito desktop */
+  }
+  
+  .mobile-cart-btn {
+    display: block; /* Mostramos carrito móvil */
+  }
+  
+  .nav-icons {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 10px;
+  }
+  
+  .logo {
+    font-size: 0.9rem;
+  }
+  
+  .logo-img {
+    width: 25px;
+  }
+  
+  .menu-btn, .mobile-cart-btn {
+    font-size: 1.2rem;
+  }
+  
+  .nav-icons {
+    gap: 5px;
+  }
+  
+  .icon-group i {
+    font-size: 1.1rem;
+    min-width: 35px;
+  }
+  
+  .modal-content {
+    padding: 20px 15px;
+  }
+  
+  .modal-content h2 {
+    font-size: 1.3rem;
+  margin-bottom: 15px;
+  }
+  
+  .cart-item {
+    padding: 10px 0;
+  }
+  
+  .item-image {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .item-details h3 {
+    font-size: 0.9rem;
+  }
+  
+  .item-details p {
+    font-size: 0.8rem;
+  }
+  
+  .total-section {
+    font-size: 1rem;
+  }
+  
+  .continue-shopping,
+  .checkout-button {
+    padding: 10px;
+    font-size: 0.9rem;
   }
 }
 </style>
