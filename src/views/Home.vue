@@ -136,11 +136,12 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .home-container {
-  background: linear-gradient(to bottom, #ffffff, #e0e0e0);
-  color: #333;
+  background: linear-gradient(to bottom, #121212, #000000);
+  color: #ffffff;
   font-family: 'Poppins', sans-serif;
   text-align: center;
   padding-top: 80px;
+  min-height: 100vh;
 }
 
 /* Carrusel */
@@ -148,6 +149,7 @@ export default {
   height: 500px;
   object-fit: cover;
   border-radius: 10px;
+  border: 1px solid #333;
 }
 
 .carousel {
@@ -155,7 +157,12 @@ export default {
   max-width: 99%;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
 }
 
 /* Slogan */
@@ -166,8 +173,9 @@ export default {
 .slogan h1 {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #b88c3a;
+  color: #d4af37; /* Oro más brillante */
   padding: 0 20px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Secciones */
@@ -178,12 +186,12 @@ export default {
 .section-title {
   font-size: 2.2rem;
   margin-bottom: 25px;
-  color: #444;
+  color: #ffffff;
 }
 
 .section-text {
   font-size: 1.2rem;
-  color: #666;
+  color: #cccccc;
   max-width: 700px;
   margin: 0 auto 50px;
 }
@@ -204,33 +212,37 @@ export default {
   height: 400px;
   object-fit: cover;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  border: 1px solid #333;
   transition: all 0.3s ease;
 }
 
 .icon-grid > img:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+  border-color: #d4af37;
 }
 
 /* Estilos para el catálogo */
 .catalogo-item {
   width: 200px;
   height: 250px;
-  background: #f0f0f0;
+  background: #1e1e1e;
   border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
   overflow: hidden;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  border: 1px solid #333;
 }
 
 .catalogo-item:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.1);
+  border-color: #d4af37;
 }
 
 .catalogo-link {
@@ -238,7 +250,7 @@ export default {
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: inherit;
+  color: #ffffff;
   width: 100%;
   height: 100%;
   padding-top: 15px;
@@ -249,13 +261,14 @@ export default {
   height: 180px;
   border-radius: 20px;
   object-fit: cover;
+  border: 1px solid #333;
 }
 
 .catalogo-label {
   margin-top: 15px;
   font-weight: bold;
   font-size: 1.2rem;
-  color: #333;
+  color: #ffffff;
 }
 
 /* Transición entre frases */
