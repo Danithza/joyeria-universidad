@@ -133,17 +133,95 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos originales se mantienen igual */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+.home-container {
+  background: linear-gradient(to bottom, #ffffff, #e0e0e0);
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  padding-top: 80px;
+}
+
+/* Carrusel */
+.carousel-inner img {
+  height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.carousel {
+  margin-bottom: 40px;
+  max-width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Slogan */
+.slogan {
+  margin: 40px 0 60px;
+}
+
+.slogan h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #b88c3a;
+  padding: 0 20px;
+}
+
+/* Secciones */
+.section {
+  margin: 70px 20px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  color: #444;
+}
+
+.section-text {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 50px;
+}
+
+/* Grid de imágenes */
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 30px;
+  padding: 0 20px;
+}
+
+/* Imágenes de productos (anillos, pulseras, cadenas) */
+.icon-grid > img {
+  width: 300px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.icon-grid > img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para el catálogo */
 .catalogo-item {
-  width: 180px;
-  height: 220px;
-  background: #d1d1d1; /* Gris clarito para la base */
+  width: 200px;
+  height: 250px;
+  background: #f0f0f0;
   border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   overflow: hidden;
-  transition: transform 0.3s;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -152,6 +230,7 @@ export default {
 
 .catalogo-item:hover {
   transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
 .catalogo-link {
@@ -162,94 +241,21 @@ export default {
   color: inherit;
   width: 100%;
   height: 100%;
-  margin-top: 13px;
+  padding-top: 15px;
+}
+
+.catalogo-grid img {
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
+  object-fit: cover;
 }
 
 .catalogo-label {
-  margin-top: 12px;
+  margin-top: 15px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #333;
-}
-
-.home-container {
-  background: linear-gradient(to bottom, #ffffff, #e0e0e0);
-  color: #333;
-  font-family: 'Poppins', sans-serif;
-  text-align: center;
-  padding-top: 80px; /* separado del navbar */
-}
-
-.carousel-inner img {
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.carousel {
-  margin-bottom: 30px;
-  max-width: 99%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Slogan */
-.slogan {
-  top: 100px;
-  margin-bottom: 50px;
-}
-
-.slogan h1 {
-  font-size: 2.2rem;
-  font-weight: 600;
-  color: #b88c3a;
-}
-
-/* Secciones */
-.section {
-  margin: 60px 20px;
-}
-
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #444;
-}
-
-.section-text {
-  font-size: 1.1rem;
-  color: #666;
-  max-width: 600px;
-  margin: 0 auto 40px;
-}
-
-.icon-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-/* Estilos para las imágenes dentro del catálogo */
-.catalogo-grid img {
-  width: 160px;
-  height: 160px;
-  border-radius: 20px;
-}
-
-/* Estilos para las imágenes de anillos, pulseras, métodos de pago */
-.icon-grid > img {
-  width: 228px;
-  height: 299px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s;
-}
-
-.icon-grid > img:hover {
-  transform: scale(1.05);
 }
 
 /* Transición entre frases */
@@ -261,66 +267,137 @@ export default {
 }
 
 /* ------------------------- */
-/* MEDIA QUERIES PARA RESPONSIVE */
+/* MEDIA QUERIES RESPONSIVE */
 /* ------------------------- */
+
+/* Tablets grandes (1025px - 1200px) */
+@media (max-width: 1200px) {
+  .icon-grid > img {
+    width: 280px;
+    height: 380px;
+  }
+}
 
 /* Tablets (768px - 1024px) */
 @media (max-width: 1024px) {
   .carousel-inner img {
-    height: 350px;
+    height: 400px;
   }
 
   .slogan h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.9rem;
+  }
+
+  .icon-grid > img {
+    width: 240px;
+    height: 320px;
+  }
+
+  .catalogo-item {
+    width: 180px;
+    height: 230px;
+  }
+
+  .catalogo-grid img {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* Tablets pequeñas (600px - 767px) */
+@media (max-width: 767px) {
+  .home-container {
+    padding-top: 70px;
+  }
+
+  .carousel-inner img {
+    height: 300px;
+  }
+
+  .slogan h1 {
+    font-size: 1.6rem;
+  }
+
+  .section {
+    margin: 50px 15px;
   }
 
   .section-title {
     font-size: 1.7rem;
   }
 
+  .icon-grid {
+    gap: 25px;
+  }
+
+  .icon-grid > img {
+    width: 220px;
+    height: 300px;
+  }
+
   .catalogo-item {
-    width: 150px;
+    width: 160px;
+    height: 210px;
+  }
+
+  .catalogo-grid img {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+/* Móviles (480px - 599px) */
+@media (max-width: 599px) {
+  .icon-grid > img {
+    width: 180px;
+    height: 250px;
+  }
+
+  .catalogo-item {
+    width: 140px;
     height: 190px;
   }
 
   .catalogo-grid img {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
   }
 
-  .icon-grid > img {
-    width: 180px;
-    height: 240px;
+  .catalogo-label {
+    font-size: 1.1rem;
   }
 }
 
-/* Móviles (hasta 767px) */
-@media (max-width: 767px) {
-  .home-container {
-    padding-top: 60px;
-  }
-
+/* Móviles pequeños (hasta 479px) */
+@media (max-width: 479px) {
   .carousel-inner img {
-    height: 200px;
+    height: 250px;
   }
 
   .slogan h1 {
-    font-size: 1.3rem;
-    margin: 0 10px;
-  }
-
-  .section {
-    margin: 30px 10px;
+    font-size: 1.4rem;
   }
 
   .section-title {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+
+  .icon-grid {
+    gap: 20px;
+  }
+
+  .icon-grid > img {
+    width: 160px;
+    height: 220px;
   }
 
   .catalogo-item {
     width: 130px;
-    height: 170px;
+    height: 180px;
   }
 
   .catalogo-grid img {
@@ -329,51 +406,7 @@ export default {
   }
 
   .catalogo-label {
-    font-size: 0.95rem;
-  }
-
-  .icon-grid {
-    gap: 15px;
-  }
-
-  .icon-grid > img {
-    width: 140px;
-    height: 180px;
-  }
-}
-
-
-/* Móviles pequeños (hasta 480px) */
-@media (max-width: 480px) {
-  .slogan h1 {
-    font-size: 1.2rem;
-  }
-
-  .section-title {
-    font-size: 1.3rem;
-  }
-
-  .icon-grid {
-    gap: 10px;
-  }
-
-  .catalogo-item {
-    width: 100px;
-    height: 140px;
-  }
-
-  .catalogo-grid img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .catalogo-label {
-    font-size: 0.8rem;
-  }
-
-  .icon-grid > img {
-    width: 130px;
-    height: 170px;
+    font-size: 1rem;
   }
 }
 </style>

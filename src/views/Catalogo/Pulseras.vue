@@ -91,7 +91,7 @@
             <span class="rating-num">({{ pulseraSeleccionada.rating }}/5)</span>
           </div>
           <p class="modal-precio">${{ pulseraSeleccionada.precio.toLocaleString() }} COP</p>
-          <p class="modal-descripcion">Pulseras ultramega radiantes</p>
+          <p class="modal-descripcion">{{ pulseraSeleccionada.descripcion }}</p>
           <div class="modal-botones">
             <button @click="agregarAlCarrito(pulseraSeleccionada)" class="modal-comprar">
               <i class="fas fa-cart-plus"></i> Añadir al carrito
