@@ -241,37 +241,9 @@ const cerrarModal = () => {
 
 <style scoped>
 .app-container {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.main-layout {
-  display: flex;
-  padding: 20px;
-  margin-top: 80px; /* Ajuste para el navbar fijo */
-}
-
-.sidebar-filters {
-  width: 250px;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-right: 20px;
-}
-
-.galeria {
-  flex: 1;
-}
-
-
-</style>
-
-<style scoped>
-.app-container {
   background-color: #f5f5f5;
   min-height: 100vh;
-  padding-top: 100px;
+  margin-top: 70px;
 }
 .dark {
   background-color: #121212;

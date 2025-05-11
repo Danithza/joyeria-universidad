@@ -269,7 +269,6 @@ const cerrarModal = () => {
 .app-container {
   background-color: #f5f5f5;
   min-height: 100vh;
-  padding-top: 100px;
 }
 .dark {
   background-color: #121212;
