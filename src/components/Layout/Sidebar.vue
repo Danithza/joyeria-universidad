@@ -121,7 +121,7 @@ export default {
 /* Botón de toggle */
 .menu-toggle {
   position: fixed;
-  top: 20px;
+  top: 4px;
   left: 20px;
   background: var(--sidebar-bg);
   color: var(--text-active);
