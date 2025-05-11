@@ -1,4 +1,5 @@
 <template>
+  <!-- Todo el template se mantiene exactamente igual -->
   <div class="home-container">
     <!-- Carrusel de Bootstrap -->
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -81,8 +82,8 @@
   </div>
 </template>
 
-
 <script>
+// El script se mantiene exactamente igual
 export default {
   data() {
     return {
@@ -131,8 +132,8 @@ export default {
 }
 </script>
 
-
 <style scoped>
+/* Estilos originales se mantienen igual */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .catalogo-item {
@@ -251,35 +252,128 @@ export default {
   transform: scale(1.05);
 }
 
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .carousel-inner img {
-    height: 300px;
-  }
-
-  .slogan h1 {
-    font-size: 1.7rem;
-  }
-
-}
-
-@media (max-width: 480px) {
-  .carousel-inner img {
-    height: 200px;
-  }
-
-  .icon-grid img {
-    width: 100px;
-    height: 100px;
-  }
-}
-
 /* Transición entre frases */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.8s;
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+/* ------------------------- */
+/* MEDIA QUERIES PARA RESPONSIVE */
+/* ------------------------- */
+
+/* Tablets (768px - 1024px) */
+@media (max-width: 1024px) {
+  .carousel-inner img {
+    height: 350px;
+  }
+
+  .slogan h1 {
+    font-size: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .catalogo-item {
+    width: 150px;
+    height: 190px;
+  }
+
+  .catalogo-grid img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .icon-grid > img {
+    width: 180px;
+    height: 240px;
+  }
+}
+
+/* Móviles (hasta 767px) */
+@media (max-width: 767px) {
+  .home-container {
+    padding-top: 60px;
+  }
+
+  .carousel-inner img {
+    height: 200px;
+  }
+
+  .slogan h1 {
+    font-size: 1.3rem;
+    margin: 0 10px;
+  }
+
+  .section {
+    margin: 30px 10px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+
+  .catalogo-item {
+    width: 130px;
+    height: 170px;
+  }
+
+  .catalogo-grid img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .catalogo-label {
+    font-size: 0.95rem;
+  }
+
+  .icon-grid {
+    gap: 15px;
+  }
+
+  .icon-grid > img {
+    width: 140px;
+    height: 180px;
+  }
+}
+
+
+/* Móviles pequeños (hasta 480px) */
+@media (max-width: 480px) {
+  .slogan h1 {
+    font-size: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+  }
+
+  .icon-grid {
+    gap: 10px;
+  }
+
+  .catalogo-item {
+    width: 100px;
+    height: 140px;
+  }
+
+  .catalogo-grid img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .catalogo-label {
+    font-size: 0.8rem;
+  }
+
+  .icon-grid > img {
+    width: 130px;
+    height: 170px;
+  }
 }
 </style>
