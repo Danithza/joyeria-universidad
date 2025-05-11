@@ -118,8 +118,6 @@ const proceedToCheckout = () => {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
 
 /* Estilos base */
 .navbar {
@@ -151,9 +149,11 @@ const proceedToCheckout = () => {
 }
 
 .logo-img {
-  width: 40px;
+  width: 50px;
   height: auto;
   transition: all 0.3s ease;
+  display: block;
+  margin-left: 44%;
 }
 
 .logo {
@@ -313,7 +313,7 @@ const proceedToCheckout = () => {
   height: 60px;
   object-fit: cover;
   border-radius: 8px;
-  margin-right: 15px;
+  margin-right: 20px;
 }
 
 .item-details {
