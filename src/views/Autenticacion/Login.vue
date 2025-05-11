@@ -84,21 +84,22 @@ export default {
 .login-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Alinea arriba */
+  align-items: flex-start;
   min-height: 100vh;
-  padding-top: 100px; /* Baja el formulario */
-  background: #eeeeee; /* gris claro */
+  padding-top: 200px;
+  background: #000000; /* Fondo negro */
+  color: #ffffff; /* Letras blancas */
 }
 
 .login-card {
-  background: #f5f5f5;
+  background: #1a1a1a; /* Fondo oscuro para la tarjeta */
   padding: 30px 25px;
   border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
   text-align: center;
   width: 100%;
-  max-width: 340px; /* más angosto */
-  border: 1px solid #ddd;
+  max-width: 340px;
+  border: 1px solid #333;
 }
 
 h2 {
@@ -125,16 +126,16 @@ h2 {
 .input-group input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
   border-radius: 10px;
   font-size: 14px;
-  background: #fafafa;
-  color: #333;
+  background: #2a2a2a;
+  color: #fff;
   transition: border 0.3s ease;
 }
 
 .input-group input:focus {
-  background: #fff;
+  background: #333;
   box-shadow: 0 0 0 2px #b88c3a;
   outline: none;
 }
@@ -178,7 +179,7 @@ h2 {
 .register-section p {
   margin: 0;
   font-size: 13px;
-  color: #555;
+  color: #ccc;
 }
 
 .btn-register {

@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>© 2024 Elegancia Digital en Línea - Todos los derechos reservados.</p>
+    <p>© 2025 Elegancia Digital en Línea - Todos los derechos reservados.</p>
   </footer>
 </template>
 

@@ -30,7 +30,7 @@
         </button>
       </form>
 
-      <!-- Modal de confirmación simplificado -->
+      <!-- Modal de confirmación -->
       <div v-if="showModal" class="modal-overlay">
         <div class="modal-content">
           <h3>¡Mensaje enviado con éxito!</h3>
@@ -120,19 +120,20 @@ export default {
   align-items: center;
   padding: 100px 20px;
   min-height: 100vh;
-  background: #eeeeee;
+  background: #000000; /* Fondo negro */
+  color: #ffffff; /* Texto blanco */
   padding-top: 110px;
 }
 
 .support-card {
-  background-color: #f5f5f5;
+  background-color: #1a1a1a; /* Fondo gris oscuro */
   padding: 50px 40px;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.05); /* Sombra clara */
   width: 100%;
   max-width: 600px;
   text-align: center;
-  border: 1px solid #ddd;
+  border: 1px solid #333; /* Borde gris */
   position: relative;
 }
 
@@ -140,12 +141,12 @@ h2 {
   font-family: 'Poppins', sans-serif;
   font-size: 28px;
   font-weight: 700;
-  color: #b88c3a;
+  color: #b88c3a; /* Dorado */
   margin-bottom: 10px;
 }
 
 p {
-  color: #666;
+  color: #ccc; /* Texto gris claro */
   margin-bottom: 30px;
   font-size: 16px;
 }
@@ -164,7 +165,7 @@ p {
 
 .input-group label {
   font-weight: 600;
-  color: #b88c3a;
+  color: #b88c3a; /* Dorado */
   margin-bottom: 8px;
 }
 
@@ -172,23 +173,28 @@ p {
 .input-group textarea {
   width: 100%;
   padding: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid #444; /* Borde gris oscuro */
   border-radius: 14px;
-  background: #fafafa;
-  color: #333;
+  background: #2a2a2a; /* Fondo gris más oscuro */
+  color: #ffffff; /* Texto blanco */
   font-size: 15px;
   transition: all 0.3s ease;
 }
 
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #666; /* Placeholder gris */
+}
+
 .input-group input:focus,
 .input-group textarea:focus {
-  background: #fff;
-  box-shadow: 0 0 0 2px #b88c3a;
+  background: #333; /* Fondo gris al enfocar */
+  box-shadow: 0 0 0 2px #b88c3a; /* Borde dorado al enfocar */
   outline: none;
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #b88c3a, #d6a441);
+  background: linear-gradient(135deg, #b88c3a, #d6a441); /* Degradado dorado */
   color: #fff;
   padding: 16px;
   border: none;
@@ -201,21 +207,28 @@ p {
 
 .btn-submit:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(184, 140, 58, 0.4);
+  box-shadow: 0 8px 20px rgba(184, 140, 58, 0.4); /* Sombra dorada */
+}
+
+.btn-submit:disabled {
+  background: #444;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .faq-section {
   margin-top: 40px;
   text-align: left;
   font-size: 16px;
-  color: #666;
+  color: #ccc; /* Texto gris claro */
 }
 
 .faq-section h3 {
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 15px;
-  color: #b88c3a;
+  color: #b88c3a; /* Dorado */
 }
 
 .faq-section ul {
@@ -227,17 +240,17 @@ p {
   margin-bottom: 20px;
   font-size: 15px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #444; /* Borde gris oscuro */
 }
 
-/* Estilos para el modal simplificado */
+/* Estilos para el modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,35 +258,39 @@ p {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #1a1a1a; /* Fondo gris oscuro */
   padding: 30px;
   border-radius: 15px;
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   text-align: center;
+  border: 1px solid #333;
 }
 
 .modal-content h3 {
-  color: #4CAF50;
+  color: #4CAF50; /* Verde para éxito */
   margin-bottom: 15px;
 }
 
+.modal-content p {
+  color: #ccc;
+}
+
 .btn-close {
-  width: 15%;
-  background: #b88c3a;
-  color: black;
+  background: #b88c3a; /* Dorado */
+  color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  margin-top: 0px;
-  align-items: center;
+  margin-top: 20px;
+  transition: background 0.3s ease;
 }
 
 .btn-close:hover {
-  background: #a07b32;
+  background: #d6a441; /* Dorado más claro */
 }
 
 @media (min-width: 768px) {
