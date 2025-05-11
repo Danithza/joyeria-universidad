@@ -1,244 +1,215 @@
 <template>
-  <div class="password-container">
-    <div class="password-card">
-      <h2><i class="fas fa-key"></i> Cambiar Contraseña</h2>
-      
+  <div class="register-container">
+    <div class="register-card">
+      <h2>Cambiar Contraseña</h2>
+
+      <!-- Mensaje de éxito -->
       <div v-if="successMessage" class="success-message">
-        <i class="fas fa-check-circle"></i> {{ successMessage }}
-      </div>
-      
-      <div v-if="errorMessage" class="error-message">
-        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        {{ successMessage }}
       </div>
 
-      <form @submit.prevent="handleSubmit" class="password-form">
-        <div class="input-group">
-          <label for="current-password"><i class="fas fa-lock"></i> Contraseña Actual</label>
-          <input type="password" id="current-password" v-model="form.current" required />
+      <!-- Mensaje de error -->
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <form @submit.prevent="changePassword">
+        <div class="form-row">
+          <div class="input-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" v-model="email" required />
+          </div>
+
+          <div class="input-group">
+            <label for="currentPassword">Contraseña Actual</label>
+            <input type="password" id="currentPassword" v-model="currentPassword" required />
+          </div>
+
+          <div class="input-group">
+            <label for="newPassword">Nueva Contraseña</label>
+            <input type="password" id="newPassword" v-model="newPassword" required />
+          </div>
+
+          <div class="input-group">
+            <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+            <input type="password" id="confirmPassword" v-model="confirmPassword" required />
+          </div>
         </div>
-        
-        <div class="input-group">
-          <label for="new-password"><i class="fas fa-key"></i> Nueva Contraseña</label>
-          <input type="password" id="new-password" v-model="form.new" required minlength="8"/>
-          <small class="hint">Mínimo 8 caracteres</small>
+
+        <div class="button-group">
+          <button type="submit" class="btn-register">Cambiar Contraseña</button>
+          <button
+            v-if="successMessage"
+            type="button"
+            class="btn-back"
+            @click="goToLogin"
+          >
+            Ir al Login
+          </button>
         </div>
-        
-        <div class="input-group">
-          <label for="confirm-password"><i class="fas fa-check-circle"></i> Confirmar Contraseña</label>
-          <input type="password" id="confirm-password" v-model="form.confirm" required minlength="8"/>
-        </div>
-        
-        <button type="submit" class="btn-submit" :disabled="isLoading">
-          <i class="fas" :class="{'fa-spinner fa-pulse': isLoading, 'fa-key': !isLoading}"></i> 
-          {{ isLoading ? 'Procesando...' : 'Cambiar Contraseña' }}
-        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  name: "PasswordChange",
+  name: "ChangePassword",
   data() {
     return {
-      form: {
-        current: "",
-        new: "",
-        confirm: ""
-      },
-      isLoading: false,
-      successMessage: null,
-      errorMessage: null
+      email: "",
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+      successMessage: "",
+      errorMessage: "",
     };
   },
-  methods: {    
-    async handleSubmit() {
-      // Validación básica
-      if (this.form.new.length < 8) {
-        this.errorMessage = "La nueva contraseña debe tener al menos 8 caracteres";
-        return;
-      }
-      
-      if (this.form.new !== this.form.confirm) {
-        this.errorMessage = "Las contraseñas no coinciden";
+  methods: {
+    changePassword() {
+      this.successMessage = "";
+      this.errorMessage = "";
+
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorMessage = "Las nuevas contraseñas no coinciden.";
         return;
       }
 
-      this.isLoading = true;
-      this.errorMessage = null;
+      const users = JSON.parse(localStorage.getItem("users")) || [];
 
-      try {
-        const response = await axios.post('/api/auth/change-password', {
-          currentPassword: this.form.current,
-          newPassword: this.form.new
-        }, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
+      const userIndex = users.findIndex(
+        (user) => user.email === this.email && user.password === this.currentPassword
+      );
 
-        if (response.data.success) {
-          this.successMessage = "¡Contraseña cambiada exitosamente!";
-          this.form = { current: "", new: "", confirm: "" };
-          setTimeout(() => this.successMessage = null, 5000);
-        } else {
-          this.errorMessage = response.data.message || "Error al cambiar la contraseña";
-        }
-      } catch (error) {
-        this.errorMessage = error.response?.data?.message || 
-                           "Error al procesar la solicitud";
-      } finally {
-        this.isLoading = false;
+      if (userIndex === -1) {
+        this.errorMessage = "Correo o contraseña actual incorrectos.";
+        return;
       }
-    }
-  }
+
+      users[userIndex].password = this.newPassword;
+      localStorage.setItem("users", JSON.stringify(users));
+
+      this.successMessage = "¡Contraseña actualizada correctamente!";
+      this.email = this.currentPassword = this.newPassword = this.confirmPassword = "";
+    },
+    goToLogin() {
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-.password-container {
+.register-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
+  padding-top: 100px;
   background: #eeeeee;
-  padding: 20px;
 }
 
-.password-card {
-  margin-top: 7%;
+.register-card {
   background: #f5f5f5;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 450px;
-  text-align: center;
+  max-width: 700px;
   border: 1px solid #ddd;
+  text-align: center;
 }
 
 h2 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
   font-weight: 700;
+  margin-bottom: 30px;
   color: #b88c3a;
-  margin-bottom: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
 }
 
-.password-form {
+.form-row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .input-group {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .input-group {
+    width: 48%;
+  }
 }
 
 .input-group label {
   font-weight: 600;
-  color: #b88c3a;
   margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: #b88c3a;
   font-size: 14px;
+  text-align: left;
 }
 
 .input-group input {
-  width: 100%;
-  padding: 12px 15px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 15px;
+  border-radius: 14px;
+  font-size: 14px;
   background: #fafafa;
+  color: #333;
   transition: all 0.3s ease;
 }
 
 .input-group input:focus {
-  border-color: #b88c3a;
-  box-shadow: 0 0 0 2px rgba(184, 140, 58, 0.2);
   background: #fff;
+  box-shadow: 0 0 0 2px #b88c3a;
   outline: none;
 }
 
-.hint {
-  color: #666;
-  font-size: 12px;
-  margin-top: 5px;
-  display: block;
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-top: 25px;
 }
 
-.btn-submit {
+.btn-register,
+.btn-back {
   background: linear-gradient(135deg, #b88c3a, #d6a441);
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  border-radius: 14px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-submit:hover {
+.btn-register:hover,
+.btn-back:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(184, 140, 58, 0.3);
-}
-
-.btn-submit:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  box-shadow: 0 6px 18px rgba(184, 140, 58, 0.3);
 }
 
 .success-message {
-  background: #4CAF50;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  color: #4caf50;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
 .error-message {
-  background: #f44336;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-@media (max-width: 480px) {
-  .password-card {
-    padding: 20px;
-  }
-  
-  h2 {
-    font-size: 20px;
-  }
+  color: #e53935;
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 </style>

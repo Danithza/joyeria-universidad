@@ -149,7 +149,7 @@ const proceedToCheckout = () => {
 }
 
 .logo-img {
-  width: 50px;
+  width: 70px;
   height: auto;
   transition: all 0.3s ease;
   display: block;
@@ -158,7 +158,7 @@ const proceedToCheckout = () => {
 
 .logo {
   font-family: 'Inter', sans-serif;
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #ffffff;
   font-weight: 700;
   white-space: nowrap;
