@@ -1,5 +1,4 @@
 <template>
-  <!-- Todo el template se mantiene exactamente igual -->
   <div class="home-container">
     <!-- Carrusel de Bootstrap -->
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -79,11 +78,15 @@
         <img src="@/assets/img-home/img-promos-cadenas/collar4.jpg" alt="Cadena D" />
       </div>
     </section>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/573106164105" class="whatsapp-button" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="WhatsApp">
+    </a>
   </div>
 </template>
 
 <script>
-// El script se mantiene exactamente igual
 export default {
   data() {
     return {
@@ -107,8 +110,8 @@ export default {
       { nombre: "Anillos", archivo: "anillos.webp", ruta: "/anillos" },
       { nombre: "Cadenas", archivo: "collar.jpg", ruta: "/cadenas" },
       { nombre: "Piercing", archivo: "piercing.jpg", ruta: "/piercing" },
-      { nombre: "Pulseras", archivo: "pulceras.jpg", ruta: "/pulseras" },  // ojo: sin mayúscula ni tilde
-      { nombre: "Relojes", archivo: "reloj.jpg", ruta: "/relojes" }       // ojo: sin mayúscula
+      { nombre: "Pulseras", archivo: "pulceras.jpg", ruta: "/pulseras" },
+      { nombre: "Relojes", archivo: "reloj.jpg", ruta: "/relojes" }
     ];
 
     const catalogoImages = import.meta.glob('@/assets/img-home/catalogo/*.{jpg,jpeg,png,webp}', { eager: true });
@@ -173,7 +176,7 @@ export default {
 .slogan h1 {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #d4af37; /* Oro más brillante */
+  color: #d4af37;
   padding: 0 20px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -206,7 +209,7 @@ export default {
   padding: 0 20px;
 }
 
-/* Imágenes de productos (anillos, pulseras, cadenas) */
+/* Imágenes de productos */
 .icon-grid > img {
   width: 300px;
   height: 400px;
@@ -277,6 +280,33 @@ export default {
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+/* Botón de WhatsApp flotante */
+.whatsapp-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+}
+
+.whatsapp-button img {
+  width: 36px;
+  height: 36px;
 }
 
 /* ------------------------- */
@@ -360,6 +390,18 @@ export default {
   .catalogo-grid img {
     width: 140px;
     height: 140px;
+  }
+
+  .whatsapp-button {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .whatsapp-button img {
+    width: 30px;
+    height: 30px;
   }
 }
 

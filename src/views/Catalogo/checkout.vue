@@ -155,22 +155,27 @@ const pagar = () => {
 .checkout-form {
   padding: 2rem;
   max-width: 700px;
-  margin: 7rem auto;
+  margin: 11rem auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f7f7f7;
+  background: #000000; /* Fondo negro */
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  color: #ffffff; /* Texto blanco por defecto */
+}
+
+h1, h2 {
+  text-align: center;
+  color: #ffffff; /* Títulos en blanco */
+  margin-bottom: 1rem;
 }
 
 h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 1rem;
+  font-size: 1.8rem;
 }
 
 h2 {
   font-size: 1.2rem;
-  color: #444;
+  color: #ffffff;
   margin-bottom: 0.5rem;
 }
 
@@ -184,16 +189,18 @@ input,
 select {
   padding: 0.5rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
+  background-color: #222;
+  color: #fff;
 }
 
 button {
   padding: 0.75rem;
-  background-color: #252323;
-  color: white;
+  background-color: #ffffff;
+  color: #000000;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -202,7 +209,7 @@ button {
 }
 
 button:hover {
-  background-color: #444;
+  background-color: #dddddd;
 }
 
 .nombre-apellido {
@@ -227,10 +234,10 @@ button:hover {
 
 .resumen-carrito {
   margin-top: 2rem;
-  background-color: #ffffff;
+  background-color: #222;
   padding: 1rem;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
 }
 
 .resumen-carrito ul {
@@ -240,17 +247,23 @@ button:hover {
 
 .resumen-carrito li {
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 .totales p {
   margin: 0.3rem 0;
   font-weight: 500;
+  color: #fff;
 }
 
 .mensaje-exito {
-  color: green;
+  color: #4CAF50;
   font-weight: bold;
   margin-top: 1rem;
   text-align: center;
+}
+
+label {
+  color: #fff;
 }
 </style>
