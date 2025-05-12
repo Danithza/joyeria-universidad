@@ -88,28 +88,43 @@ export default {
   }
 };
 </script>
+<style>
+/* Estilos globales */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000 !important;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+}
 
-<style scoped>
+#app {
+  background-color: #000000;
+}
+
+/* Importación de fuente */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+/* Estilos específicos del componente */
 .perfil-container {
-  font-family: 'Montserrat', sans-serif;
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  color: #ffffff; /* Texto blanco */
-  background: #000000; /* Fondo negro */
+  color: #ffffff;
+  background: #000000;
   min-height: 100vh;
 }
 
 .profile-card {
-  background: #1a1a1a; /* Fondo gris oscuro */
+  background: #1a1a1a;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05); /* Sombra clara */
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
   overflow: hidden;
   padding: 2.5rem;
   margin-top: 80px;
-  border: 1px solid #333; /* Borde gris */
+  border: 1px solid #333;
+  animation: fadeIn 0.6s ease-out;
 }
 
 .user-info {
@@ -118,7 +133,7 @@ export default {
   align-items: center;
   gap: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #333; /* Borde gris */
+  border-bottom: 1px solid #333;
   margin-bottom: 2rem;
 }
 
@@ -151,7 +166,7 @@ export default {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #333; /* Borde gris */
+  border: 4px solid #333;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
@@ -160,13 +175,13 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2a2a2a, #1a1a1a); /* Degradado gris oscuro */
+  background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #888; /* Texto gris */
+  color: #888;
   font-weight: 500;
-  border: 4px solid #333; /* Borde gris */
+  border: 4px solid #333;
   text-align: center;
   padding: 1rem;
   box-sizing: border-box;
@@ -179,7 +194,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente oscuro */
+  background: rgba(0, 0, 0, 0.7); /* Corregido */
   color: white;
   display: flex;
   justify-content: center;
@@ -198,14 +213,14 @@ export default {
 
 .user-details {
   flex-grow: 1;
-  color: #ffffff; /* Texto blanco */
+  color: #ffffff;
 }
 
 .user-details h2 {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #ffffff; /* Texto blanco */
+  color: #ffffff;
   position: relative;
   display: inline-block;
 }
@@ -217,7 +232,7 @@ export default {
   left: 0;
   width: 50px;
   height: 4px;
-  background: linear-gradient(90deg, #b88c3a, #d6a441); /* Degradado dorado */
+  background: linear-gradient(90deg, #b88c3a, #d6a441);
   border-radius: 2px;
 }
 
@@ -225,11 +240,11 @@ export default {
   font-size: 1rem;
   margin-bottom: 0.8rem;
   line-height: 1.6;
-  color: #ccc; /* Texto gris claro */
+  color: #ccc;
 }
 
 .user-details strong {
-  color: #b88c3a; /* Dorado */
+  color: #b88c3a;
   font-weight: 600;
 }
 
@@ -241,13 +256,13 @@ export default {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #ffffff; /* Texto blanco */
+  color: #ffffff;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #333; /* Borde gris */
+  border-bottom: 2px solid #333;
 }
 
 .purchase-history p {
-  color: #aaa; /* Texto gris más claro */
+  color: #aaa;
   font-size: 0.95rem;
 }
 
@@ -255,36 +270,32 @@ export default {
 .not-logged-in {
   text-align: center;
   padding: 2rem;
-  background: #1a1a1a; /* Fondo gris oscuro */
+  background: #1a1a1a;
   border-radius: 16px;
   box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
   margin-top: 80px;
-  border: 1px solid #333; /* Borde gris */
+  border: 1px solid #333;
 }
 
 .not-logged-in p {
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: #ffffff; /* Texto blanco */
+  color: #ffffff;
 }
 
 .not-logged-in a {
-  color: #b88c3a; /* Dorado */
+  color: #b88c3a;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .not-logged-in a:hover {
-  color: #d6a441; /* Dorado más claro */
+  color: #d6a441;
   text-decoration: underline;
 }
 
-/* Efectos de transición */
-.profile-card {
-  animation: fadeIn 0.6s ease-out;
-}
-
+/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;

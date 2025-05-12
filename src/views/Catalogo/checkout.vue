@@ -150,7 +150,6 @@ const pagar = () => {
   cartStore.limpiarCarrito()
 }
 </script>
-
 <style scoped>
 .checkout-form {
   padding: 2rem;
@@ -160,7 +159,7 @@ const pagar = () => {
   background: #000000; /* Fondo negro */
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-  color: #ffffff; /* Texto blanco por defecto */
+  color: #b88c3a; /* Letra dorada */
 }
 
 h1, h2 {
@@ -194,7 +193,7 @@ select {
   width: 100%;
   box-sizing: border-box;
   background-color: #222;
-  color: #fff;
+  color: #b88c3a; /* Input texto dorado */
 }
 
 button {
@@ -247,13 +246,13 @@ button:hover {
 
 .resumen-carrito li {
   margin-bottom: 0.5rem;
-  color: #fff;
+  color: #b88c3a;
 }
 
 .totales p {
   margin: 0.3rem 0;
   font-weight: 500;
-  color: #fff;
+  color: #b88c3a;
 }
 
 .mensaje-exito {
@@ -264,6 +263,6 @@ button:hover {
 }
 
 label {
-  color: #fff;
+  color: #b88c3a;
 }
 </style>
