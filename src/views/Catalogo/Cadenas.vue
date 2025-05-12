@@ -386,7 +386,7 @@ button:hover {
   color: #bbb;
 }
 
-/* Estilos del Modal */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -399,7 +399,6 @@ button:hover {
   align-items: center;
   z-index: 1000;
 }
-
 .modal-contenido {
   background: #fff;
   border-radius: 16px;
@@ -415,7 +414,6 @@ button:hover {
   background: #1e1e1e;
   color: #fff;
 }
-
 .modal-cerrar {
   position: absolute;
   top: 15px;
@@ -443,21 +441,18 @@ button:hover {
   align-items: center;
   justify-content: center;
 }
-
 .modal-imagen {
   max-width: 100%;
   max-height: 400px;
   border-radius: 12px;
   object-fit: contain;
 }
-
 .modal-info {
   flex: 1;
   padding: 2rem;
   display: flex;
   flex-direction: column;
 }
-
 .modal-precio {
   font-size: 1.5rem;
   font-weight: bold;
@@ -467,7 +462,6 @@ button:hover {
 .dark .modal-precio {
   color: #ddd;
 }
-
 .modal-descripcion {
   margin: 1rem 0;
   line-height: 1.6;
@@ -476,13 +470,11 @@ button:hover {
 .dark .modal-descripcion {
   color: #aaa;
 }
-
 .modal-botones {
   display: flex;
   gap: 1rem;
   margin-top: auto;
 }
-
 .modal-comprar {
   background: #e91e63;
   color: white;
@@ -492,7 +484,6 @@ button:hover {
 .modal-comprar:hover {
   background: #c2185b;
 }
-
 .modal-cerrar-btn {
   background: #666;
   color: white;
@@ -509,7 +500,13 @@ button:hover {
   background: #333;
 }
 
-@media (max-width: 768px) {
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  .grid-horizontal {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 1024px) {
   .main-layout {
     flex-direction: column;
   }
@@ -519,23 +516,29 @@ button:hover {
   .grid-horizontal {
     grid-template-columns: 1fr;
   }
-  
   .modal-contenido {
     flex-direction: column;
     width: 90%;
-    max-height: 90vh;
   }
-  
-  .modal-imagen-container {
+  .modal-imagen-container,
+  .modal-info {
     padding: 1rem;
   }
-  
-  .modal-info {
-    padding: 1.5rem;
-  }
-  
   .modal-botones {
     flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .imagen-horizontal {
+    width: 100px;
+    height: 100px;
+  }
+  .tarjeta-producto.horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .modal-imagen {
+    max-height: 250px;
   }
 }
 </style>
